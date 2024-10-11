@@ -92,3 +92,21 @@ void estacion::mostrarInfo() const
         cout << "- " << surtidores[i] << endl;
     }
 }
+
+// Método para verificar el estado de los combustibles y mostrarlos
+void estacion::mostrarEstadoCombustibles() const {
+    // Asegurarnos de que 'activo' se interprete como un valor de 3 bits binarios
+    unsigned short int valorBinario = activo & 0b111;  // Forzamos la interpretación de los 3 bits menos significativos
+
+    // Descomponemos el valor en cada uno de los combustibles en el orden correcto
+    bool regular = valorBinario & 1;            // Primer bit (unidades) -> Regular
+    bool premium = (valorBinario >> 1) & 1;     // Segundo bit (decenas) -> Premium
+    bool ecomax = (valorBinario >> 2) & 1;      // Tercer bit (centenas) -> Ecomax
+
+    // Mostrar el estado de cada combustible
+    cout << "Estado de los combustibles:" << endl;
+    cout << "- Regular: " << (regular ? "Disponible" : "No disponible") << endl;
+    cout << "- Premium: " << (premium ? "Disponible" : "No disponible") << endl;
+    cout << "- Ecomax: " << (ecomax ? "Disponible" : "No disponible") << endl;
+}
+

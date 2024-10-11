@@ -43,6 +43,10 @@ public:
 
     // Método para mostrar información básica de la estación
     void mostrarInfo() const;
+
+    // Método para verificar el estado de un combustible
+    void mostrarEstadoCombustibles() const;
+
 };
 
 #endif // ESTACION_H

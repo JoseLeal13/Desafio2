@@ -2,19 +2,17 @@
 #include <iostream>
 
 int main() {
-    // Crear una estación
-    estacion est1("Termax1", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 111);
+    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 111);
 
-    // Agregar algunos surtidores
     est1.agregarSurtidor("A1");
     est1.agregarSurtidor("A2");
 
-    // Mostrar información de la estación
     est1.mostrarInfo();
 
-    // Mostrar información de un surtidor específico
+    est1.mostrarEstadoCombustibles();
+
     cout << "\nInformación del surtidor A1:" << endl;
-    est1.mostrarSurtidor(0); // Surtidor en el índice 0 ("A1")
+    est1.mostrarSurtidor(0);
 
     return 0;
 }
