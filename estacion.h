@@ -47,6 +47,9 @@ public:
     // Método para verificar el estado de un combustible
     void mostrarEstadoCombustibles() const;
 
+    //Método para vender combustible
+    void venderCombustible(string tipo) const;
+
 };
 
 #endif // ESTACION_H
