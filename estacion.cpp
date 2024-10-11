@@ -1,11 +1,10 @@
 #include "estacion.h"
 #include <iostream>
-#include <string>
 
 using namespace std;
 
 // Definición del constructor
-estacion::estacion(string nombre, unsigned short int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo)
+estacion::estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo)
 {
     this->nombre = nombre;
     this->id = id;
@@ -16,6 +15,7 @@ estacion::estacion(string nombre, unsigned short int id, string gerente, char re
     this->maquina = maquina;
     this->isla = isla;
     this->activo = activo;
+    this->contadorSurtidores = 0;  // Inicializamos el contador de surtidores
 }
 
 // Getters
@@ -23,7 +23,7 @@ string estacion::getNombre() const {
     return nombre;
 }
 
-unsigned short int estacion::getId() const {
+unsigned int estacion::getId() const {
     return id;
 }
 
@@ -35,7 +35,6 @@ char estacion::getRegion() const {
     return region;
 }
 
-// Los getters de latitud y longitud devuelven double ahora
 double estacion::getLatitud() const {
     return latitud;
 }
@@ -56,12 +55,27 @@ unsigned short int estacion::getActivo() const {
     return activo;
 }
 
-// Setter para modificar las islas
-void estacion::setIsla(unsigned short int nuevaIsla) {
-    isla = nuevaIsla;
+// Método para agregar un surtidor
+void estacion::agregarSurtidor(string idSurtidor) {
+    if (contadorSurtidores < 12) { // Solo permite agregar hasta 12 surtidores
+        surtidores[contadorSurtidores] = idSurtidor;  // Guardar el identificador del surtidor
+        contadorSurtidores++;  // Incrementar el contador
+    } else {
+        cout << "No se pueden agregar más surtidores, el límite es 12." << endl;
+    }
 }
 
-// Método para mostrar información básica
+// Método para mostrar información de un surtidor
+void estacion::mostrarSurtidor(int indice) const {
+    if (indice < contadorSurtidores && indice >= 0) {
+        cout << "Surtidor " << surtidores[indice] << " de la estación " << nombre << endl;
+        cout << "Activo: " << activo << endl;
+    } else {
+        cout << "Índice de surtidor no válido." << endl;
+    }
+}
+
+// Método para mostrar información básica de la estación
 void estacion::mostrarInfo() const
 {
     cout << "Nombre de la estación: " << nombre << endl;
@@ -72,4 +86,9 @@ void estacion::mostrarInfo() const
     cout << "Máquina: " << maquina << endl;
     cout << "Isla: " << isla << endl;
     cout << "Activo: " << activo << endl;
+
+    cout << "Surtidores en la estación: " << endl;
+    for (int i = 0; i < contadorSurtidores; i++) {
+        cout << "- " << surtidores[i] << endl;
+    }
 }

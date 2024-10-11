@@ -1,19 +1,20 @@
 #include "estacion.h"
 #include <iostream>
 
-using namespace std;
-
 int main() {
-    estacion miEstacion("Terpel", 12345, "José", 'N', 10.9804, -74.7889, "A1", 5, 111);
+    // Crear una estación
+    estacion est1("Termax1", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 111);
 
-    cout << "Información inicial de la estación:" << endl;
-    miEstacion.mostrarInfo();
+    // Agregar algunos surtidores
+    est1.agregarSurtidor("A1");
+    est1.agregarSurtidor("A2");
 
-    cout << "\nModificando el número de islas..." << endl;
-    miEstacion.setIsla(10);
+    // Mostrar información de la estación
+    est1.mostrarInfo();
 
-    cout << "Información después de modificar las islas:" << endl;
-    miEstacion.mostrarInfo();
+    // Mostrar información de un surtidor específico
+    cout << "\nInformación del surtidor A1:" << endl;
+    est1.mostrarSurtidor(0); // Surtidor en el índice 0 ("A1")
 
     return 0;
 }

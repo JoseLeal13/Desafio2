@@ -1,31 +1,32 @@
 #ifndef ESTACION_H
 #define ESTACION_H
+
 #include <string>
 using namespace std;
 
 class estacion
 {
 private:
-    string nombre;               // Nombre de la estación
-    unsigned short int id;       // ID de la estación
-    string gerente;              // Nombre del gerente
-    char region;                 // Región de la estación
-    double latitud;              // Latitud (coordenadas GPS)
-    double longitud;             // Longitud (coordenadas GPS)
-    string maquina;              // Máquina de la estación
+    string nombre;
+    unsigned int id;
+    string gerente;
+    char region;
+    double latitud;
+    double longitud;
+    string maquina;
+    unsigned short int isla;
+    unsigned short int activo;
+
+    string surtidores[12];  // Arreglo para almacenar los identificadores de hasta 12 surtidores
+    unsigned short int contadorSurtidores;  // Para llevar el conteo de surtidores añadidos
 
 public:
-    unsigned short int isla;     // Número de isla
-    unsigned short int activo;   // Estado de actividad
-
     // Constructor
-    estacion(string nombre, unsigned short int id, string gerente, char region,
-             double latitud, double longitud, string maquina,
-             unsigned short int isla, unsigned short int activo);
+    estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo);
 
     // Getters
     string getNombre() const;
-    unsigned short int getId() const;
+    unsigned int getId() const;
     string getGerente() const;
     char getRegion() const;
     double getLatitud() const;
@@ -34,10 +35,13 @@ public:
     unsigned short int getIsla() const;
     unsigned short int getActivo() const;
 
-    // Setter para modificar el número de isla
-    void setIsla(unsigned short int nuevaIsla);
+    // Método para agregar un surtidor
+    void agregarSurtidor(string idSurtidor);
 
-    // Método para mostrar la información de la estación
+    // Método para mostrar información de un surtidor
+    void mostrarSurtidor(int indice) const;
+
+    // Método para mostrar información básica de la estación
     void mostrarInfo() const;
 };
 
