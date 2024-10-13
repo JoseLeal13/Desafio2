@@ -1,3 +1,4 @@
+/*
 #ifndef TANK_H
 #define TANK_H
 
@@ -15,3 +16,4 @@ public:
 };
 
 #endif // TANK_H
+*/
