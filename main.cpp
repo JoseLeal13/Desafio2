@@ -18,12 +18,10 @@ int main() {
     est1.venderCombustible("Ecomax");
     est1.venderCombustible("Disel");
 
-    est1.registrarVenta(50.0, "Regular", "Tarjeta", "123456789", 250.0);
-    est1.registrarVenta(50.0, "Regular", "Efectivo", "123456789", 250.0);
-    est1.registrarVenta(50.0, "Ecomax", "Tarjeta", "123456789", 250.0);
-    est1.registrarVenta(50.0, "Ecomax", "Efectivo", "123456789", 250.0);
+    est1.registrarVenta(30.0, "Regular", "Tarjeta", "123456789", 200.0);
     est1.registrarVenta(50.0, "Premium", "Efectivo", "123456789", 250.0);
-    est1.registrarVenta(50.0, "Premium", "Tarjeta", "123456789", 110.0);
+    est1.registrarVenta(20.0, "Ecomax", "Tarjeta", "123456789", 150.0);
+
 
     est1.mostrarVentas();
 

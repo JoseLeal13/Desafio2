@@ -7,12 +7,13 @@ using namespace std;
 // Definición del constructor
 estacion::estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo)
     : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud), longitud(longitud),
-    maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0){
-    ventas = new Venta[5];// Inicializa el arreglo dinámico para ventas
+    maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0), capacidadVentas(5) {
+    ventas = new Venta[capacidadVentas]; // Inicializa el arreglo dinámico para ventas
 }
 
 estacion::~estacion() {
-    delete[] ventas; // Liberar la memoria asignada al arreglo dinámico
+    // Liberar la memoria asignada al arreglo dinámico
+    delete[] ventas; // Liberar el arreglo de objetos Venta
 }
 
 // Getters
@@ -98,25 +99,31 @@ void estacion::venderCombustible(string tipo) const {
     }
 }
 
-// Registrar venta
 void estacion::registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto) {
-    if (contadorVentas == 5) {
-        cout << "Límite de ventas alcanzado. Guardando ventas." << endl;
-        guardarVentasEnArchivo();
-        contadorVentas = 0; // Reiniciar contador después de guardar
-    }
+    // Agregar la nueva venta
+    time_t now = time(0);
+    ventas[contadorVentas].fechaHora = ctime(&now); // Cambiado a . en lugar de ->
+    ventas[contadorVentas].cantidadCombustible = cantidad;
+    ventas[contadorVentas].categoria = categoria;
+    ventas[contadorVentas].metodoPago = metodoPago;
+    ventas[contadorVentas].documentoCliente = documentoCliente;
+    ventas[contadorVentas].monto = monto;
 
-    // Ahora podemos agregar la nueva venta
-    if (contadorVentas < 5) {
-        time_t now = time(0);
-        ventas[contadorVentas++] = {ctime(&now), cantidad, categoria, metodoPago, documentoCliente, monto};
-        cout << "Venta registrada." << endl;
-    } else {
-        cout << "No se pueden agregar más ventas, el límite es 5." << endl;
+    contadorVentas++;
+
+    // Si alcanzamos 5 ventas, guardamos y reiniciamos
+    if (contadorVentas == capacidadVentas) {
+        cout << "Se han registrado " << capacidadVentas << " ventas. Guardando ventas." << endl;
+        guardarVentasEnArchivo();
+
+        // Reiniciar el contador de ventas
+        contadorVentas = 0;
+
+        // Volver a usar el arreglo existente, no es necesario reasignar memoria
     }
 }
 
-
+// Guardar ventas en archivo
 bool estacion::guardarVentasEnArchivo() {
     ofstream archivo("ventas.txt", ios::app);
     if (!archivo) {
@@ -125,7 +132,7 @@ bool estacion::guardarVentasEnArchivo() {
     }
 
     for (int i = 0; i < contadorVentas; ++i) {
-        archivo << "Fecha: " << ventas[i].fechaHora
+        archivo << "Fecha: " << ventas[i].fechaHora // Cambiado a . en lugar de ->
                 << " Cantidad: " << ventas[i].cantidadCombustible << "L "
                 << "Categoría: " << ventas[i].categoria << " "
                 << "Pago: " << ventas[i].metodoPago << " "
@@ -138,7 +145,11 @@ bool estacion::guardarVentasEnArchivo() {
 }
 
 // Mostrar ventas
-void estacion::mostrarVentas() const {
+void estacion::mostrarVentas() {
+    // Guardar las ventas actuales en el archivo antes de mostrar
+    guardarVentasEnArchivo();
+
+    // Mostrar el contenido del archivo de ventas
     ifstream archivo("ventas.txt");
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;

@@ -28,8 +28,9 @@ private:
     string surtidores[12];  // Arreglo para almacenar los identificadores de surtidores
     unsigned short int contadorSurtidores;  // Para llevar el conteo de surtidores añadidos
 
-    Venta* ventas;  // Puntero para almacenar las ventas dinámicamente
+    Venta* ventas;  // Puntero para almacenar las ventas dinámicamente (arreglo bidimensional)
     unsigned short int contadorVentas;  // Contador para las ventas realizadas
+    unsigned short int capacidadVentas;  // Capacidad actual del arreglo
 
 public:
     // Constructor
@@ -61,7 +62,7 @@ public:
     void venderCombustible(string tipo) const;
     void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
     bool guardarVentasEnArchivo();
-    void mostrarVentas() const;
+    void mostrarVentas();
 };
 
 #endif // ESTACION_H
