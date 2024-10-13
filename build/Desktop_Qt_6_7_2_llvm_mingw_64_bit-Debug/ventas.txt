@@ -18,3 +18,53 @@ Fecha: Sun Oct 13 13:44:01 2024
  Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
 Fecha: Sun Oct 13 13:44:01 2024
  Cantidad: 30L Categoría: Premium Pago: Efectivo Cliente: 987654321 Monto: $180
+Fecha: Sun Oct 13 13:55:29 2024
+ Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 13:55:29 2024
+ Cantidad: 30L Categoría: Premium Pago: Efectivo Cliente: 987654321 Monto: $180
+Fecha: Sun Oct 13 13:55:29 2024
+ Cantidad: 40L Categoría: Ecomax Pago: Tarjeta Cliente: 112233445 Monto: $200
+Fecha: Sun Oct 13 13:55:29 2024
+ Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 13:55:29 2024
+ Cantidad: 30L Categoría: Premium Pago: Efectivo Cliente: 987654321 Monto: $180
+Fecha: Sun Oct 13 13:56:40 2024
+ Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 13:56:40 2024
+ Cantidad: 30L Categoría: Premium Pago: Efectivo Cliente: 987654321 Monto: $180
+Fecha: Sun Oct 13 13:56:40 2024
+ Cantidad: 40L Categoría: Ecomax Pago: Tarjeta Cliente: 112233445 Monto: $200
+Fecha: Sun Oct 13 13:56:40 2024
+ Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 13:56:40 2024
+ Cantidad: 30L Categoría: Premium Pago: Efectivo Cliente: 987654321 Monto: $180
+Fecha: Sun Oct 13 13:58:40 2024
+ Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 13:58:40 2024
+ Cantidad: 30L Categoría: Premium Pago: Efectivo Cliente: 987654321 Monto: $180
+Fecha: Sun Oct 13 13:58:40 2024
+ Cantidad: 40L Categoría: Ecomax Pago: Tarjeta Cliente: 112233445 Monto: $200
+Fecha: Sun Oct 13 13:58:40 2024
+ Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 13:58:40 2024
+ Cantidad: 30L Categoría: Premium Pago: Efectivo Cliente: 987654321 Monto: $180
+Fecha: Sun Oct 13 14:27:31 2024
+ Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:27:31 2024
+ Cantidad: 50L Categoría: Regular Pago: Efectivo Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:27:31 2024
+ Cantidad: 50L Categoría: Ecomax Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:27:31 2024
+ Cantidad: 50L Categoría: Ecomax Pago: Efectivo Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:27:31 2024
+ Cantidad: 50L Categoría: Premium Pago: Efectivo Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:30:42 2024
+ Cantidad: 50L Categoría: Regular Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:30:42 2024
+ Cantidad: 50L Categoría: Regular Pago: Efectivo Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:30:42 2024
+ Cantidad: 50L Categoría: Ecomax Pago: Tarjeta Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:30:42 2024
+ Cantidad: 50L Categoría: Ecomax Pago: Efectivo Cliente: 123456789 Monto: $250
+Fecha: Sun Oct 13 14:30:42 2024
+ Cantidad: 50L Categoría: Premium Pago: Efectivo Cliente: 123456789 Monto: $250

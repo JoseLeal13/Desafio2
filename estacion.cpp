@@ -100,29 +100,28 @@ void estacion::venderCombustible(string tipo) const {
 
 // Registrar venta
 void estacion::registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto) {
+    if (contadorVentas == 5) {
+        cout << "Límite de ventas alcanzado. Guardando ventas." << endl;
+        guardarVentasEnArchivo();
+        contadorVentas = 0; // Reiniciar contador después de guardar
+    }
+
+    // Ahora podemos agregar la nueva venta
     if (contadorVentas < 5) {
         time_t now = time(0);
         ventas[contadorVentas++] = {ctime(&now), cantidad, categoria, metodoPago, documentoCliente, monto};
         cout << "Venta registrada." << endl;
-
-        if (contadorVentas == 5) {
-            if (guardarVentasEnArchivo()) {
-                contadorVentas = 0;
-            }
-        }
     } else {
-        cout << "Límite de ventas alcanzado." << endl;
+        cout << "No se pueden agregar más ventas, el límite es 5." << endl;
     }
 }
 
-// Guardar ventas en archivo
+
 bool estacion::guardarVentasEnArchivo() {
     ofstream archivo("ventas.txt", ios::app);
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return false;
-    } else {
-        cout << "Archivo abierto exitosamente." << endl;  // Añadir esta línea
     }
 
     for (int i = 0; i < contadorVentas; ++i) {
@@ -137,7 +136,6 @@ bool estacion::guardarVentasEnArchivo() {
     cout << "Ventas guardadas." << endl;
     return true;
 }
-
 
 // Mostrar ventas
 void estacion::mostrarVentas() const {
