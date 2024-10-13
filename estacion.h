@@ -4,8 +4,16 @@
 #include <string>
 using namespace std;
 
-class estacion
-{
+struct Venta {
+    string fechaHora;
+    double cantidadCombustible;
+    string categoria;
+    string metodoPago;
+    string documentoCliente;
+    double monto;
+};
+
+class estacion {
 private:
     string nombre;
     unsigned int id;
@@ -17,12 +25,19 @@ private:
     unsigned short int isla;
     unsigned short int activo;
 
-    string surtidores[12];  // Arreglo para almacenar los identificadores de hasta 12 surtidores
+    string surtidores[12];  // Arreglo para almacenar los identificadores de surtidores
     unsigned short int contadorSurtidores;  // Para llevar el conteo de surtidores añadidos
+
+    Venta* ventas;  // Puntero para almacenar las ventas dinámicamente (arreglo bidimensional)
+    unsigned short int contadorVentas;  // Contador para las ventas realizadas
+    unsigned short int capacidadVentas;  // Capacidad actual del arreglo
 
 public:
     // Constructor
     estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo);
+
+    // Destructor
+    ~estacion();
 
     // Getters
     string getNombre() const;
@@ -35,21 +50,25 @@ public:
     unsigned short int getIsla() const;
     unsigned short int getActivo() const;
 
-    // Método para agregar un surtidor
+    // Métodos para surtidores
     void agregarSurtidor(string idSurtidor);
-
-    // Método para mostrar información de un surtidor
     void mostrarSurtidor(int indice) const;
 
-    // Método para mostrar información básica de la estación
+    // Información de la estación
     void mostrarInfo() const;
-
-    // Método para verificar el estado de un combustible
     void mostrarEstadoCombustibles() const;
 
+<<<<<<< HEAD
     //Método para vender combustible
     void venderCombustible(int tipo) const;
 
+=======
+    // Métodos de venta
+    void venderCombustible(string tipo) const;
+    void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
+    bool guardarVentasEnArchivo();
+    void mostrarVentas();
+>>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
 };
 
 #endif // ESTACION_H

@@ -9,6 +9,7 @@ void Mopred();//mostrar opciones de la red
 void Mopes();//mostrar opciones para una estacion
 void MopSurtidores();//mostrar opciones para los surtidores
 int main() {
+<<<<<<< HEAD
     unsigned short int opcion=0;
     while(opcion!=3){
          system("cls");
@@ -146,6 +147,9 @@ void MopSurtidores(){
 /*estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 101);
     tank tank1(12344,200,2333,2333,1);
     tank tank2(1000,50,20,130,0);
+=======
+    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7);
+>>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
     est1.agregarSurtidor("A1");
     est1.agregarSurtidor("A2");
 
@@ -164,6 +168,7 @@ void MopSurtidores(){
     ofstream archivo("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
     for(unsigned short int i=0;i<sizeof(lista)/sizeof(lista[0]);i++){
 
+<<<<<<< HEAD
         if (archivo.is_open()) {
         // Guardamos el objeto en el archivo
         archivo << lista[i]<<"\n";
@@ -171,6 +176,19 @@ void MopSurtidores(){
     } else {
         cout << "No se pudo abrir el archivo\n";
     }
+=======
+    est1.venderCombustible("Regular");
+    est1.venderCombustible("Premium");
+    est1.venderCombustible("Ecomax");
+    est1.venderCombustible("Disel");
+
+    est1.registrarVenta(30.0, "Regular", "Tarjeta", "123456789", 200.0);
+    est1.registrarVenta(50.0, "Premium", "Efectivo", "123456789", 250.0);
+    est1.registrarVenta(20.0, "Ecomax", "Tarjeta", "123456789", 150.0);
+
+
+    est1.mostrarVentas();
+>>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
 
     lista[i].mostrar();
     }

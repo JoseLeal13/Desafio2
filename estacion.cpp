@@ -1,21 +1,19 @@
 #include "estacion.h"
 #include <iostream>
-
+#include <ctime>
+#include <fstream>
 using namespace std;
 
 // Definición del constructor
 estacion::estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo)
-{
-    this->nombre = nombre;
-    this->id = id;
-    this->gerente = gerente;
-    this->region = region;
-    this->latitud = latitud;  // Latitud de tipo double
-    this->longitud = longitud;  // Longitud de tipo double
-    this->maquina = maquina;
-    this->isla = isla;
-    this->activo = activo;
-    this->contadorSurtidores = 0;  // Inicializamos el contador de surtidores
+    : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud), longitud(longitud),
+    maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0), capacidadVentas(5) {
+    ventas = new Venta[capacidadVentas]; // Inicializa el arreglo dinámico para ventas
+}
+
+estacion::~estacion() {
+    // Liberar la memoria asignada al arreglo dinámico
+    delete[] ventas; // Liberar el arreglo de objetos Venta
 }
 
 // Getters
@@ -57,59 +55,38 @@ unsigned short int estacion::getActivo() const {
 
 // Método para agregar un surtidor
 void estacion::agregarSurtidor(string idSurtidor) {
-    if (contadorSurtidores < 12) { // Solo permite agregar hasta 12 surtidores
-        surtidores[contadorSurtidores] = idSurtidor;  // Guardar el identificador del surtidor
-        contadorSurtidores++;  // Incrementar el contador
+    if (contadorSurtidores < 12) {
+        surtidores[contadorSurtidores++] = idSurtidor;
     } else {
         cout << "No se pueden agregar más surtidores, el límite es 12." << endl;
     }
 }
 
-// Método para mostrar información de un surtidor
+// Mostrar información de un surtidor
 void estacion::mostrarSurtidor(int indice) const {
-    if (indice < contadorSurtidores && indice >= 0) {
+    if (indice >= 0 && indice < contadorSurtidores) {
         cout << "Surtidor " << surtidores[indice] << " de la estación " << nombre << endl;
-        cout << "Activo: " << activo << endl;
     } else {
         cout << "Índice de surtidor no válido." << endl;
     }
 }
 
-// Método para mostrar información básica de la estación
-void estacion::mostrarInfo() const
-{
-    cout << "Nombre de la estación: " << nombre << endl;
-    cout << "ID: " << id << endl;
-    cout << "Gerente: " << gerente << endl;
-    cout << "Región: " << region << endl;
-    cout << "Ubicación (Latitud, Longitud): " << latitud << ", " << longitud << endl;
-    cout << "Máquina: " << maquina << endl;
-    cout << "Isla: " << isla << endl;
-    cout << "Activo: " << activo << endl;
-
-    cout << "Surtidores en la estación: " << endl;
-    for (int i = 0; i < contadorSurtidores; i++) {
-        cout << "- " << surtidores[i] << endl;
-    }
+// Mostrar información básica de la estación
+void estacion::mostrarInfo() const {
+    cout << "Nombre: " << nombre << "\nID: " << id << "\nGerente: " << gerente
+         << "\nRegión: " << region << "\nUbicación: (" << latitud << ", " << longitud << ")"
+         << "\nMáquina: " << maquina << "\nIsla: " << isla << "\nActivo: " << activo << endl;
 }
 
-// Método para verificar el estado de los combustibles y mostrarlos
+// Verificar estado de combustibles
 void estacion::mostrarEstadoCombustibles() const {
-    // Asegurarnos de que 'activo' se interprete como un valor de 3 bits binarios
-    unsigned short int valorBinario = activo & 0b111;  // Forzamos la interpretación de los 3 bits menos significativos
-
-    // Descomponemos el valor en cada uno de los combustibles en el orden correcto
-    bool regular = valorBinario & 1;            // Primer bit (unidades) -> Regular
-    bool premium = (valorBinario >> 1) & 1;     // Segundo bit (decenas) -> Premium
-    bool ecomax = (valorBinario >> 2) & 1;      // Tercer bit (centenas) -> Ecomax
-
-    // Mostrar el estado de cada combustible
-    cout << "Estado de los combustibles:" << endl;
-    cout << "- Regular: " << (regular ? "Disponible" : "No disponible") << endl;
-    cout << "- Premium: " << (premium ? "Disponible" : "No disponible") << endl;
-    cout << "- Ecomax: " << (ecomax ? "Disponible" : "No disponible") << endl;
+    cout << "Estado de los combustibles:\n";
+    cout << "- Regular: " << ((activo & 1) ? "Disponible" : "No disponible") << endl;
+    cout << "- Premium: " << ((activo & 2) ? "Disponible" : "No disponible") << endl;
+    cout << "- Ecomax: " << ((activo & 4) ? "Disponible" : "No disponible") << endl;
 }
 
+<<<<<<< HEAD
 // Método para vender un tipo de combustible
 void estacion::venderCombustible(int tipo) const {
     if (tipo == 1) {
@@ -120,7 +97,81 @@ void estacion::venderCombustible(int tipo) const {
             cout << "Vendiendo combustible Ecomax." << endl;
         }else {
         cout << "Tipo de combustible no válido." << endl;
+=======
+// Vender combustible
+void estacion::venderCombustible(string tipo) const {
+    if (tipo == "Regular" && (activo & 1)) {
+        cout << "Vendiendo Regular." << endl;
+    } else if (tipo == "Premium" && (activo & 2)) {
+        cout << "Vendiendo Premium." << endl;
+    } else if (tipo == "Ecomax" && (activo & 4)) {
+        cout << "Vendiendo Ecomax." << endl;
+    } else {
+        cout << "El tipo de combustible no está disponible." << endl;
+>>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
     }
 }
 
+void estacion::registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto) {
+    // Agregar la nueva venta
+    time_t now = time(0);
+    ventas[contadorVentas].fechaHora = ctime(&now); // Cambiado a . en lugar de ->
+    ventas[contadorVentas].cantidadCombustible = cantidad;
+    ventas[contadorVentas].categoria = categoria;
+    ventas[contadorVentas].metodoPago = metodoPago;
+    ventas[contadorVentas].documentoCliente = documentoCliente;
+    ventas[contadorVentas].monto = monto;
 
+    contadorVentas++;
+
+    // Si alcanzamos 5 ventas, guardamos y reiniciamos
+    if (contadorVentas == capacidadVentas) {
+        cout << "Se han registrado " << capacidadVentas << " ventas. Guardando ventas." << endl;
+        guardarVentasEnArchivo();
+
+        // Reiniciar el contador de ventas
+        contadorVentas = 0;
+
+        // Volver a usar el arreglo existente, no es necesario reasignar memoria
+    }
+}
+
+// Guardar ventas en archivo
+bool estacion::guardarVentasEnArchivo() {
+    ofstream archivo("ventas.txt", ios::app);
+    if (!archivo) {
+        cerr << "Error al abrir el archivo." << endl;
+        return false;
+    }
+
+    for (int i = 0; i < contadorVentas; ++i) {
+        archivo << "Fecha: " << ventas[i].fechaHora // Cambiado a . en lugar de ->
+                << " Cantidad: " << ventas[i].cantidadCombustible << "L "
+                << "Categoría: " << ventas[i].categoria << " "
+                << "Pago: " << ventas[i].metodoPago << " "
+                << "Cliente: " << ventas[i].documentoCliente << " "
+                << "Monto: $" << ventas[i].monto << endl;
+    }
+    archivo.close();
+    cout << "Ventas guardadas." << endl;
+    return true;
+}
+
+// Mostrar ventas
+void estacion::mostrarVentas() {
+    // Guardar las ventas actuales en el archivo antes de mostrar
+    guardarVentasEnArchivo();
+
+    // Mostrar el contenido del archivo de ventas
+    ifstream archivo("ventas.txt");
+    if (!archivo) {
+        cerr << "Error al abrir el archivo." << endl;
+        return;
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        cout << linea << endl;
+    }
+    archivo.close();
+}
