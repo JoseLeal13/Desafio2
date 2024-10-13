@@ -74,4 +74,4 @@ ostream& operator<<(ostream& os, const tank& tank) {
     }
     tankes.close();
     return arreglo;
-
+*/
