@@ -48,7 +48,7 @@ public:
     void mostrarEstadoCombustibles() const;
 
     //Método para vender combustible
-    void venderCombustible(string tipo) const;
+    void venderCombustible(int tipo) const;
 
 };
 

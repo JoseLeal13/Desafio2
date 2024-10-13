@@ -111,26 +111,14 @@ void estacion::mostrarEstadoCombustibles() const {
 }
 
 // Método para vender un tipo de combustible
-void estacion::venderCombustible(string tipo) const {
-    if (tipo == "Regular") {
-        if (activo & 1) {  // Verificamos si el bit correspondiente a Regular está activo
-            cout << "Vendiendo combustible Regular." << endl;
-        } else {
-            cout << "El combustible Regular no está disponible." << endl;
-        }
-    } else if (tipo == "Premium") {
-        if (activo & (1 << 1)) {  // Verificamos si el bit correspondiente a Premium está activo
+void estacion::venderCombustible(int tipo) const {
+    if (tipo == 1) {
+         cout << "Vendiendo combustible Regular." << endl;
+        }else if (tipo == 2) {
             cout << "Vendiendo combustible Premium." << endl;
-        } else {
-            cout << "El combustible Premium no está disponible." << endl;
-        }
-    } else if (tipo == "Ecomax") {
-        if (activo & (1 << 2)) {  // Verificamos si el bit correspondiente a Ecomax está activo
+        }else if (tipo == 3) {
             cout << "Vendiendo combustible Ecomax." << endl;
-        } else {
-            cout << "El combustible Ecomax no está disponible." << endl;
-        }
-    } else {
+        }else {
         cout << "Tipo de combustible no válido." << endl;
     }
 }
