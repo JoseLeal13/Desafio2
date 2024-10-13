@@ -4,8 +4,16 @@
 #include <string>
 using namespace std;
 
-class estacion
-{
+struct Venta {
+    string fechaHora;
+    double cantidadCombustible;
+    string categoria;
+    string metodoPago;
+    string documentoCliente;
+    double monto;
+};
+
+class estacion {
 private:
     string nombre;
     unsigned int id;
@@ -17,8 +25,11 @@ private:
     unsigned short int isla;
     unsigned short int activo;
 
-    string surtidores[12];  // Arreglo para almacenar los identificadores de hasta 12 surtidores
+    string surtidores[12];  // Arreglo para almacenar los identificadores de surtidores
     unsigned short int contadorSurtidores;  // Para llevar el conteo de surtidores añadidos
+
+    Venta ventas[5];  // Arreglo para almacenar hasta 5 ventas
+    unsigned short int contadorVentas;  // Contador para las ventas realizadas
 
 public:
     // Constructor
@@ -35,21 +46,19 @@ public:
     unsigned short int getIsla() const;
     unsigned short int getActivo() const;
 
-    // Método para agregar un surtidor
+    // Métodos para surtidores
     void agregarSurtidor(string idSurtidor);
-
-    // Método para mostrar información de un surtidor
     void mostrarSurtidor(int indice) const;
 
-    // Método para mostrar información básica de la estación
+    // Información de la estación
     void mostrarInfo() const;
-
-    // Método para verificar el estado de un combustible
     void mostrarEstadoCombustibles() const;
 
-    //Método para vender combustible
+    // Métodos de venta
     void venderCombustible(string tipo) const;
-
+    void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
+    bool guardarVentasEnArchivo();
+    void mostrarVentas() const;
 };
 
 #endif // ESTACION_H
