@@ -28,12 +28,15 @@ private:
     string surtidores[12];  // Arreglo para almacenar los identificadores de surtidores
     unsigned short int contadorSurtidores;  // Para llevar el conteo de surtidores añadidos
 
-    Venta ventas[5];  // Arreglo para almacenar hasta 5 ventas
+    Venta* ventas;  // Puntero para almacenar las ventas dinámicamente
     unsigned short int contadorVentas;  // Contador para las ventas realizadas
 
 public:
     // Constructor
     estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo);
+
+    // Destructor
+    ~estacion();
 
     // Getters
     string getNombre() const;

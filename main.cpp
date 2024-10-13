@@ -21,6 +21,9 @@ int main() {
     est1.registrarVenta(50.0, "Regular", "Tarjeta", "123456789", 250.0);
     est1.registrarVenta(30.0, "Premium", "Efectivo", "987654321", 180.0);
     est1.registrarVenta(40.0, "Ecomax", "Tarjeta", "112233445", 200.0);
+    est1.registrarVenta(50.0, "Regular", "Tarjeta", "123456789", 250.0);
+    est1.registrarVenta(30.0, "Premium", "Efectivo", "987654321", 180.0);
+    est1.registrarVenta(40.0, "Ecomax", "Tarjeta", "112233445", 200.0);
 
     est1.mostrarVentas();
 

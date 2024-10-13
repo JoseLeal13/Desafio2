@@ -7,7 +7,13 @@ using namespace std;
 // Definición del constructor
 estacion::estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo)
     : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud), longitud(longitud),
-    maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0) {}
+    maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0){
+    ventas = new Venta[5];// Inicializa el arreglo dinámico para ventas
+}
+
+estacion::~estacion() {
+    delete[] ventas; // Liberar la memoria asignada al arreglo dinámico
+}
 
 // Getters
 string estacion::getNombre() const {
@@ -115,6 +121,8 @@ bool estacion::guardarVentasEnArchivo() {
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return false;
+    } else {
+        cout << "Archivo abierto exitosamente." << endl;  // Añadir esta línea
     }
 
     for (int i = 0; i < contadorVentas; ++i) {
@@ -129,6 +137,7 @@ bool estacion::guardarVentasEnArchivo() {
     cout << "Ventas guardadas." << endl;
     return true;
 }
+
 
 // Mostrar ventas
 void estacion::mostrarVentas() const {
