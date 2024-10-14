@@ -34,7 +34,11 @@ private:
 
 public:
     // Constructor
-    estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo);
+    //sobrecarga para poder inicializar el objeto sin nada
+    estacion();
+    estacion(string nombre, unsigned int id, string gerente,
+             char region, double latitud, double longitud, string maquina,
+             unsigned short int isla, unsigned short int activo);
 
     // Destructor
     ~estacion();
@@ -63,8 +67,12 @@ public:
     void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
-    // Método para inicializar los atributos
-    void inicializar();
+
+    // Métodos para manejar estaciones desde archivos
+
+    static unsigned int contadorlineas(const string& rutaArchivo);
+    static estacion* TXTobj(const string& rutaArchivo);
+    void guardarTXT(const string& rutaArchivo);
 
 };
 

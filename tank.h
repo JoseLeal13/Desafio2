@@ -1,4 +1,3 @@
-
 #ifndef tank_h
 #define tank_h
 #include <string>
@@ -24,7 +23,6 @@ public:
     ~tank();
     //----------------
     //Metodos
-        //funcion para pasar los txt a objetos
     void gettank();     //mostrar los valores de los atributos
     void settank(unsigned short int tcombustible,unsigned short int cant);//metodo para modificar los atributos
     int getrest(unsigned short int tcombustibles);     //metodo que retorna el restante de combustible de un objeto
@@ -35,7 +33,8 @@ public:
     static tank* TXTobj(const string& rutaArchivo);                      //pasar el txt a objetos de clase tank
     static void Saveobj(tank* array,tank obj,const string& archivo);           //guardar los objetos a un archivo
 
-    };
+
+};
 
 #endif // tank_h
 

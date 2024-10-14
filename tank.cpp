@@ -104,15 +104,16 @@ tank* tank::TXTobj(const string& rutaArchivo){
     }else{
         return nullptr;
     }
+
 }
 void tank:: Saveobj(tank* array,tank obj,const string& archivo){    //guardar objetos en archivo
     unsigned int tam=contadorlineas();
     ofstream texto(archivo);
     texto<<obj<<endl;
     if (array!=nullptr){
-    for(unsigned int i=0;i<tam;i++){
-        texto<<array[i]<<endl;
-    }
+        for(unsigned int i=0;i<tam;i++){
+            texto<<array[i]<<endl;
+        }
     }
     texto.close();
 }

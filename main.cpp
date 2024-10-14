@@ -13,6 +13,7 @@ void MopSurtidores();//mostrar opciones para los surtidores
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo);
+/*
 int main() {
 
     unsigned short int opcion=0;
@@ -142,8 +143,32 @@ int main() {
     }
     return 0;
 }
+*/
+
+int main(){
+    //tank:tankes myTank(0, 0.0,0.0, 0.0, 1);
+ /*   tank tankn(12345,1);
+    tank tank2(121234,0);
+    tank tank3(12345,0);
+    tank lista[3]={tankn,tank2,tank3};
+    lista[0].setprecios(20000,35000,40000);
+
+    tank* array=tank::TXTobj("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
+    lista[0].gettank();
+    tank::Saveobj(array,lista[0],"C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
+*/
+     string archivo="C:\\Users\\juan david\\Documents\\desafioII\\estacion.txt";
+    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7);
+    estacion est2("Termax", 54321, "Juan", 'S', 10.9983, -73.2514, "B", 2, 5);
+
+    est1.guardarTXT(archivo);
+    est2.guardarTXT(archivo);
 
 
+    estacion* estacionesCargadas = estacion::TXTobj(archivo);
+    estacionesCargadas[0].mostrarInfo();
+
+}
 
 
 void Mopcion(){//mostrar opciones
@@ -177,6 +202,7 @@ void MopSurtidores(){
     cout<<"4. Desactivar surtidor."<<endl;
     cout<<"5. Historial de surtidor."<<endl;
 }
+
 
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,

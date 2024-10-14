@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
+#include <string>
 using namespace std;
 
 // Definición del constructor
@@ -10,9 +11,11 @@ estacion::estacion(string nombre, unsigned int id, string gerente, char region, 
     maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0), capacidadVentas(5) {
     ventas = new Venta[capacidadVentas]; // Inicializa el arreglo dinámico para ventas
 }
+estacion::estacion() : nombre(""),id(0),gerente(""),region('N'),latitud(0.0f),longitud(0.0f),
+    maquina(""),isla(0),activo(0),contadorSurtidores(0),contadorVentas(0),capacidadVentas(5){}
 
+// Destructor
 estacion::~estacion() {
-    // Liberar la memoria asignada al arreglo dinámico
     delete[] ventas; // Liberar el arreglo de objetos Venta
 }
 
@@ -86,23 +89,16 @@ void estacion::mostrarEstadoCombustibles() const {
     cout << "- Ecomax: " << ((activo & 4) ? "Disponible" : "No disponible") << endl;
 }
 
-// Vender combustible
-void estacion::venderCombustible(string tipo) const {
-    if (tipo == "Regular" && (activo & 1)) {
-        cout << "Vendiendo Regular." << endl;
-    } else if (tipo == "Premium" && (activo & 2)) {
-        cout << "Vendiendo Premium." << endl;
-    } else if (tipo == "Ecomax" && (activo & 4)) {
-        cout << "Vendiendo Ecomax." << endl;
-    } else {
-        cout << "El tipo de combustible no está disponible." << endl;
-    }
-}
-
+// Registrar venta de combustible
 void estacion::registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto) {
-    // Agregar la nueva venta
+    if (contadorVentas >= capacidadVentas) {
+        cout << "Capacidad máxima alcanzada. Guardando ventas." << endl;
+        guardarVentasEnArchivo();
+        contadorVentas = 0; // Reiniciar el contador
+    }
+
     time_t now = time(0);
-    ventas[contadorVentas].fechaHora = ctime(&now); // Cambiado a . en lugar de ->
+    ventas[contadorVentas].fechaHora = ctime(&now); // Se usa ctime para obtener la fecha/hora actual
     ventas[contadorVentas].cantidadCombustible = cantidad;
     ventas[contadorVentas].categoria = categoria;
     ventas[contadorVentas].metodoPago = metodoPago;
@@ -110,46 +106,36 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
     ventas[contadorVentas].monto = monto;
 
     contadorVentas++;
-
-    // Si alcanzamos 5 ventas, guardamos y reiniciamos
-    if (contadorVentas == capacidadVentas) {
-        cout << "Se han registrado " << capacidadVentas << " ventas. Guardando ventas." << endl;
-        guardarVentasEnArchivo();
-
-        // Reiniciar el contador de ventas
-        contadorVentas = 0;
-
-        // Volver a usar el arreglo existente, no es necesario reasignar memoria
-    }
 }
 
 // Guardar ventas en archivo
 bool estacion::guardarVentasEnArchivo() {
-    ofstream archivo("ventas.txt", ios::app);
+    ofstream archivo("ventas.txt", ios::app); // Modo append
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return false;
     }
 
-    for (int i = 0; i < contadorVentas; ++i) {
-        archivo << "Fecha: " << ventas[i].fechaHora // Cambiado a . en lugar de ->
-                << " Cantidad: " << ventas[i].cantidadCombustible << "L "
-                << "Categoría: " << ventas[i].categoria << " "
-                << "Pago: " << ventas[i].metodoPago << " "
-                << "Cliente: " << ventas[i].documentoCliente << " "
-                << "Monto: $" << ventas[i].monto << endl;
+    if (archivo.tellp() == 0) { // Agregar cabeceras si el archivo está vacío
+        archivo << "Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($)" << endl;
     }
+
+    for (int i = 0; i < contadorVentas; ++i) {
+        archivo << ventas[i].fechaHora << " | "
+                << ventas[i].cantidadCombustible << "L | "
+                << ventas[i].categoria << " | "
+                << ventas[i].metodoPago << " | "
+                << ventas[i].documentoCliente << " | "
+                << "$" << ventas[i].monto << endl;
+    }
+
     archivo.close();
-    cout << "Ventas guardadas." << endl;
+    cout << "Ventas guardadas exitosamente." << endl;
     return true;
 }
 
 // Mostrar ventas
 void estacion::mostrarVentas() {
-    // Guardar las ventas actuales en el archivo antes de mostrar
-    guardarVentasEnArchivo();
-
-    // Mostrar el contenido del archivo de ventas
     ifstream archivo("ventas.txt");
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
@@ -162,3 +148,79 @@ void estacion::mostrarVentas() {
     }
     archivo.close();
 }
+
+// Contar líneas en un archivo
+unsigned int estacion::contadorlineas(const string& rutaArchivo) {
+    string linea;
+    unsigned int count = 0;
+    ifstream archivo(rutaArchivo);
+    while (getline(archivo, linea)) {
+        count++;
+    }
+    archivo.close();
+    return count;
+}
+
+// Cargar objetos desde un archivo
+estacion* estacion::TXTobj(const string& rutaArchivo) {
+    unsigned int count = contadorlineas(rutaArchivo); // Determinar cuántas líneas tiene el archivo
+    if (count == 0 ){
+        cout << "El archivo está vacío." << endl;
+        return nullptr;
+    }
+
+    estacion* arrayEstaciones = new estacion[count]; // Crear arreglo dinámico
+    string atributos[9]; // Asumiendo 9 atributos por estación
+    string linea;
+    unsigned int i = 0;
+
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo." << endl;
+        return nullptr; // Si no se puede abrir, retornamos nullptr
+    }
+
+    // Leer línea por línea del archivo
+    while (getline(archivo, linea) && i < count) {
+        unsigned int posInicio = 0, posDelim, index = 0;
+
+        // Pasar cada línea y extraer los atributos separados por ';'
+        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 9) {
+            atributos[index] = linea.substr(posInicio, posDelim - posInicio);
+            posInicio = posDelim + 1;
+            index++;
+        }
+
+        // Validar que se han leído todos los atributos necesarios
+        if (index != 9) {
+            cout << "Error: Línea incompleta en el archivo." << endl;
+            continue; // O manejar el error de otra manera
+        }
+
+        // Crear y almacenar un objeto estación en el arreglo
+        arrayEstaciones[i] = estacion(atributos[0],stoi(atributos[1]), atributos[2],
+                                      atributos[3][0], stod(atributos[4]), stod(atributos[5]),
+                                      atributos[6], stoi(atributos[7]), stoi(atributos[8]));
+        i++;
+    }
+
+    archivo.close();
+    return arrayEstaciones; // Retornar el arreglo de objetos
+}
+
+// Guardar estación en archivo
+void estacion::guardarTXT(const string& rutaArchivo) {
+    ofstream archivo(rutaArchivo, ios::app); // Modo 'append' para agregar sin borrar
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo para guardar." << endl;
+        return;
+    }
+
+    // Guardar los atributos separados por ';'
+    archivo << nombre<< ';' << id << ';' << gerente << ';' << region << ';'
+            << latitud << ';' << longitud << ';' << maquina << ';' << isla << ';'
+            << activo << '\n';
+
+    archivo.close();
+}
+
