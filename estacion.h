@@ -63,6 +63,11 @@ public:
     void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
+
+    // Métodos para manejar estaciones desde archivos
+    static unsigned int contadorlineas();
+    static estacion* TXTobj(const string& rutaArchivo);
+    void guardarTXT(const string& rutaArchivo);
 };
 
 #endif // ESTACION_H
