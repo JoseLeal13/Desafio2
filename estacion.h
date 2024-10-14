@@ -58,17 +58,12 @@ public:
     void mostrarInfo() const;
     void mostrarEstadoCombustibles() const;
 
-<<<<<<< HEAD
-    //Método para vender combustible
-    void venderCombustible(int tipo) const;
-
-=======
     // Métodos de venta
     void venderCombustible(string tipo) const;
     void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
+
 };
 
 #endif // ESTACION_H

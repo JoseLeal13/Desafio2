@@ -8,8 +8,7 @@ void Mopcion();//mostrar opciones
 void Mopred();//mostrar opciones de la red
 void Mopes();//mostrar opciones para una estacion
 void MopSurtidores();//mostrar opciones para los surtidores
-int main() {
-<<<<<<< HEAD
+/*int main() {
     unsigned short int opcion=0;
     while(opcion!=3){
          system("cls");
@@ -26,6 +25,7 @@ int main() {
         if (opcred==1){ //agregar estacion
             system("cls");
             cout<<"agregando estacion..."<<endl;
+
             //break;
         }else if(opcred==2){//eliminar una estacion
              system("cls");
@@ -109,6 +109,17 @@ int main() {
     }
     return 0;
 }
+*/
+int main(){
+    //tank:tankes myTank(0, 0.0,0.0, 0.0, 1);
+    tank tankn(12345,20,12,148,1);
+    tank tank2(121234,23,23,154,0);
+    tank tank3(12345,23,21,12,0);
+    tank lista[3]={tankn,tank2,tank3};
+    tankn.gettank();
+    tank* array=tank::TXTobj("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
+    tank::Saveobj(array,lista,"C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
+}
 
 void Mopcion(){//mostrar opciones
     cout << "1. Gestionar la red de estaciones."<<endl;
@@ -142,55 +153,3 @@ void MopSurtidores(){
     cout<<"5. Historial de surtidor."<<endl;
 }
 
-
-
-/*estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 101);
-    tank tank1(12344,200,2333,2333,1);
-    tank tank2(1000,50,20,130,0);
-=======
-    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7);
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
-    est1.agregarSurtidor("A1");
-    est1.agregarSurtidor("A2");
-
-    est1.mostrarInfo();
-
-    est1.mostrarEstadoCombustibles();
-
-
-    cout << "\nInformación del surtidor A1:" << endl;
-    est1.mostrarSurtidor(0);
-    int combustible;
-    cout << "Ingrese combustible para vender: ";
-    cin >>combustible;
-    est1.venderCombustible(combustible);
-    tank arreglo[2]={tank1,tank2};
-    ofstream archivo("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
-    for(unsigned short int i=0;i<sizeof(lista)/sizeof(lista[0]);i++){
-
-<<<<<<< HEAD
-        if (archivo.is_open()) {
-        // Guardamos el objeto en el archivo
-        archivo << lista[i]<<"\n";
-        cout << "Objeto guardado en tank.txt\n";
-    } else {
-        cout << "No se pudo abrir el archivo\n";
-    }
-=======
-    est1.venderCombustible("Regular");
-    est1.venderCombustible("Premium");
-    est1.venderCombustible("Ecomax");
-    est1.venderCombustible("Disel");
-
-    est1.registrarVenta(30.0, "Regular", "Tarjeta", "123456789", 200.0);
-    est1.registrarVenta(50.0, "Premium", "Efectivo", "123456789", 250.0);
-    est1.registrarVenta(20.0, "Ecomax", "Tarjeta", "123456789", 150.0);
-
-
-    est1.mostrarVentas();
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
-
-    lista[i].mostrar();
-    }
-     archivo.close();
-    */
