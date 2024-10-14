@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 void Mopcion();//mostrar opciones
 void Mopred();//mostrar opciones de la red
@@ -11,7 +13,8 @@ void MopSurtidores();//mostrar opciones para los surtidores
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo);
-int main() {
+/*int main() {
+
     unsigned short int opcion=0;
     while(opcion!=3){
          system("cls");
@@ -34,13 +37,24 @@ int main() {
             double latitud;
             double longitud;
             string maquina;
-            unsigned short int isla;
-            unsigned short int activo;
+            unsigned short int isla,activo,surtidores;
+            string idsurtidor;
             ingresarDatosEstacion(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
             estacion Est1(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+            tank tank1(id,activo);
+            cout <<"Ingrese cantidad de surtidores: ";
+            cin>>surtidores;
+            while(surtidores>0){
+                cout<<"Ingrese el Id del surtidor";
+                cin>>idsurtidor;
+                Est1.agregarSurtidor(idsurtidor);
+                surtidores-=1;
+            }
+
             cout<<"Estacion creada correctamente..."<<endl;
             system("cls");
-            Est1.mostrarInfo();
+            tank1.gettank();
+            Est1.mostrarSurtidor(2);
             //break;
         }else if(opcred==2){//eliminar una estacion
              system("cls");
@@ -123,8 +137,20 @@ int main() {
 
     }
     return 0;
-}
+}*/
 
+int main(){
+    //tank:tankes myTank(0, 0.0,0.0, 0.0, 1);
+    tank tankn(12345,1);
+    tank tank2(121234,0);
+    tank tank3(12345,0);
+    tank lista[3]={tankn,tank2,tank3};
+    lista[0].setprecios(20000,35000,40000);
+
+    tank* array=tank::TXTobj("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
+    lista[0].gettank();
+    tank::Saveobj(array,lista[0],"C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
+}
 
 
 void Mopcion(){//mostrar opciones
@@ -170,7 +196,7 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cout << "Ingrese nombre del gerente de la estacion: ";
     cin.ignore();
     getline(cin, gerente);
-    cout << "Ingrese region de la estacion (N/S): ";
+    cout << "Ingrese region de la estacion (N/S/C): ";
     cin >> region;
     cout << "Ingrese coordenadas estacion (Latitud-Longitud): ";
     cin >> latitud >> longitud;
