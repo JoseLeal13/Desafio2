@@ -8,7 +8,10 @@ void Mopcion();//mostrar opciones
 void Mopred();//mostrar opciones de la red
 void Mopes();//mostrar opciones para una estacion
 void MopSurtidores();//mostrar opciones para los surtidores
-/*int main() {
+void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
+                           double& latitud, double& longitud, string& maquina,
+                           unsigned short int& isla, unsigned short int& activo);
+int main() {
     unsigned short int opcion=0;
     while(opcion!=3){
          system("cls");
@@ -24,8 +27,20 @@ void MopSurtidores();//mostrar opciones para los surtidores
 
         if (opcred==1){ //agregar estacion
             system("cls");
-            cout<<"agregando estacion..."<<endl;
-
+            string nombre;
+            unsigned int id;
+            string gerente;
+            char region;
+            double latitud;
+            double longitud;
+            string maquina;
+            unsigned short int isla;
+            unsigned short int activo;
+            ingresarDatosEstacion(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+            estacion Est1(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+            cout<<"Estacion creada correctamente..."<<endl;
+            system("cls");
+            Est1.mostrarInfo();
             //break;
         }else if(opcred==2){//eliminar una estacion
              system("cls");
@@ -109,17 +124,8 @@ void MopSurtidores();//mostrar opciones para los surtidores
     }
     return 0;
 }
-*/
-int main(){
-    //tank:tankes myTank(0, 0.0,0.0, 0.0, 1);
-    tank tankn(12345,20,12,148,1);
-    tank tank2(121234,23,23,154,0);
-    tank tank3(12345,23,21,12,0);
-    tank lista[3]={tankn,tank2,tank3};
-    tankn.gettank();
-    tank* array=tank::TXTobj("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
-    tank::Saveobj(array,lista,"C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
-}
+
+
 
 void Mopcion(){//mostrar opciones
     cout << "1. Gestionar la red de estaciones."<<endl;
@@ -152,4 +158,28 @@ void MopSurtidores(){
     cout<<"4. Desactivar surtidor."<<endl;
     cout<<"5. Historial de surtidor."<<endl;
 }
+
+void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
+                           double& latitud, double& longitud, string& maquina,
+                           unsigned short int& isla, unsigned short int& activo) {
+    cout << "Ingrese nombre de la estacion: ";
+    cin.ignore();
+    getline(cin, nombre);
+    cout << "Ingrese identificacion de la estacion: ";
+    cin >> id;
+    cout << "Ingrese nombre del gerente de la estacion: ";
+    cin.ignore();
+    getline(cin, gerente);
+    cout << "Ingrese region de la estacion (N/S): ";
+    cin >> region;
+    cout << "Ingrese coordenadas estacion (Latitud-Longitud): ";
+    cin >> latitud >> longitud;
+    cout << "Ingrese el modelo de surtidoras: ";
+    cin >> maquina;
+    cout << "Ingrese la cantidad de islas de la estacion: ";
+    cin >> isla;
+    cout << "Ingrese si la estacion esta activa (1 o 0): ";
+    cin >> activo;
+}
+
 

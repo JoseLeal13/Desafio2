@@ -63,6 +63,8 @@ public:
     void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
+    // Método para inicializar los atributos
+    void inicializar();
 
 };
 
