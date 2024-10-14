@@ -56,7 +56,6 @@ public:
 
     // Información de la estación
     void mostrarInfo() const;
-    void mostrarEstadoCombustibles() const;
 
     // Métodos de venta
     void venderCombustible(string tipo) const;
@@ -65,9 +64,10 @@ public:
     void mostrarVentas();
 
     // Métodos para manejar estaciones desde archivos
-    static unsigned int contadorlineas();
+    static unsigned int contadorlineas(const string& rutaArchivo);
     static estacion* TXTobj(const string& rutaArchivo);
     void guardarTXT(const string& rutaArchivo);
+
 };
 
 #endif // ESTACION_H

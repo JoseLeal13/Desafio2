@@ -79,13 +79,6 @@ void estacion::mostrarInfo() const {
          << "\nMáquina: " << maquina << "\nIsla: " << isla << "\nActivo: " << activo << endl;
 }
 
-// Verificar estado de combustibles
-void estacion::mostrarEstadoCombustibles() const {
-    cout << "Estado de los combustibles:\n";
-    cout << "- Regular: " << ((activo & 1) ? "Disponible" : "No disponible") << endl;
-    cout << "- Premium: " << ((activo & 2) ? "Disponible" : "No disponible") << endl;
-    cout << "- Ecomax: " << ((activo & 4) ? "Disponible" : "No disponible") << endl;
-}
 
 // Registrar venta de combustible
 void estacion::registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto) {
@@ -162,7 +155,7 @@ unsigned int estacion::contadorlineas(const string& rutaArchivo) {
 // Cargar objetos desde un archivo
 estacion* estacion::TXTobj(const string& rutaArchivo) {
     unsigned int count = contadorlineas(rutaArchivo); // Determinar cuántas líneas tiene el archivo
-    if (count == 0) {
+    if (count == 0 ){
         cout << "El archivo está vacío." << endl;
         return nullptr;
     }
@@ -182,7 +175,7 @@ estacion* estacion::TXTobj(const string& rutaArchivo) {
     while (getline(archivo, linea) && i < count) {
         unsigned int posInicio = 0, posDelim, index = 0;
 
-        // Parsear cada línea y extraer los atributos separados por ';'
+        // Pasar cada línea y extraer los atributos separados por ';'
         while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 9) {
             atributos[index] = linea.substr(posInicio, posDelim - posInicio);
             posInicio = posDelim + 1;
@@ -196,7 +189,7 @@ estacion* estacion::TXTobj(const string& rutaArchivo) {
         }
 
         // Crear y almacenar un objeto estación en el arreglo
-        arrayEstaciones[i] = estacion(stoi(atributos[0]), atributos[1], atributos[2],
+        arrayEstaciones[i] = estacion(atributos[0],stoi(atributos[1]), atributos[2],
                                       atributos[3][0], stod(atributos[4]), stod(atributos[5]),
                                       atributos[6], stoi(atributos[7]), stoi(atributos[8]));
         i++;
@@ -215,7 +208,7 @@ void estacion::guardarTXT(const string& rutaArchivo) {
     }
 
     // Guardar los atributos separados por ';'
-    archivo << id << ';' << nombre << ';' << gerente << ';' << region << ';'
+    archivo << nombre<< ';' << id << ';' << gerente << ';' << region << ';'
             << latitud << ';' << longitud << ';' << maquina << ';' << isla << ';'
             << activo << '\n';
 
