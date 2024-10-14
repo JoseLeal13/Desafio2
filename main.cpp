@@ -13,7 +13,7 @@ void MopSurtidores();//mostrar opciones para los surtidores
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo);
-/*int main() {
+int main() {
 
     unsigned short int opcion=0;
     while(opcion!=3){
@@ -29,6 +29,8 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
             cin>>opcred;
 
         if (opcred==1){ //agregar estacion
+            string archivotanks="C:\\Users\\juan david\\Documents\\desafioII\\tank.txt";
+            tank* tankes=tank::TXTobj(archivotanks);
             system("cls");
             string nombre;
             unsigned int id;
@@ -50,12 +52,14 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
                 Est1.agregarSurtidor(idsurtidor);
                 surtidores-=1;
             }
-
+            tank::Saveobj(tankes,tank1,archivotanks);
             cout<<"Estacion creada correctamente..."<<endl;
             system("cls");
             tank1.gettank();
             Est1.mostrarSurtidor(2);
             //break;
+
+
         }else if(opcred==2){//eliminar una estacion
              system("cls");
             cout<<"eliminando estacion..."<<endl;
@@ -137,20 +141,9 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
 
     }
     return 0;
-}*/
-
-int main(){
-    //tank:tankes myTank(0, 0.0,0.0, 0.0, 1);
-    tank tankn(12345,1);
-    tank tank2(121234,0);
-    tank tank3(12345,0);
-    tank lista[3]={tankn,tank2,tank3};
-    lista[0].setprecios(20000,35000,40000);
-
-    tank* array=tank::TXTobj("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
-    lista[0].gettank();
-    tank::Saveobj(array,lista[0],"C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
 }
+
+
 
 
 void Mopcion(){//mostrar opciones

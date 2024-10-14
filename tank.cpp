@@ -86,6 +86,7 @@ tank* tank::TXTobj(const string& rutaArchivo){
         cout << "Error al abrir el archivo." << endl;
         return nullptr;        // Si no se puede abrir el archivo, retornamos null
     }
+    if(count>1){
     while(getline(txt,linea)){
         unsigned int posInicio = 0, posDelim, index = 0;
         while ((posDelim = linea.find(';', posInicio)) != string::npos&&index<9){
@@ -100,13 +101,18 @@ tank* tank::TXTobj(const string& rutaArchivo){
     }
     txt.close();
     return arrobjetos;
+    }else{
+        return nullptr;
+    }
 }
 void tank:: Saveobj(tank* array,tank obj,const string& archivo){    //guardar objetos en archivo
     unsigned int tam=contadorlineas();
     ofstream texto(archivo);
     texto<<obj<<endl;
+    if (array!=nullptr){
     for(unsigned int i=0;i<tam;i++){
         texto<<array[i]<<endl;
+    }
     }
     texto.close();
 }
