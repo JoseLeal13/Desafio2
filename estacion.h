@@ -31,7 +31,6 @@ private:
     Venta* ventas;  // Puntero para almacenar las ventas dinámicamente (arreglo bidimensional)
     unsigned short int contadorVentas;  // Contador para las ventas realizadas
     unsigned short int capacidadVentas;  // Capacidad actual del arreglo
-    unsigned short int numeroVentas;
 
 public:
     // Constructor
@@ -39,7 +38,7 @@ public:
     estacion();
     estacion(string nombre, unsigned int id, string gerente,
              char region, double latitud, double longitud, string maquina,
-             unsigned short int isla, unsigned short int activo, unsigned short int numeroVenta);
+             unsigned short int isla, unsigned short int activo);
 
     // Destructor
     ~estacion();
@@ -54,6 +53,7 @@ public:
     string getMaquina() const;
     unsigned short int getIsla() const;
     unsigned short int getActivo() const;
+    void setactivo(unsigned short int activi);
 
     // Métodos para surtidores
     void agregarSurtidor(string idSurtidor);
@@ -61,19 +61,20 @@ public:
 
     // Información de la estación
     void mostrarInfo() const;
-    unsigned short int getVenta() const;
+    void mostrarEstadoCombustibles() const;
 
     // Métodos de venta
+    void venderCombustible(string tipo) const;
     void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
 
     // Métodos para manejar estaciones desde archivos
+
     static unsigned int contadorlineas(const string& rutaArchivo);
     static estacion* TXTobj(const string& rutaArchivo);
     void guardarTXT(const string& rutaArchivo);
 
-    bool eliminarEstacion(unsigned int idEstacion);
 };
 
 #endif // ESTACION_H

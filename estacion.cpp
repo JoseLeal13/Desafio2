@@ -6,31 +6,19 @@
 using namespace std;
 
 // Definición del constructor
-estacion::estacion(string nombre, unsigned int id, string gerente, char region,
-                   double latitud, double longitud, string maquina,
-                   unsigned short int isla, unsigned short int activo,
-                   unsigned short int numeroVentas)
-    : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud),
-    longitud(longitud), maquina(maquina), isla(isla), activo(activo),
-    numeroVentas(numeroVentas), contadorVentas(0), capacidadVentas(5) {
-    ventas = new Venta[capacidadVentas];  // Asignación de memoria
+estacion::estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo)
+    : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud), longitud(longitud),
+    maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0), capacidadVentas(5) {
+    ventas = new Venta[capacidadVentas]; // Inicializa el arreglo dinámico para ventas
 }
-
-// Constructor por defecto
-estacion::estacion()
-    : nombre(""), id(0), gerente(""), region('N'), latitud(0.0), longitud(0.0),
-    maquina(""), isla(0), activo(0), numeroVentas(0), contadorSurtidores(0),
-    contadorVentas(0), capacidadVentas(5) {
-    ventas = new Venta[capacidadVentas];  // Asignación en constructor por defecto
-}
+estacion::estacion() : nombre(""),id(0),gerente(""),region('N'),latitud(0.0f),longitud(0.0f),
+    maquina(""),isla(0),activo(0),contadorSurtidores(0),contadorVentas(0),capacidadVentas(5){}
 
 // Destructor
 estacion::~estacion() {
-    if (ventas != nullptr) {  // Verificar si el puntero es válido antes de liberar
-        delete[] ventas;
-        ventas = nullptr;  // Evitar puntero colgante
-    }
+    delete[] ventas; // Liberar el arreglo de objetos Venta
 }
+
 // Getters
 string estacion::getNombre() const {
     return nombre;
@@ -67,8 +55,9 @@ unsigned short int estacion::getIsla() const {
 unsigned short int estacion::getActivo() const {
     return activo;
 }
-unsigned short int estacion::getVenta() const {
-    return numeroVentas;
+
+void estacion::setactivo(unsigned short int activi){
+    activo=activi;
 }
 // Método para agregar un surtidor
 void estacion::agregarSurtidor(string idSurtidor) {
@@ -95,6 +84,13 @@ void estacion::mostrarInfo() const {
          << "\nMáquina: " << maquina << "\nIsla: " << isla << "\nActivo: " << activo << endl;
 }
 
+// Verificar estado de combustibles
+void estacion::mostrarEstadoCombustibles() const {
+    cout << "Estado de los combustibles:\n";
+    cout << "- Regular: " << ((activo & 1) ? "Disponible" : "No disponible") << endl;
+    cout << "- Premium: " << ((activo & 2) ? "Disponible" : "No disponible") << endl;
+    cout << "- Ecomax: " << ((activo & 4) ? "Disponible" : "No disponible") << endl;
+}
 
 // Registrar venta de combustible
 void estacion::registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto) {
@@ -113,12 +109,11 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
     ventas[contadorVentas].monto = monto;
 
     contadorVentas++;
-    numeroVentas++;
 }
 
 // Guardar ventas en archivo
 bool estacion::guardarVentasEnArchivo() {
-    ofstream archivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\ventas.txt", ios::app); // Modo append
+    ofstream archivo("ventas.txt", ios::app); // Modo append
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return false;
@@ -144,7 +139,7 @@ bool estacion::guardarVentasEnArchivo() {
 
 // Mostrar ventas
 void estacion::mostrarVentas() {
-    ifstream archivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\ventas.txt");
+    ifstream archivo("ventas.txt");
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return;
@@ -171,60 +166,50 @@ unsigned int estacion::contadorlineas(const string& rutaArchivo) {
 
 // Cargar objetos desde un archivo
 estacion* estacion::TXTobj(const string& rutaArchivo) {
-    unsigned int count = contadorlineas(rutaArchivo); // Determina cuántas líneas tiene el archivo
-    if (count == 0) {
+    unsigned int count = contadorlineas(rutaArchivo); // Determinar cuántas líneas tiene el archivo
+    if (count == 0 ){
         cout << "El archivo está vacío." << endl;
         return nullptr;
     }
 
     estacion* arrayEstaciones = new estacion[count]; // Crear arreglo dinámico
-    string atributos[10]; // 10 atributos por estación
+    string atributos[9]; // Asumiendo 9 atributos por estación
     string linea;
     unsigned int i = 0;
 
     ifstream archivo(rutaArchivo);
     if (!archivo.is_open()) {
         cout << "Error al abrir el archivo." << endl;
-        return nullptr;
+        return nullptr; // Si no se puede abrir, retornamos nullptr
     }
 
     // Leer línea por línea del archivo
     while (getline(archivo, linea) && i < count) {
         unsigned int posInicio = 0, posDelim, index = 0;
 
-        // Extraer los atributos separados por ';'
-        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 10) {
+        // Pasar cada línea y extraer los atributos separados por ';'
+        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 9) {
             atributos[index] = linea.substr(posInicio, posDelim - posInicio);
             posInicio = posDelim + 1;
             index++;
         }
 
-        // Validar que se han leído todos los atributos
-        if (index != 10) {
+        // Validar que se han leído todos los atributos necesarios
+        if (index != 9) {
             cout << "Error: Línea incompleta en el archivo." << endl;
-            continue;  // Ignorar líneas mal formadas
+            continue; // O manejar el error de otra manera
         }
 
-        // Crear y almacenar una estación en el arreglo
-        arrayEstaciones[i] = estacion(
-            atributos[0],                    // nombre
-            stoi(atributos[1]),              // id
-            atributos[2],                    // gerente
-            atributos[3][0],                 // region
-            stod(atributos[4]),              // latitud
-            stod(atributos[5]),              // longitud
-            atributos[6],                    // maquina
-            stoi(atributos[7]),              // isla
-            stoi(atributos[8]),              // activo
-            stoi(atributos[9])               // numeroVentas
-            );
+        // Crear y almacenar un objeto estación en el arreglo
+        arrayEstaciones[i] = estacion(atributos[0],stoi(atributos[1]), atributos[2],
+                                      atributos[3][0], stod(atributos[4]), stod(atributos[5]),
+                                      atributos[6], stoi(atributos[7]), stoi(atributos[8]));
         i++;
     }
 
     archivo.close();
-    return arrayEstaciones;
+    return arrayEstaciones; // Retornar el arreglo de objetos
 }
-
 
 // Guardar estación en archivo
 void estacion::guardarTXT(const string& rutaArchivo) {
@@ -240,66 +225,4 @@ void estacion::guardarTXT(const string& rutaArchivo) {
             << activo << '\n';
 
     archivo.close();
-}
-
-// Método para eliminar una estación por ID
-bool estacion::eliminarEstacion(unsigned int idEstacion) {
-
-    string rutaArchivo = "C:\\Users\\Lenovo\\Documents\\Desafio2\\estaciones.txt";
-    estacion* estaciones = TXTobj(rutaArchivo); // Cargar estaciones desde el archivo
-
-    if (estaciones == nullptr) {
-        cout << "No se pudieron cargar las estaciones desde el archivo." << endl;
-        return false;
-    }
-
-    unsigned int totalEstaciones = contadorlineas(rutaArchivo);
-    bool encontrado = false;
-
-    // Crear un nuevo arreglo para almacenar las estaciones que no se eliminan
-    estacion* nuevasEstaciones = new estacion[totalEstaciones - 1];
-    unsigned int nuevoIndice = 0;
-
-    // Recorrer las estaciones y copiar las que no son la que se va a eliminar
-    for (unsigned int i = 0; i < totalEstaciones; i++) {
-        if (estaciones[i].getId() != idEstacion) {
-            nuevasEstaciones[nuevoIndice++] = estaciones[i]; // Copiar estación
-        } else {
-            encontrado = true; // Marca que se encontró y eliminó la estación
-        }
-    }
-
-    // Guardar las estaciones restantes en el archivo
-    ofstream archivo(rutaArchivo, ios::trunc); // Abrir en modo truncado para sobreescribir
-    if (!archivo.is_open()) {
-        cout << "Error al abrir el archivo para guardar." << endl;
-        delete[] estaciones; // Liberar memoria
-        delete[] nuevasEstaciones; // Liberar memoria
-        return false;
-    }
-
-    for (unsigned int i = 0; i < nuevoIndice; i++) {
-        archivo << nuevasEstaciones[i].getNombre() << ';'
-                << nuevasEstaciones[i].getId() << ';'
-                << nuevasEstaciones[i].getGerente() << ';'
-                << nuevasEstaciones[i].getRegion() << ';'
-                << nuevasEstaciones[i].getLatitud() << ';'
-                << nuevasEstaciones[i].getLongitud() << ';'
-                << nuevasEstaciones[i].getMaquina() << ';'
-                << nuevasEstaciones[i].getIsla() << ';'
-                << nuevasEstaciones[i].getActivo() << '\n';
-    }
-
-    archivo.close();
-
-    delete[] estaciones;
-    delete[] nuevasEstaciones;
-
-    if (encontrado) {
-        cout << "Estación eliminada exitosamente." << endl;
-        return true;
-    } else {
-        cout << "Estación no encontrada." << endl;
-        return false;
-    }
 }
