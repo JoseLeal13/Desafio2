@@ -4,3 +4,6 @@ Fecha: Sun Oct 13 16:26:00 2024
  Cantidad: 50L Categoría: Premium Pago: Efectivo Cliente: 123456789 Monto: $250
 Fecha: Sun Oct 13 16:26:00 2024
  Cantidad: 20L Categoría: Ecomax Pago: Tarjeta Cliente: 123456789 Monto: $150
+Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($)
+Mon Oct 14 17:34:27 2024
+ | 20L | Ecomax | Tarjeta | 1091970674 | $25000

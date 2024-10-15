@@ -1,4 +1,3 @@
-
 #include "estacion.h"
 #include "tank.h"
 #include <iostream>
@@ -14,7 +13,8 @@ void MopSurtidores();//mostrar opciones para los surtidores
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo);
-/*int main() {
+/*
+int main() {
 
     unsigned short int opcion=0;
     while(opcion!=3){
@@ -30,6 +30,8 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
             cin>>opcred;
 
         if (opcred==1){ //agregar estacion
+            string archivotanks="C:\\Users\\juan david\\Documents\\desafioII\\tank.txt";
+            tank* tankes=tank::TXTobj(archivotanks);
             system("cls");
             string nombre;
             unsigned int id;
@@ -51,12 +53,14 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
                 Est1.agregarSurtidor(idsurtidor);
                 surtidores-=1;
             }
-
+            tank::Saveobj(tankes,tank1,archivotanks);
             cout<<"Estacion creada correctamente..."<<endl;
             system("cls");
             tank1.gettank();
             Est1.mostrarSurtidor(2);
             //break;
+
+
         }else if(opcred==2){//eliminar una estacion
              system("cls");
             cout<<"eliminando estacion..."<<endl;
@@ -138,11 +142,11 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
 
     }
     return 0;
-}*/
+}
+*/
 
 int main(){
-    //tank:tankes myTank(0, 0.0,0.0, 0.0, 1);
-    /*   tank tankn(12345,1);
+ /*   tank tankn(12345,1);
     tank tank2(121234,0);
     tank tank3(12345,0);
     tank lista[3]={tankn,tank2,tank3};
@@ -152,9 +156,12 @@ int main(){
     lista[0].gettank();
     tank::Saveobj(array,lista[0],"C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
 */
+
     string archivo="C:\\Users\\lenovo\\Documents\\desafio2\\estacion.txt";
-    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7);
-    estacion est2("Termax", 54321, "Juan", 'S', 10.9983, -73.2514, "B", 2, 5);
+
+    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7, 0);
+    estacion est2("Termax", 54321, "Juan", 'S', 10.9983, -73.2514, "B", 2, 5, 0);
+
 
     est1.guardarTXT(archivo);
     est2.guardarTXT(archivo);
@@ -162,9 +169,15 @@ int main(){
 
     estacion* estacionesCargadas = estacion::TXTobj(archivo);
     estacionesCargadas[0].mostrarInfo();
+    est1.registrarVenta(20, "Regular", "Tarjeta", "1091970674", 20000);
+    est1.guardarVentasEnArchivo();
+    est1.mostrarVentas();
+
+    cout << "Ventas registradas: " << est1.getVenta() << endl;  // Debería ser 0
 
 }
-/*
+
+
 
 void Mopcion(){//mostrar opciones
     cout << "1. Gestionar la red de estaciones."<<endl;
@@ -197,8 +210,8 @@ void MopSurtidores(){
     cout<<"4. Desactivar surtidor."<<endl;
     cout<<"5. Historial de surtidor."<<endl;
 }
-*/
-/*
+
+
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo) {
@@ -221,35 +234,5 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cout << "Ingrese si la estacion esta activa (1 o 0): ";
     cin >> activo;
 }
-*/
-
-/*#include "estacion.h"
-#include <iostream>
-
-int main() {
-    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7);
-    est1.agregarSurtidor("A1");
-    est1.agregarSurtidor("A2");
-
-    est1.mostrarInfo();
-
-    est1.mostrarEstadoCombustibles();
-
-    cout << "\nInformación del surtidor A1:" << endl;
-    est1.mostrarSurtidor(0);
-
-    est1.venderCombustible("Regular");
-    est1.venderCombustible("Premium");
-    est1.venderCombustible("Ecomax");
-    est1.venderCombustible("Disel");
-
-    est1.registrarVenta(30.0, "Regular", "Tarjeta", "123456789", 200.0);
-    est1.registrarVenta(50.0, "Premium", "Efectivo", "123456789", 250.0);
-    est1.registrarVenta(20.0, "Ecomax", "Tarjeta", "123456789", 150.0);
 
 
-    est1.mostrarVentas();
-
-    return 0;
-}
-*/

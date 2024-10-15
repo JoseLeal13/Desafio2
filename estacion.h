@@ -31,10 +31,15 @@ private:
     Venta* ventas;  // Puntero para almacenar las ventas dinámicamente (arreglo bidimensional)
     unsigned short int contadorVentas;  // Contador para las ventas realizadas
     unsigned short int capacidadVentas;  // Capacidad actual del arreglo
+    unsigned short int numeroVentas;
 
 public:
     // Constructor
-    estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo);
+    //sobrecarga para poder inicializar el objeto sin nada
+    estacion();
+    estacion(string nombre, unsigned int id, string gerente,
+             char region, double latitud, double longitud, string maquina,
+             unsigned short int isla, unsigned short int activo, unsigned short int numeroVenta);
 
     // Destructor
     ~estacion();
@@ -56,9 +61,9 @@ public:
 
     // Información de la estación
     void mostrarInfo() const;
+    unsigned short int getVenta() const;
 
     // Métodos de venta
-    void venderCombustible(string tipo) const;
     void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
     bool guardarVentasEnArchivo();
     void mostrarVentas();

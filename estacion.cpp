@@ -6,17 +6,31 @@
 using namespace std;
 
 // Definición del constructor
-estacion::estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo)
-    : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud), longitud(longitud),
-    maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0), capacidadVentas(5) {
-    ventas = new Venta[capacidadVentas]; // Inicializa el arreglo dinámico para ventas
+estacion::estacion(string nombre, unsigned int id, string gerente, char region,
+                   double latitud, double longitud, string maquina,
+                   unsigned short int isla, unsigned short int activo,
+                   unsigned short int numeroVentas)
+    : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud),
+    longitud(longitud), maquina(maquina), isla(isla), activo(activo),
+    numeroVentas(numeroVentas), contadorVentas(0), capacidadVentas(5) {
+    ventas = new Venta[capacidadVentas];  // Asignación de memoria
+}
+
+// Constructor por defecto
+estacion::estacion()
+    : nombre(""), id(0), gerente(""), region('N'), latitud(0.0), longitud(0.0),
+    maquina(""), isla(0), activo(0), numeroVentas(0), contadorSurtidores(0),
+    contadorVentas(0), capacidadVentas(5) {
+    ventas = new Venta[capacidadVentas];  // Asignación en constructor por defecto
 }
 
 // Destructor
 estacion::~estacion() {
-    delete[] ventas; // Liberar el arreglo de objetos Venta
+    if (ventas != nullptr) {  // Verificar si el puntero es válido antes de liberar
+        delete[] ventas;
+        ventas = nullptr;  // Evitar puntero colgante
+    }
 }
-
 // Getters
 string estacion::getNombre() const {
     return nombre;
@@ -53,7 +67,9 @@ unsigned short int estacion::getIsla() const {
 unsigned short int estacion::getActivo() const {
     return activo;
 }
-
+unsigned short int estacion::getVenta() const {
+    return numeroVentas;
+}
 // Método para agregar un surtidor
 void estacion::agregarSurtidor(string idSurtidor) {
     if (contadorSurtidores < 12) {
@@ -97,11 +113,12 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
     ventas[contadorVentas].monto = monto;
 
     contadorVentas++;
+    numeroVentas++;
 }
 
 // Guardar ventas en archivo
 bool estacion::guardarVentasEnArchivo() {
-    ofstream archivo("ventas.txt", ios::app); // Modo append
+    ofstream archivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\ventas.txt", ios::app); // Modo append
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return false;
@@ -127,7 +144,7 @@ bool estacion::guardarVentasEnArchivo() {
 
 // Mostrar ventas
 void estacion::mostrarVentas() {
-    ifstream archivo("ventas.txt");
+    ifstream archivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\ventas.txt");
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return;
@@ -154,50 +171,60 @@ unsigned int estacion::contadorlineas(const string& rutaArchivo) {
 
 // Cargar objetos desde un archivo
 estacion* estacion::TXTobj(const string& rutaArchivo) {
-    unsigned int count = contadorlineas(rutaArchivo); // Determinar cuántas líneas tiene el archivo
-    if (count == 0 ){
+    unsigned int count = contadorlineas(rutaArchivo); // Determina cuántas líneas tiene el archivo
+    if (count == 0) {
         cout << "El archivo está vacío." << endl;
         return nullptr;
     }
 
     estacion* arrayEstaciones = new estacion[count]; // Crear arreglo dinámico
-    string atributos[9]; // Asumiendo 9 atributos por estación
+    string atributos[10]; // 10 atributos por estación
     string linea;
     unsigned int i = 0;
 
     ifstream archivo(rutaArchivo);
     if (!archivo.is_open()) {
         cout << "Error al abrir el archivo." << endl;
-        return nullptr; // Si no se puede abrir, retornamos nullptr
+        return nullptr;
     }
 
     // Leer línea por línea del archivo
     while (getline(archivo, linea) && i < count) {
         unsigned int posInicio = 0, posDelim, index = 0;
 
-        // Pasar cada línea y extraer los atributos separados por ';'
-        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 9) {
+        // Extraer los atributos separados por ';'
+        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 10) {
             atributos[index] = linea.substr(posInicio, posDelim - posInicio);
             posInicio = posDelim + 1;
             index++;
         }
 
-        // Validar que se han leído todos los atributos necesarios
-        if (index != 9) {
+        // Validar que se han leído todos los atributos
+        if (index != 10) {
             cout << "Error: Línea incompleta en el archivo." << endl;
-            continue; // O manejar el error de otra manera
+            continue;  // Ignorar líneas mal formadas
         }
 
-        // Crear y almacenar un objeto estación en el arreglo
-        arrayEstaciones[i] = estacion(atributos[0],stoi(atributos[1]), atributos[2],
-                                      atributos[3][0], stod(atributos[4]), stod(atributos[5]),
-                                      atributos[6], stoi(atributos[7]), stoi(atributos[8]));
+        // Crear y almacenar una estación en el arreglo
+        arrayEstaciones[i] = estacion(
+            atributos[0],                    // nombre
+            stoi(atributos[1]),              // id
+            atributos[2],                    // gerente
+            atributos[3][0],                 // region
+            stod(atributos[4]),              // latitud
+            stod(atributos[5]),              // longitud
+            atributos[6],                    // maquina
+            stoi(atributos[7]),              // isla
+            stoi(atributos[8]),              // activo
+            stoi(atributos[9])               // numeroVentas
+            );
         i++;
     }
 
     archivo.close();
-    return arrayEstaciones; // Retornar el arreglo de objetos
+    return arrayEstaciones;
 }
+
 
 // Guardar estación en archivo
 void estacion::guardarTXT(const string& rutaArchivo) {
@@ -214,3 +241,4 @@ void estacion::guardarTXT(const string& rutaArchivo) {
 
     archivo.close();
 }
+
