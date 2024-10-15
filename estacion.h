@@ -73,6 +73,7 @@ public:
     static estacion* TXTobj(const string& rutaArchivo);
     void guardarTXT(const string& rutaArchivo);
 
+    bool eliminarEstacion(unsigned int idEstacion);
 };
 
 #endif // ESTACION_H

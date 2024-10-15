@@ -242,3 +242,64 @@ void estacion::guardarTXT(const string& rutaArchivo) {
     archivo.close();
 }
 
+// Método para eliminar una estación por ID
+bool estacion::eliminarEstacion(unsigned int idEstacion) {
+
+    string rutaArchivo = "C:\\Users\\Lenovo\\Documents\\Desafio2\\estaciones.txt";
+    estacion* estaciones = TXTobj(rutaArchivo); // Cargar estaciones desde el archivo
+
+    if (estaciones == nullptr) {
+        cout << "No se pudieron cargar las estaciones desde el archivo." << endl;
+        return false;
+    }
+
+    unsigned int totalEstaciones = contadorlineas(rutaArchivo);
+    bool encontrado = false;
+
+    // Crear un nuevo arreglo para almacenar las estaciones que no se eliminan
+    estacion* nuevasEstaciones = new estacion[totalEstaciones - 1];
+    unsigned int nuevoIndice = 0;
+
+    // Recorrer las estaciones y copiar las que no son la que se va a eliminar
+    for (unsigned int i = 0; i < totalEstaciones; i++) {
+        if (estaciones[i].getId() != idEstacion) {
+            nuevasEstaciones[nuevoIndice++] = estaciones[i]; // Copiar estación
+        } else {
+            encontrado = true; // Marca que se encontró y eliminó la estación
+        }
+    }
+
+    // Guardar las estaciones restantes en el archivo
+    ofstream archivo(rutaArchivo, ios::trunc); // Abrir en modo truncado para sobreescribir
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo para guardar." << endl;
+        delete[] estaciones; // Liberar memoria
+        delete[] nuevasEstaciones; // Liberar memoria
+        return false;
+    }
+
+    for (unsigned int i = 0; i < nuevoIndice; i++) {
+        archivo << nuevasEstaciones[i].getNombre() << ';'
+                << nuevasEstaciones[i].getId() << ';'
+                << nuevasEstaciones[i].getGerente() << ';'
+                << nuevasEstaciones[i].getRegion() << ';'
+                << nuevasEstaciones[i].getLatitud() << ';'
+                << nuevasEstaciones[i].getLongitud() << ';'
+                << nuevasEstaciones[i].getMaquina() << ';'
+                << nuevasEstaciones[i].getIsla() << ';'
+                << nuevasEstaciones[i].getActivo() << '\n';
+    }
+
+    archivo.close();
+
+    delete[] estaciones;
+    delete[] nuevasEstaciones;
+
+    if (encontrado) {
+        cout << "Estación eliminada exitosamente." << endl;
+        return true;
+    } else {
+        cout << "Estación no encontrada." << endl;
+        return false;
+    }
+}
