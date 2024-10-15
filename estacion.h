@@ -34,7 +34,11 @@ private:
 
 public:
     // Constructor
-    estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo);
+    //sobrecarga para poder inicializar el objeto sin nada
+    estacion();
+    estacion(string nombre, unsigned int id, string gerente,
+             char region, double latitud, double longitud, string maquina,
+             unsigned short int isla, unsigned short int activo);
 
     // Destructor
     ~estacion();
@@ -49,6 +53,7 @@ public:
     string getMaquina() const;
     unsigned short int getIsla() const;
     unsigned short int getActivo() const;
+    void setactivo(unsigned short int activi);
 
     // Métodos para surtidores
     void agregarSurtidor(string idSurtidor);
@@ -58,17 +63,19 @@ public:
     void mostrarInfo() const;
     void mostrarEstadoCombustibles() const;
 
-<<<<<<< HEAD
-    //Método para vender combustible
-    void venderCombustible(int tipo) const;
-
-=======
     // Métodos de venta
     void venderCombustible(string tipo) const;
     void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
+
+    // Métodos para manejar estaciones desde archivos
+
+    static unsigned int contadorlineas(const string& rutaArchivo);
+    static estacion* TXTobj(const string& rutaArchivo);
+    static void guardarTXT(estacion* array, estacion obj, const string& rutaArchivo);      //sobrecargar archivo
+    void guardarTXT(const string& rutaArchivo);
+
 };
 
 #endif // ESTACION_H

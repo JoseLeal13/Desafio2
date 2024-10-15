@@ -3,19 +3,37 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 void Mopcion();//mostrar opciones
 void Mopred();//mostrar opciones de la red
 void Mopes();//mostrar opciones para una estacion
 void MopSurtidores();//mostrar opciones para los surtidores
+void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
+                           double& latitud, double& longitud, string& maquina,
+                           unsigned short int& isla, unsigned short int& activo);
+
 int main() {
-<<<<<<< HEAD
+    string archivotanks="C:\\Users\\juan david\\Documents\\desafioII\\tank.txt";
+    string archivoEst="C:\\Users\\juan david\\Documents\\desafioII\\estacion.txt";
+    string archivoventas="C:\\Users\\juan david\Documents\\desafioII\\ventas.txt";
+    estacion* Estsaved=estacion::TXTobj(archivoEst);
+    tank* tankes=tank::TXTobj(archivotanks);
+    string nombre;
+    unsigned int id;
+    string gerente;
+    char region;
+    double latitud;
+    double longitud;
+    string maquina;
+    unsigned short int isla,activo,surtidores;
+    string idsurtidor;
     unsigned short int opcion=0;
     while(opcion!=3){
          system("cls");
         Mopcion();  //muestra opciones para gestionar red o estaciones
         cin>>opcion;
-
         if (opcion==1){ //gestionar la red
             system("cls");
             unsigned short int opcred=6;//opcion red
@@ -25,11 +43,50 @@ int main() {
 
         if (opcred==1){ //agregar estacion
             system("cls");
-            cout<<"agregando estacion..."<<endl;
-            //break;
+            ingresarDatosEstacion(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+            estacion Est1(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+            tank tank1(id,activo);
+            cout <<"Ingrese cantidad de surtidores: ";
+            cin>>surtidores;
+            while(surtidores>0){
+                cout<<"Ingrese el Id del surtidor: ";
+                cin>>idsurtidor;
+                Est1.agregarSurtidor(idsurtidor);
+                surtidores-=1;
+            }
+            tank::Saveobj(tankes,tank1,archivotanks);
+            Est1.guardarTXT(archivoEst);
+            cout<<"Estacion creada correctamente..."<<endl;
+            system("cls");
+            //tank1.gettank();
+            //Est1.mostrarSurtidor(2);
+
         }else if(opcred==2){//eliminar una estacion
              system("cls");
-            cout<<"eliminando estacion..."<<endl;
+            unsigned int tam=estacion::contadorlineas(archivoEst);
+            cout<<"Ingrese el Id de la estacion a eliminar: ";
+            cin>>id;
+            unsigned short int objel;
+            for (unsigned int i=0;i<tam;i++){
+                if(id==Estsaved[i].getId()&&tankes[i].Getid()==id){
+                    Estsaved[i].mostrarInfo();
+                    tankes[i].gettank();
+                    Estsaved[i].setactivo(0);
+                    tankes[i].setactivo(0);
+                    objel=i;
+                    break;
+                }
+
+            }
+            estacion::guardarTXT(Estsaved,Estsaved[objel],archivoEst);
+            //tank::Saveobj(tankes,tankes[objel],archivotanks);
+
+            cout <<"Estacion eliminada Correctamente..."<<endl;
+            Estsaved[objel].mostrarInfo();
+            tankes[objel].gettank();
+
+
+
             //break;
         }else if(opcred==3){// calcular las ventas
              system("cls");
@@ -37,8 +94,17 @@ int main() {
             //break;
         }else if (opcred==4){//fijar el precio de los combustibles
              system("cls");
-            cout<<"fijando precios..."<<endl;
-            //break;
+            unsigned int tam=estacion::contadorlineas(archivoEst);
+            float newpricea=0,newpriceb=0,newpricec=0;
+            cout<<"Ingrese el nuevo precio de los combustibles."<<endl;
+            cin>>newpricea;
+            cin>>newpriceb;
+            cin>>newpricec;
+            for (unsigned short int i=0;i<tam;i++){
+                tankes[i].setprecios(newpricea,newpriceb,newpricec);
+            }
+            tankes[0].getprice();
+
         }else if (opcred==0){
              system("cls");
             cout<<"saliendo de el programa..."<<endl;
@@ -110,6 +176,8 @@ int main() {
     return 0;
 }
 
+
+
 void Mopcion(){//mostrar opciones
     cout << "1. Gestionar la red de estaciones."<<endl;
     cout << "2. Gestionar las estaciones de servicio."<<endl;
@@ -143,54 +211,26 @@ void MopSurtidores(){
 }
 
 
+void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
+                           double& latitud, double& longitud, string& maquina,
+                           unsigned short int& isla, unsigned short int& activo) {
+    cout << "Ingrese nombre de la estacion: ";
+    cin.ignore();
+    getline(cin, nombre);
+    cout << "Ingrese identificacion de la estacion: ";
+    cin >> id;
+    cout << "Ingrese nombre del gerente de la estacion: ";
+    cin.ignore();
+    getline(cin, gerente);
+    cout << "Ingrese region de la estacion (N/S/C): ";
+    cin >> region;
+    cout << "Ingrese coordenadas estacion (Latitud-Longitud): ";
+    cin >> latitud >> longitud;
+    cout << "Ingrese el modelo de surtidoras: ";
+    cin >> maquina;
+    cout << "Ingrese la cantidad de islas de la estacion: ";
+    cin >> isla;
+    cout << "Ingrese si la estacion esta activa (1 o 0): ";
+    cin >> activo;
+}
 
-/*estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 101);
-    tank tank1(12344,200,2333,2333,1);
-    tank tank2(1000,50,20,130,0);
-=======
-    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7);
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
-    est1.agregarSurtidor("A1");
-    est1.agregarSurtidor("A2");
-
-    est1.mostrarInfo();
-
-    est1.mostrarEstadoCombustibles();
-
-
-    cout << "\nInformación del surtidor A1:" << endl;
-    est1.mostrarSurtidor(0);
-    int combustible;
-    cout << "Ingrese combustible para vender: ";
-    cin >>combustible;
-    est1.venderCombustible(combustible);
-    tank arreglo[2]={tank1,tank2};
-    ofstream archivo("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
-    for(unsigned short int i=0;i<sizeof(lista)/sizeof(lista[0]);i++){
-
-<<<<<<< HEAD
-        if (archivo.is_open()) {
-        // Guardamos el objeto en el archivo
-        archivo << lista[i]<<"\n";
-        cout << "Objeto guardado en tank.txt\n";
-    } else {
-        cout << "No se pudo abrir el archivo\n";
-    }
-=======
-    est1.venderCombustible("Regular");
-    est1.venderCombustible("Premium");
-    est1.venderCombustible("Ecomax");
-    est1.venderCombustible("Disel");
-
-    est1.registrarVenta(30.0, "Regular", "Tarjeta", "123456789", 200.0);
-    est1.registrarVenta(50.0, "Premium", "Efectivo", "123456789", 250.0);
-    est1.registrarVenta(20.0, "Ecomax", "Tarjeta", "123456789", 150.0);
-
-
-    est1.mostrarVentas();
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
-
-    lista[i].mostrar();
-    }
-     archivo.close();
-    */
