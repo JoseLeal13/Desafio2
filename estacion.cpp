@@ -2,6 +2,7 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
+#include <string>
 using namespace std;
 
 // Definición del constructor
@@ -10,9 +11,11 @@ estacion::estacion(string nombre, unsigned int id, string gerente, char region, 
     maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0), capacidadVentas(5) {
     ventas = new Venta[capacidadVentas]; // Inicializa el arreglo dinámico para ventas
 }
+estacion::estacion() : nombre(""),id(0),gerente(""),region('N'),latitud(0.0f),longitud(0.0f),
+    maquina(""),isla(0),activo(0),contadorSurtidores(0),contadorVentas(0),capacidadVentas(5){}
 
+// Destructor
 estacion::~estacion() {
-    // Liberar la memoria asignada al arreglo dinámico
     delete[] ventas; // Liberar el arreglo de objetos Venta
 }
 
@@ -53,21 +56,75 @@ unsigned short int estacion::getActivo() const {
     return activo;
 }
 
+void estacion::setactivo(unsigned short int activi){
+    activo=activi;
+}
 // Método para agregar un surtidor
-void estacion::agregarSurtidor(string idSurtidor) {
-    if (contadorSurtidores < 12) {
-        surtidores[contadorSurtidores++] = idSurtidor;
-    } else {
-        cout << "No se pueden agregar más surtidores, el límite es 12." << endl;
+void estacion::agregarSurtidor(unsigned short int idSurtidor) {
+    if (contadorSurtidores >= 12) {
+        cout << "Capacidad máxima de surtidores alcanzada." << endl;
+        return;
+    }
+    surtidores[contadorSurtidores] = idSurtidor;
+    surtidorActivo[contadorSurtidores] = 0;  // Inicialmente desactivado
+    ventaSurtidor[contadorSurtidores] = 0;   // Inicialmente sin ventas
+    contadorSurtidores++;
+    cout << "Surtidor " << idSurtidor << " agregado." << endl;
+}
+
+void estacion::eliminarSurtidor(unsigned short int idSurtidor) {
+    if (contadorSurtidores <= 2) {
+        cout << "No se pueden eliminar más de 2 surtidores." << endl;
+        return;
+    }
+
+    bool encontrado = false;
+    for (int i = 0; i < contadorSurtidores; i++) {
+        if (surtidores[i] == idSurtidor) {
+            surtidores[i] = surtidores[contadorSurtidores - 1];  // Reemplazar con el último
+            contadorSurtidores--;
+            encontrado = true;
+            cout << "Surtidor " << idSurtidor << " eliminado." << endl;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        cout << "Surtidor no encontrado." << endl;
     }
 }
 
-// Mostrar información de un surtidor
-void estacion::mostrarSurtidor(int indice) const {
-    if (indice >= 0 && indice < contadorSurtidores) {
-        cout << "Surtidor " << surtidores[indice] << " de la estación " << nombre << endl;
-    } else {
-        cout << "Índice de surtidor no válido." << endl;
+// Activar o desactivar un surtidor
+void estacion::activarSurtidor(unsigned short int indice, bool estado) {
+    if (indice >= 12) {
+        cout << "Índice de surtidor inválido." << endl;
+        return;
+    }
+    surtidorActivo[indice] = estado ? 1 : 0;
+    cout << "Surtidor " << surtidores[indice]
+         << (estado ? " activado." : " desactivado.") << endl;
+}
+
+// Registrar una venta para un surtidor específico
+void estacion::registrarVentaSurtidor(unsigned short int id) {
+    if (id >= 12) {
+        cout << "ID de surtidor inválido." << endl;
+        return;
+    }
+    if (surtidorActivo[id] == 0) {
+        cout << "El surtidor está desactivado. No se puede registrar la venta." << endl;
+        return;
+    }
+    ventaSurtidor[id]++;
+    cout << "Venta registrada para surtidor " << surtidores[id] << "." << endl;
+}
+
+// Mostrar el estado de los surtidores
+void estacion::mostrarEstadoSurtidores() const {
+    for (unsigned short int i = 0; i < contadorSurtidores; ++i) {
+        cout << "Surtidor: " << surtidores[i]
+             << " | Estado: " << (surtidorActivo[i] ? "Activo" : "Inactivo")
+             << " | Ventas: " << ventaSurtidor[i] << endl;
     }
 }
 
@@ -86,83 +143,70 @@ void estacion::mostrarEstadoCombustibles() const {
     cout << "- Ecomax: " << ((activo & 4) ? "Disponible" : "No disponible") << endl;
 }
 
-<<<<<<< HEAD
-// Método para vender un tipo de combustible
-void estacion::venderCombustible(int tipo) const {
-    if (tipo == 1) {
-         cout << "Vendiendo combustible Regular." << endl;
-        }else if (tipo == 2) {
-            cout << "Vendiendo combustible Premium." << endl;
-        }else if (tipo == 3) {
-            cout << "Vendiendo combustible Ecomax." << endl;
-        }else {
-        cout << "Tipo de combustible no válido." << endl;
-=======
-// Vender combustible
-void estacion::venderCombustible(string tipo) const {
-    if (tipo == "Regular" && (activo & 1)) {
-        cout << "Vendiendo Regular." << endl;
-    } else if (tipo == "Premium" && (activo & 2)) {
-        cout << "Vendiendo Premium." << endl;
-    } else if (tipo == "Ecomax" && (activo & 4)) {
-        cout << "Vendiendo Ecomax." << endl;
-    } else {
-        cout << "El tipo de combustible no está disponible." << endl;
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
+// Registrar venta de combustible
+void estacion::registrarVenta(double cantidad, string categoria, string metodoPago,
+                              string documentoCliente, double monto, unsigned short int id) {
+    if (contadorVentas >= capacidadVentas) {
+        cout << "Capacidad máxima alcanzada. Guardando ventas." << endl;
+        guardarVentasEnArchivo();
+        contadorVentas = 0;  // Reiniciar el contador
     }
-}
 
-void estacion::registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto) {
-    // Agregar la nueva venta
+    if (id >= 12 || surtidorActivo[id] == 0) {
+        cout << "Surtidor inválido o inactivo." << endl;
+        return;
+    }
+
+    // Registrar venta en el surtidor
+    registrarVentaSurtidor(id);
+
+    // Almacenar los datos de la venta
     time_t now = time(0);
-    ventas[contadorVentas].fechaHora = ctime(&now); // Cambiado a . en lugar de ->
+    string fechaHora = ctime(&now);
+    fechaHora.pop_back();  // Eliminar '\n'
+    ventas[contadorVentas].fechaHora = fechaHora;
     ventas[contadorVentas].cantidadCombustible = cantidad;
     ventas[contadorVentas].categoria = categoria;
     ventas[contadorVentas].metodoPago = metodoPago;
     ventas[contadorVentas].documentoCliente = documentoCliente;
     ventas[contadorVentas].monto = monto;
+    ventas[contadorVentas].id = id;
 
     contadorVentas++;
-
-    // Si alcanzamos 5 ventas, guardamos y reiniciamos
-    if (contadorVentas == capacidadVentas) {
-        cout << "Se han registrado " << capacidadVentas << " ventas. Guardando ventas." << endl;
-        guardarVentasEnArchivo();
-
-        // Reiniciar el contador de ventas
-        contadorVentas = 0;
-
-        // Volver a usar el arreglo existente, no es necesario reasignar memoria
-    }
 }
+
 
 // Guardar ventas en archivo
 bool estacion::guardarVentasEnArchivo() {
-    ofstream archivo("ventas.txt", ios::app);
+    ofstream archivo("ventas.txt", ios::app); // Modo append
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return false;
     }
 
-    for (int i = 0; i < contadorVentas; ++i) {
-        archivo << "Fecha: " << ventas[i].fechaHora // Cambiado a . en lugar de ->
-                << " Cantidad: " << ventas[i].cantidadCombustible << "L "
-                << "Categoría: " << ventas[i].categoria << " "
-                << "Pago: " << ventas[i].metodoPago << " "
-                << "Cliente: " << ventas[i].documentoCliente << " "
-                << "Monto: $" << ventas[i].monto << endl;
+    // Agregar cabeceras si el archivo está vacío
+    if (archivo.tellp() == 0) {
+        archivo << "Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($) | ID (Surtidor)" << endl;
     }
+
+    // Guardar cada venta en el archivo
+    for (int i = 0; i < contadorVentas; ++i) {
+        archivo << ventas[i].fechaHora << " | "
+                << ventas[i].cantidadCombustible << "L | "
+                << ventas[i].categoria << " | "
+                << ventas[i].metodoPago << " | "
+                << ventas[i].documentoCliente << " | "
+                << "$" << ventas[i].monto << " | "
+                << "Surtidor " << ventas[i].id << endl;
+    }
+
     archivo.close();
-    cout << "Ventas guardadas." << endl;
+    cout << "Ventas guardadas exitosamente." << endl;
     return true;
 }
 
 // Mostrar ventas
 void estacion::mostrarVentas() {
-    // Guardar las ventas actuales en el archivo antes de mostrar
-    guardarVentasEnArchivo();
-
-    // Mostrar el contenido del archivo de ventas
     ifstream archivo("ventas.txt");
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
@@ -173,5 +217,80 @@ void estacion::mostrarVentas() {
     while (getline(archivo, linea)) {
         cout << linea << endl;
     }
+    archivo.close();
+}
+
+// Contar líneas en un archivo
+unsigned int estacion::contadorlineas(const string& rutaArchivo) {
+    string linea;
+    unsigned int count = 0;
+    ifstream archivo(rutaArchivo);
+    while (getline(archivo, linea)) {
+        count++;
+    }
+    archivo.close();
+    return count;
+}
+
+// Cargar objetos desde un archivo
+estacion* estacion::TXTobj(const string& rutaArchivo) {
+    unsigned int count = contadorlineas(rutaArchivo); // Determinar cuántas líneas tiene el archivo
+    if (count == 0 ){
+        cout << "El archivo está vacío." << endl;
+        return nullptr;
+    }
+
+    estacion* arrayEstaciones = new estacion[count]; // Crear arreglo dinámico
+    string atributos[9]; // Asumiendo 9 atributos por estación
+    string linea;
+    unsigned int i = 0;
+
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo." << endl;
+        return nullptr; // Si no se puede abrir, retornamos nullptr
+    }
+
+    // Leer línea por línea del archivo
+    while (getline(archivo, linea) && i < count) {
+        unsigned int posInicio = 0, posDelim, index = 0;
+
+        // Pasar cada línea y extraer los atributos separados por ';'
+        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 9) {
+            atributos[index] = linea.substr(posInicio, posDelim - posInicio);
+            posInicio = posDelim + 1;
+            index++;
+        }
+
+        // Validar que se han leído todos los atributos necesarios
+        if (index != 9) {
+            cout << "Error: Línea incompleta en el archivo." << endl;
+            continue; // O manejar el error de otra manera
+        }
+
+        // Crear y almacenar un objeto estación en el arreglo
+        arrayEstaciones[i] = estacion(atributos[0],stoi(atributos[1]), atributos[2],
+                                      atributos[3][0], stod(atributos[4]), stod(atributos[5]),
+                                      atributos[6], stoi(atributos[7]), stoi(atributos[8]));
+        i++;
+    }
+
+    archivo.close();
+    return arrayEstaciones; // Retornar el arreglo de objetos
+}
+
+// Guardar estación en archivo
+void estacion::guardarTXT(const string& rutaArchivo) {
+    ofstream archivo(rutaArchivo, ios::app); // Modo 'append' para agregar sin borrar
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo para guardar." << endl;
+        return;
+    }
+
+    // Guardar los atributos separados por ';'
+    archivo << nombre<< ';' << id << ';' << gerente << ';' << region << ';'
+            << latitud << ';' << longitud << ';' << maquina << ';' << isla << ';'
+            << activo << '\n';
+
     archivo.close();
 }

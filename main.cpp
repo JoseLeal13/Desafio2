@@ -3,194 +3,220 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib> // Para system()
 using namespace std;
-void Mopcion();//mostrar opciones
-void Mopred();//mostrar opciones de la red
-void Mopes();//mostrar opciones para una estacion
-void MopSurtidores();//mostrar opciones para los surtidores
+
+void Mopcion(); // mostrar opciones
+void Mopred(); // mostrar opciones de la red
+void Mopes(); // mostrar opciones para una estacion
+void MopSurtidores(); // mostrar opciones para los surtidores
+void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
+                           double& latitud, double& longitud, string& maquina,
+                           unsigned short int& isla, unsigned short int& activo);
+
 int main() {
-<<<<<<< HEAD
-    unsigned short int opcion=0;
-    while(opcion!=3){
-         system("cls");
-        Mopcion();  //muestra opciones para gestionar red o estaciones
-        cin>>opcion;
+    estacion estacion1("Estación Central", 101, "Carlos Pérez", 'N', 4.60971, -74.08175,
+                       "Máquina XPTO", 2, 1);
 
-        if (opcion==1){ //gestionar la red
-            system("cls");
-            unsigned short int opcred=6;//opcion red
-        while(opcred!=0){
-            Mopred();//muestra las opciones de la gestion de red
-            cin>>opcred;
+    estacion1.mostrarInfo();
 
-        if (opcred==1){ //agregar estacion
+    estacion1.agregarSurtidor(1); // Surtidor 1
+    estacion1.agregarSurtidor(2); // Surtidor 2
+
+    estacion1.mostrarEstadoSurtidores();
+
+    estacion1.activarSurtidor(0, true); // Activar surtidor 1
+    estacion1.activarSurtidor(1, true); // Activar surtidor 2
+
+    estacion1.mostrarEstadoSurtidores();
+
+    estacion1.registrarVentaSurtidor(0); // Venta en surtidor 1
+    estacion1.registrarVentaSurtidor(1); // Venta en surtidor 2
+
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+
+    estacion1.mostrarVentas();
+/*
+    unsigned short int opcion = 0;
+
+    while (opcion != 3) {
+        system("cls");
+        Mopcion();  // muestra opciones para gestionar red o estaciones
+        cin >> opcion;
+
+        if (opcion == 1) { // gestionar la red
             system("cls");
-            cout<<"agregando estacion..."<<endl;
-            //break;
-        }else if(opcred==2){//eliminar una estacion
-             system("cls");
-            cout<<"eliminando estacion..."<<endl;
-            //break;
-        }else if(opcred==3){// calcular las ventas
-             system("cls");
-            cout<<"calculando ventas..."<<endl;
-            //break;
-        }else if (opcred==4){//fijar el precio de los combustibles
-             system("cls");
-            cout<<"fijando precios..."<<endl;
-            //break;
-        }else if (opcred==0){
-             system("cls");
-            cout<<"saliendo de el programa..."<<endl;
-            break;
-           }
-        else{
-             system("cls");
-            cout <<"Ingrese una opcion valida."<<endl;
-           }
-        }
-    }
-    //gestionar las estaciones
-    else if(opcion==2){
+            unsigned short int opcred = 6; // opcion red
+            while (opcred != 0) {
+                Mopred(); // muestra las opciones de la gestion de red
+                cin >> opcred;
+
+                if (opcred == 1) { // agregar estacion
+                    system("cls");
+                    string nombre;
+                    unsigned int id;
+                    string gerente;
+                    char region;
+                    double latitud;
+                    double longitud;
+                    string maquina;
+                    unsigned short int isla, activo, surtidores;
+                    string idsurtidor;
+                    // Llamamos a la función para ingresar los datos de la estación
+                    ingresarDatosEstacion(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+
+                    // Crear la estación
+                    estacion est1(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+
+                    est1.guardarTXT(ruta);
+                    cout << "Ingrese cantidad de surtidores: ";
+                    cin >> surtidores;
+                    while (surtidores > 0) {
+                        cout << "Ingrese el Id del surtidor: ";
+                        cin >> idsurtidor;
+                        est1.agregarSurtidor(idsurtidor);
+                        surtidores -= 1;
+                    }
+                    cout << "Estación creada correctamente..." << endl;
+                    system("cls");
+                    est1.mostrarSurtidor(2); // Muestra los surtidores de la estación
+                } else if (opcred == 2) { // eliminar una estacion
+                    system("cls");
+                    cout << "eliminando estacion..." << endl;
+                } else if (opcred == 3) { // calcular las ventas
+                    system("cls");
+                    cout << "calculando ventas..." << endl;
+                } else if (opcred == 4) { // fijar el precio de los combustibles
+                    system("cls");
+                    cout << "fijando precios..." << endl;
+                } else if (opcred == 0) {
+                    system("cls");
+                    cout << "saliendo de el programa..." << endl;
+                    break;
+                } else {
+                    system("cls");
+                    cout << "Ingrese una opcion valida." << endl;
+                }
+            }
+        } else if (opcion == 2) { // gestionar las estaciones
             system("cls");
-            unsigned short int opce=8;//opcion estacion
-            while(opce!=0){
-            Mopes();
-                cin>>opce;
-            if (opce==1){
-                system("cls");
-                    unsigned int short ops=8;
-                    while(ops!=0){
-                        MopSurtidores();
-                        cin>>ops;
-                        if (ops==1){
+            unsigned short int opce = 8; // opcion estacion
+            while (opce != 0) {
+                Mopes();
+                cin >> opce;
+                if (opce == 1) {
+                    system("cls");
+                    unsigned int short ops = 8;
+                    while (ops != 0) {
+                        MopSurtidores();     
+                        cin >> ops;
+                        if (ops == 1) {
                             system("cls");
-                            cout<< "Agregando surtior"<<endl;
-                        }else if(ops==2){
+                            cout << "Agregar surtidor: " << endl;
+                        } else if (ops == 2) {
+
                             system("cls");
-                            cout<< "Eliminando surtidor"<<endl;
-                        }else if(ops==3){
+                            cout << "Eliminar surtidor: " << endl;
+                        } else if (ops == 3) {
                             system("cls");
-                            cout << "Activando surtidor"<<endl;
-                        }else if (ops==4){
+                            cout << "Activando surtidor" << endl;
+                        } else if (ops == 4) {
                             system("cls");
-                            cout<<"Desactivando surtidor"<<endl;
-                        }else if (ops==5){
+                            cout << "Desactivando surtidor" << endl;
+                        } else if (ops == 5) {
                             system("cls");
-                            cout<<"mostrando historial"<<endl;
-                        }else if(ops==0){
+                            cout << "Mostrando historial" << endl;
+                        } else if (ops == 0) {
                             system("cls");
                             break;
-                        }else{
+                        } else {
                             system("cls");
-                            cout<<"Ingrese una opcion valida"<<endl;
+                            cout << "Ingrese una opcion valida" << endl;
                         }
                     }
-            }else if(opce==2){
-                system("cls");
-                break;
+                } else if (opce == 2) {
+                    system("cls");
+                    break;
+                } else if (opce == 3) {
+                    system("cls");
+                    break;
+                } else if (opce == 4) {
+                    system("cls");
+                    break;
+                }
             }
-            else if(opce==3){
-                system("cls");
-                break;
-            }else if(opce==4){
-                system("cls");
-                break;
-            }
-
+        } else if (opcion == 3) {
+            cout << "Saliendo de el programa...." << endl;
+            break;
+        } else {
+            cout << "Ingrese una opcion valida." << endl;
         }
-    }else if (opcion==3){
-        cout<<"Saliendo de el programa...."<<endl;
-        break;
-    }else{
-        cout << "Ingrese una opcion valida."<<endl;
     }
 
-    }
     return 0;
 }
 
-void Mopcion(){//mostrar opciones
-    cout << "1. Gestionar la red de estaciones."<<endl;
-    cout << "2. Gestionar las estaciones de servicio."<<endl;
-    cout << "3. Salir"<<endl;
-    return;
-
-}
-void Mopred(){  //mostrar opciones para la gestion de la red
-    cout << "0.  Atras."<<endl;
-    cout << "1.  Agregar estaciones de servicio."<<endl;
-    cout << "2.  Eliminar una E/S de la red nacional."<<endl;
-    cout << "3.  Calcular el monto total de las ventas."<<endl;
-    cout << "4.  Fijar los precios del combustible para toda la red."<<endl;
+void Mopcion() { // mostrar opciones
+    cout << "1. Gestionar la red de estaciones." << endl;
+    cout << "2. Gestionar las estaciones de servicio." << endl;
+    cout << "3. Salir" << endl;
     return;
 }
-void Mopes(){ //mostras opciones para la gestion de una estacion
-    cout<<"0. Atras."<<endl;
-    cout<<"1. Para configuar surtidores."<<endl;
-    cout<<"2. Reporte litros vendidos."<<endl;
-    cout<<"3. Simular una venta."<<endl;
-    cout<<"4. Asignar capacidad tanque de suministro."<<endl;
+
+void Mopred() { // mostrar opciones para la gestion de la red
+    cout << "0.  Atras." << endl;
+    cout << "1.  Agregar estaciones de servicio." << endl;
+    cout << "2.  Eliminar una E/S de la red nacional." << endl;
+    cout << "3.  Calcular el monto total de las ventas." << endl;
+    cout << "4.  Fijar los precios del combustible para toda la red." << endl;
     return;
 }
-void MopSurtidores(){
-    cout<<"0. Atras."<<endl;
-    cout<<"1. Agregar surtidor."<<endl;
-    cout<<"2. Eliminar surtidor."<<endl;
-    cout<<"3. Activar surtidor."<<endl;
-    cout<<"4. Desactivar surtidor."<<endl;
-    cout<<"5. Historial de surtidor."<<endl;
+
+void Mopes() { // mostrar opciones para la gestion de una estacion
+    cout << "0. Atras." << endl;
+    cout << "1. Para configurar surtidores." << endl;
+    cout << "2. Reporte litros vendidos." << endl;
+    cout << "3. Simular una venta." << endl;
+    cout << "4. Asignar capacidad tanque de suministro." << endl;
+    return;
 }
 
+void MopSurtidores() {
+    cout << "0. Atras." << endl;
+    cout << "1. Agregar surtidor." << endl;
+    cout << "2. Eliminar surtidor." << endl;
+    cout << "3. Activar surtidor." << endl;
+    cout << "4. Desactivar surtidor." << endl;
+    cout << "5. Historial de surtidor." << endl;
+}
 
+void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
+                           double& latitud, double& longitud, string& maquina,
+                           unsigned short int& isla, unsigned short int& activo) {
+    cout << "Ingrese nombre de la estacion: ";
+    cin.ignore();
+    getline(cin, nombre);
 
-/*estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 101);
-    tank tank1(12344,200,2333,2333,1);
-    tank tank2(1000,50,20,130,0);
-=======
-    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7);
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
-    est1.agregarSurtidor("A1");
-    est1.agregarSurtidor("A2");
+    cout << "Ingrese identificacion de la estacion: ";
+    cin >> id;
 
-    est1.mostrarInfo();
+    cout << "Ingrese nombre del gerente de la estacion: ";
+    cin.ignore();
+    getline(cin, gerente);
 
-    est1.mostrarEstadoCombustibles();
+    cout << "Ingrese region de la estacion (N/S/C): ";
+    cin >> region;
 
+    cout << "Ingrese coordenadas estacion (Latitud-Longitud): " << endl;
+    cin >> latitud >> longitud;
 
-    cout << "\nInformación del surtidor A1:" << endl;
-    est1.mostrarSurtidor(0);
-    int combustible;
-    cout << "Ingrese combustible para vender: ";
-    cin >>combustible;
-    est1.venderCombustible(combustible);
-    tank arreglo[2]={tank1,tank2};
-    ofstream archivo("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
-    for(unsigned short int i=0;i<sizeof(lista)/sizeof(lista[0]);i++){
+    cout << "Ingrese el modelo de surtidoras: ";
+    cin >> maquina;
 
-<<<<<<< HEAD
-        if (archivo.is_open()) {
-        // Guardamos el objeto en el archivo
-        archivo << lista[i]<<"\n";
-        cout << "Objeto guardado en tank.txt\n";
-    } else {
-        cout << "No se pudo abrir el archivo\n";
-    }
-=======
-    est1.venderCombustible("Regular");
-    est1.venderCombustible("Premium");
-    est1.venderCombustible("Ecomax");
-    est1.venderCombustible("Disel");
+    cout << "Ingrese la cantidad de islas de la estacion: ";
+    cin >> isla;
 
-    est1.registrarVenta(30.0, "Regular", "Tarjeta", "123456789", 200.0);
-    est1.registrarVenta(50.0, "Premium", "Efectivo", "123456789", 250.0);
-    est1.registrarVenta(20.0, "Ecomax", "Tarjeta", "123456789", 150.0);
-
-
-    est1.mostrarVentas();
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
-
-    lista[i].mostrar();
-    }
-     archivo.close();
-    */
+    cout << "Ingrese si la estacion esta activa (1 o 0): ";
+    cin >> activo;
+*/
+}

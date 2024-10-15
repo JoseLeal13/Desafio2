@@ -11,6 +11,7 @@ struct Venta {
     string metodoPago;
     string documentoCliente;
     double monto;
+    unsigned short int id;
 };
 
 class estacion {
@@ -25,16 +26,21 @@ private:
     unsigned short int isla;
     unsigned short int activo;
 
-    string surtidores[12];  // Arreglo para almacenar los identificadores de surtidores
+    unsigned short int surtidores[12];  // Arreglo para almacenar los identificadores de surtidores
     unsigned short int contadorSurtidores;  // Para llevar el conteo de surtidores añadidos
-
+    unsigned short int ventaSurtidor[12];   //Para guardar ventas de cada surtidor
+    bool surtidorActivo[12];  //Para activar o desactivar surtidor
     Venta* ventas;  // Puntero para almacenar las ventas dinámicamente (arreglo bidimensional)
     unsigned short int contadorVentas;  // Contador para las ventas realizadas
     unsigned short int capacidadVentas;  // Capacidad actual del arreglo
 
 public:
     // Constructor
-    estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo);
+    //sobrecarga para poder inicializar el objeto sin nada
+    estacion();
+    estacion(string nombre, unsigned int id, string gerente,
+             char region, double latitud, double longitud, string maquina,
+             unsigned short int isla, unsigned short int activo);
 
     // Destructor
     ~estacion();
@@ -49,26 +55,29 @@ public:
     string getMaquina() const;
     unsigned short int getIsla() const;
     unsigned short int getActivo() const;
+    void setactivo(unsigned short int activi);
 
     // Métodos para surtidores
-    void agregarSurtidor(string idSurtidor);
-    void mostrarSurtidor(int indice) const;
-
+    void agregarSurtidor(unsigned short int  idSurtidor);
+    void eliminarSurtidor(unsigned short int idSurtidor);
+    void activarSurtidor(unsigned short int indice, bool estado);
+    void mostrarEstadoSurtidores() const;
+    void registrarVentaSurtidor(unsigned short int id);
     // Información de la estación
     void mostrarInfo() const;
     void mostrarEstadoCombustibles() const;
 
-<<<<<<< HEAD
-    //Método para vender combustible
-    void venderCombustible(int tipo) const;
-
-=======
     // Métodos de venta
     void venderCombustible(string tipo) const;
-    void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto);
+    void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto, unsigned short int id);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
->>>>>>> 1783d13a218e46fb82a58b90e49fec59d0f791ac
+
+    // Métodos para manejar estaciones desde archivos
+
+    static unsigned int contadorlineas(const string& rutaArchivo);
+    static estacion* TXTobj(const string& rutaArchivo);
+    void guardarTXT(const string& rutaArchivo);
 };
 
 #endif // ESTACION_H
