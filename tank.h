@@ -22,8 +22,12 @@ public:
     //destructor
     ~tank();
     //----------------
+
+
     //Metodos
+    void getprice();
     unsigned int Getid()const;//muestra el id del objeto
+    unsigned short int Getact()const;//muestra si la estacion esta activa o no
     void gettank();     //mostrar los valores de los atributos
     void settank(unsigned short int tcombustible,unsigned short int cant);//metodo para modificar los atributos
     void setactivo(unsigned short int activid);       //modificar el estado del tanque

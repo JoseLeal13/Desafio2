@@ -24,7 +24,6 @@ int main() {
     unsigned int id;
     string gerente;
     char region;
-    tankes[0].gettank();
     double latitud;
     double longitud;
     string maquina;
@@ -56,6 +55,7 @@ int main() {
                 surtidores-=1;
             }
             tank::Saveobj(tankes,tank1,archivotanks);
+            Est1.guardarTXT(archivoEst);
             cout<<"Estacion creada correctamente..."<<endl;
             system("cls");
             //tank1.gettank();
@@ -66,15 +66,24 @@ int main() {
             unsigned int tam=estacion::contadorlineas(archivoEst);
             cout<<"Ingrese el Id de la estacion a eliminar: ";
             cin>>id;
+            unsigned short int objel;
             for (unsigned int i=0;i<tam;i++){
                 if(id==Estsaved[i].getId()&&tankes[i].Getid()==id){
+                    Estsaved[i].mostrarInfo();
+                    tankes[i].gettank();
                     Estsaved[i].setactivo(0);
                     tankes[i].setactivo(0);
+                    objel=i;
+                    break;
                 }
+
             }
+            estacion::guardarTXT(Estsaved,Estsaved[objel],archivoEst);
+            //tank::Saveobj(tankes,tankes[objel],archivotanks);
+
             cout <<"Estacion eliminada Correctamente..."<<endl;
-            Estsaved[0].mostrarInfo();
-            tankes[0].gettank();
+            Estsaved[objel].mostrarInfo();
+            tankes[objel].gettank();
 
 
 
@@ -85,8 +94,17 @@ int main() {
             //break;
         }else if (opcred==4){//fijar el precio de los combustibles
              system("cls");
-            cout<<"fijando precios..."<<endl;
-            //break;
+            unsigned int tam=estacion::contadorlineas(archivoEst);
+            float newpricea=0,newpriceb=0,newpricec=0;
+            cout<<"Ingrese el nuevo precio de los combustibles."<<endl;
+            cin>>newpricea;
+            cin>>newpriceb;
+            cin>>newpricec;
+            for (unsigned short int i=0;i<tam;i++){
+                tankes[i].setprecios(newpricea,newpriceb,newpricec);
+            }
+            tankes[0].getprice();
+
         }else if (opcred==0){
              system("cls");
             cout<<"saliendo de el programa..."<<endl;

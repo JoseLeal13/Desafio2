@@ -113,14 +113,25 @@ tank* tank::TXTobj(const string& rutaArchivo){
     }
 
 }
+unsigned short int tank::Getact()const{
+    return activo;
+}
+
+
 void tank:: Saveobj(tank* array,tank obj,const string& archivo){    //guardar objetos en archivo
     unsigned int tam=contadorlineas();
     ofstream texto(archivo);
-    texto<<obj<<endl;
-    if (array!=nullptr){
-        for(unsigned int i=0;i<tam;i++){
+    if (!texto.is_open()) {
+        cout << "Error al abrir el archivo para guardar." << endl;
+        return;
+    }
+    for(unsigned short int i=0;i<tam;i++){
+        if(array[i].Getid()!=obj.Getid()){
             texto<<array[i]<<endl;
         }
+    }
+    if(obj.Getact()==1){
+        texto<<obj;
     }
     texto.close();
 }
@@ -131,6 +142,12 @@ void tank::setprecios(float pr,float pp,float peco){
     return;
 }
 
+void tank::getprice(){
+    cout<<precios[0]<<endl;
+    cout<<precios[1]<<endl;
+    cout<<precios[2]<<endl;
+    return;
+}
 
 //destructor
 //---------
