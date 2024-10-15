@@ -7,3 +7,9 @@ Fecha: Sun Oct 13 16:26:00 2024
 Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($)
 Mon Oct 14 17:34:27 2024
  | 20L | Ecomax | Tarjeta | 1091970674 | $25000
+Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($) | ID (Surtidor)
+Tue Oct 15 10:48:54 2024
+ | 50L | Premium | Efectivo | 123456789 | $50000 | Surtidor 45454
+Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($) | ID (Surtidor)
+Tue Oct 15 10:50:05 2024
+ | 50L | Premium | Efectivo | 123456789 | $50000 | Surtidor 45454

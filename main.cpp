@@ -15,6 +15,28 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
                            unsigned short int& isla, unsigned short int& activo);
 
 int main() {
+    estacion estacion1("Estación Central", 101, "Carlos Pérez", 'N', 4.60971, -74.08175,
+                       "Máquina XPTO", 2, 1);
+
+    estacion1.mostrarInfo();
+
+    estacion1.agregarSurtidor(1); // Surtidor 1
+    estacion1.agregarSurtidor(2); // Surtidor 2
+
+    estacion1.mostrarEstadoSurtidores();
+
+    estacion1.activarSurtidor(0, true); // Activar surtidor 1
+    estacion1.activarSurtidor(1, true); // Activar surtidor 2
+
+    estacion1.mostrarEstadoSurtidores();
+
+    estacion1.registrarVentaSurtidor(0); // Venta en surtidor 1
+    estacion1.registrarVentaSurtidor(1); // Venta en surtidor 2
+
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+
+    estacion1.mostrarVentas();
+/*
     unsigned short int opcion = 0;
 
     while (opcion != 3) {
@@ -40,24 +62,24 @@ int main() {
                     string maquina;
                     unsigned short int isla, activo, surtidores;
                     string idsurtidor;
-
                     // Llamamos a la función para ingresar los datos de la estación
                     ingresarDatosEstacion(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
 
                     // Crear la estación
-                    estacion Est1(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+                    estacion est1(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
 
+                    est1.guardarTXT(ruta);
                     cout << "Ingrese cantidad de surtidores: ";
                     cin >> surtidores;
                     while (surtidores > 0) {
                         cout << "Ingrese el Id del surtidor: ";
                         cin >> idsurtidor;
-                        Est1.agregarSurtidor(idsurtidor);
+                        est1.agregarSurtidor(idsurtidor);
                         surtidores -= 1;
                     }
                     cout << "Estación creada correctamente..." << endl;
                     system("cls");
-                    Est1.mostrarSurtidor(2); // Muestra los surtidores de la estación
+                    est1.mostrarSurtidor(2); // Muestra los surtidores de la estación
                 } else if (opcred == 2) { // eliminar una estacion
                     system("cls");
                     cout << "eliminando estacion..." << endl;
@@ -86,14 +108,15 @@ int main() {
                     system("cls");
                     unsigned int short ops = 8;
                     while (ops != 0) {
-                        MopSurtidores();
+                        MopSurtidores();     
                         cin >> ops;
                         if (ops == 1) {
                             system("cls");
-                            cout << "Agregando surtidor" << endl;
+                            cout << "Agregar surtidor: " << endl;
                         } else if (ops == 2) {
+
                             system("cls");
-                            cout << "Eliminando surtidor" << endl;
+                            cout << "Eliminar surtidor: " << endl;
                         } else if (ops == 3) {
                             system("cls");
                             cout << "Activando surtidor" << endl;
@@ -184,7 +207,7 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cout << "Ingrese region de la estacion (N/S/C): ";
     cin >> region;
 
-    cout << "Ingrese coordenadas estacion (Latitud-Longitud): ";
+    cout << "Ingrese coordenadas estacion (Latitud-Longitud): " << endl;
     cin >> latitud >> longitud;
 
     cout << "Ingrese el modelo de surtidoras: ";
@@ -195,4 +218,5 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
 
     cout << "Ingrese si la estacion esta activa (1 o 0): ";
     cin >> activo;
+*/
 }

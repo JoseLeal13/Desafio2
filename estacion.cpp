@@ -60,20 +60,71 @@ void estacion::setactivo(unsigned short int activi){
     activo=activi;
 }
 // Método para agregar un surtidor
-void estacion::agregarSurtidor(string idSurtidor) {
-    if (contadorSurtidores < 12) {
-        surtidores[contadorSurtidores++] = idSurtidor;
-    } else {
-        cout << "No se pueden agregar más surtidores, el límite es 12." << endl;
+void estacion::agregarSurtidor(unsigned short int idSurtidor) {
+    if (contadorSurtidores >= 12) {
+        cout << "Capacidad máxima de surtidores alcanzada." << endl;
+        return;
+    }
+    surtidores[contadorSurtidores] = idSurtidor;
+    surtidorActivo[contadorSurtidores] = 0;  // Inicialmente desactivado
+    ventaSurtidor[contadorSurtidores] = 0;   // Inicialmente sin ventas
+    contadorSurtidores++;
+    cout << "Surtidor " << idSurtidor << " agregado." << endl;
+}
+
+void estacion::eliminarSurtidor(unsigned short int idSurtidor) {
+    if (contadorSurtidores <= 2) {
+        cout << "No se pueden eliminar más de 2 surtidores." << endl;
+        return;
+    }
+
+    bool encontrado = false;
+    for (int i = 0; i < contadorSurtidores; i++) {
+        if (surtidores[i] == idSurtidor) {
+            surtidores[i] = surtidores[contadorSurtidores - 1];  // Reemplazar con el último
+            contadorSurtidores--;
+            encontrado = true;
+            cout << "Surtidor " << idSurtidor << " eliminado." << endl;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        cout << "Surtidor no encontrado." << endl;
     }
 }
 
-// Mostrar información de un surtidor
-void estacion::mostrarSurtidor(int indice) const {
-    if (indice >= 0 && indice < contadorSurtidores) {
-        cout << "Surtidor " << surtidores[indice] << " de la estación " << nombre << endl;
-    } else {
-        cout << "Índice de surtidor no válido." << endl;
+// Activar o desactivar un surtidor
+void estacion::activarSurtidor(unsigned short int indice, bool estado) {
+    if (indice >= 12) {
+        cout << "Índice de surtidor inválido." << endl;
+        return;
+    }
+    surtidorActivo[indice] = estado ? 1 : 0;
+    cout << "Surtidor " << surtidores[indice]
+         << (estado ? " activado." : " desactivado.") << endl;
+}
+
+// Registrar una venta para un surtidor específico
+void estacion::registrarVentaSurtidor(unsigned short int id) {
+    if (id >= 12) {
+        cout << "ID de surtidor inválido." << endl;
+        return;
+    }
+    if (surtidorActivo[id] == 0) {
+        cout << "El surtidor está desactivado. No se puede registrar la venta." << endl;
+        return;
+    }
+    ventaSurtidor[id]++;
+    cout << "Venta registrada para surtidor " << surtidores[id] << "." << endl;
+}
+
+// Mostrar el estado de los surtidores
+void estacion::mostrarEstadoSurtidores() const {
+    for (unsigned short int i = 0; i < contadorSurtidores; ++i) {
+        cout << "Surtidor: " << surtidores[i]
+             << " | Estado: " << (surtidorActivo[i] ? "Activo" : "Inactivo")
+             << " | Ventas: " << ventaSurtidor[i] << endl;
     }
 }
 
@@ -93,23 +144,37 @@ void estacion::mostrarEstadoCombustibles() const {
 }
 
 // Registrar venta de combustible
-void estacion::registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto) {
+void estacion::registrarVenta(double cantidad, string categoria, string metodoPago,
+                              string documentoCliente, double monto, unsigned short int id) {
     if (contadorVentas >= capacidadVentas) {
         cout << "Capacidad máxima alcanzada. Guardando ventas." << endl;
         guardarVentasEnArchivo();
-        contadorVentas = 0; // Reiniciar el contador
+        contadorVentas = 0;  // Reiniciar el contador
     }
 
+    if (id >= 12 || surtidorActivo[id] == 0) {
+        cout << "Surtidor inválido o inactivo." << endl;
+        return;
+    }
+
+    // Registrar venta en el surtidor
+    registrarVentaSurtidor(id);
+
+    // Almacenar los datos de la venta
     time_t now = time(0);
-    ventas[contadorVentas].fechaHora = ctime(&now); // Se usa ctime para obtener la fecha/hora actual
+    string fechaHora = ctime(&now);
+    fechaHora.pop_back();  // Eliminar '\n'
+    ventas[contadorVentas].fechaHora = fechaHora;
     ventas[contadorVentas].cantidadCombustible = cantidad;
     ventas[contadorVentas].categoria = categoria;
     ventas[contadorVentas].metodoPago = metodoPago;
     ventas[contadorVentas].documentoCliente = documentoCliente;
     ventas[contadorVentas].monto = monto;
+    ventas[contadorVentas].id = id;
 
     contadorVentas++;
 }
+
 
 // Guardar ventas en archivo
 bool estacion::guardarVentasEnArchivo() {
@@ -119,17 +184,20 @@ bool estacion::guardarVentasEnArchivo() {
         return false;
     }
 
-    if (archivo.tellp() == 0) { // Agregar cabeceras si el archivo está vacío
-        archivo << "Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($)" << endl;
+    // Agregar cabeceras si el archivo está vacío
+    if (archivo.tellp() == 0) {
+        archivo << "Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($) | ID (Surtidor)" << endl;
     }
 
+    // Guardar cada venta en el archivo
     for (int i = 0; i < contadorVentas; ++i) {
         archivo << ventas[i].fechaHora << " | "
                 << ventas[i].cantidadCombustible << "L | "
                 << ventas[i].categoria << " | "
                 << ventas[i].metodoPago << " | "
                 << ventas[i].documentoCliente << " | "
-                << "$" << ventas[i].monto << endl;
+                << "$" << ventas[i].monto << " | "
+                << "Surtidor " << ventas[i].id << endl;
     }
 
     archivo.close();
