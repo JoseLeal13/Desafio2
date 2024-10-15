@@ -53,6 +53,7 @@ public:
     string getMaquina() const;
     unsigned short int getIsla() const;
     unsigned short int getActivo() const;
+    void setactivo(unsigned short int activi);
 
     // Métodos para surtidores
     void agregarSurtidor(string idSurtidor);

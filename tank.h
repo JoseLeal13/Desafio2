@@ -23,8 +23,10 @@ public:
     ~tank();
     //----------------
     //Metodos
+    unsigned int Getid()const;//muestra el id del objeto
     void gettank();     //mostrar los valores de los atributos
     void settank(unsigned short int tcombustible,unsigned short int cant);//metodo para modificar los atributos
+    void setactivo(unsigned short int activid);       //modificar el estado del tanque
     int getrest(unsigned short int tcombustibles);     //metodo que retorna el restante de combustible de un objeto
     void GuardarTank();//Este metodo es para guardar los objetos a un txt
     void setprecios(float pr,float pp,float peco); //modificar los precios de un objeto
@@ -32,6 +34,7 @@ public:
     static unsigned int contadorlineas();       //contar las lineas del archivo
     static tank* TXTobj(const string& rutaArchivo);                      //pasar el txt a objetos de clase tank
     static void Saveobj(tank* array,tank obj,const string& archivo);           //guardar los objetos a un archivo
+
 
 
 };

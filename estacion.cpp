@@ -56,6 +56,9 @@ unsigned short int estacion::getActivo() const {
     return activo;
 }
 
+void estacion::setactivo(unsigned short int activi){
+    activo=activi;
+}
 // Método para agregar un surtidor
 void estacion::agregarSurtidor(string idSurtidor) {
     if (contadorSurtidores < 12) {

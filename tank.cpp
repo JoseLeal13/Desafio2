@@ -29,6 +29,9 @@ tank::tank(unsigned int id_,unsigned short int activo_)
 }
 //-------------------------
 
+unsigned int tank::Getid()const{
+    return id;
+}
 void tank::gettank(){
     cout <<  "id tank: " <<id<<endl;
     cout << "regular: "<<combustibles[0]<<endl;
@@ -63,6 +66,10 @@ ostream& operator<<(ostream& os, const tank& tank) {
         tank.total<<";"<<tank.activo<<";"<<tank.precios[0]<<";"<<tank.precios[1]<<";"<<tank.precios[2];
     return os;
 }
+void tank:: setactivo(unsigned short int activid){
+    /*cambiar el estado de el tanque*/
+    activo=activid;
+}
 
 unsigned int tank:: contadorlineas(){
     string linea="";
@@ -86,7 +93,7 @@ tank* tank::TXTobj(const string& rutaArchivo){
         cout << "Error al abrir el archivo." << endl;
         return nullptr;        // Si no se puede abrir el archivo, retornamos null
     }
-    if(count>1){
+    if(count>0){
     while(getline(txt,linea)){
         unsigned int posInicio = 0, posDelim, index = 0;
         while ((posDelim = linea.find(';', posInicio)) != string::npos&&index<9){
