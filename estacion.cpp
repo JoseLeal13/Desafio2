@@ -6,7 +6,8 @@
 using namespace std;
 
 // Definición del constructor
-estacion::estacion(string nombre, unsigned int id, string gerente, char region, double latitud, double longitud, string maquina, unsigned short int isla, unsigned short int activo)
+estacion::estacion(string nombre, unsigned int id, string gerente, char region, double latitud,
+                   double longitud, string maquina, unsigned short int isla, unsigned short int activo)
     : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud), longitud(longitud),
     maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0), capacidadVentas(5) {
     ventas = new Venta[capacidadVentas]; // Inicializa el arreglo dinámico para ventas
@@ -292,5 +293,30 @@ void estacion::guardarTXT(const string& rutaArchivo) {
             << latitud << ';' << longitud << ';' << maquina << ';' << isla << ';'
             << activo << '\n';
 
+    archivo.close();
+}
+
+void estacion::guardarTXT(estacion* array, estacion obj, const string& rutaArchivo) {
+    unsigned short int tam=contadorlineas(rutaArchivo);
+    ofstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo para guardar." << endl;
+        return;
+    }
+    for (unsigned short int i=0;i<tam;i++){
+        if(array[i].getId()!=obj.getId()){
+        // Guardar los atributos separados por ';'
+            archivo << array[i].getNombre()<< ';' <<array[i].getId() << ';' << array[i].getGerente()<< ';'
+                <<array[i].getRegion() << ';'<< array[i].getLatitud() << ';' << array[i].getLongitud() <<
+            ';' << array[i].getMaquina() << ';' << array[i].getIsla()<< ';'
+            << array[i].getActivo() << '\n';
+        }
+    }
+    if(obj.getActivo()==1){
+        archivo <<obj.getNombre()<< ';' <<obj.getId() << ';' << obj.getGerente()<< ';'
+                <<obj.getRegion() << ';'<< obj.getLatitud() << ';' << obj.getLongitud() <<
+            ';' <<obj.getMaquina() << ';' << obj.getIsla()<< ';'
+                << obj.getActivo() << '\n';
+    }
     archivo.close();
 }

@@ -77,6 +77,7 @@ public:
 
     static unsigned int contadorlineas(const string& rutaArchivo);
     static estacion* TXTobj(const string& rutaArchivo);
+    static void guardarTXT(estacion* array, estacion obj, const string& rutaArchivo);      //sobrecargar archivo
     void guardarTXT(const string& rutaArchivo);
 };
 
