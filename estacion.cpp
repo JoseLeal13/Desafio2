@@ -145,7 +145,7 @@ void estacion::mostrarEstadoCombustibles() const {
 
 // Registrar venta de combustible
 void estacion::registrarVenta(double cantidad, string categoria, string metodoPago,
-                              string documentoCliente, double monto, unsigned short int id) {
+                              string documentoCliente, double monto, unsigned short int id, unsigned short int est) {
     if (contadorVentas >= capacidadVentas) {
         cout << "Capacidad máxima alcanzada. Guardando ventas." << endl;
         guardarVentasEnArchivo();
@@ -159,6 +159,7 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
 
     // Registrar venta en el surtidor
     registrarVentaSurtidor(id);
+    unsigned short int idSurtidor = surtidores[id];
 
     // Almacenar los datos de la venta
     time_t now = time(0);
@@ -170,7 +171,8 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
     ventas[contadorVentas].metodoPago = metodoPago;
     ventas[contadorVentas].documentoCliente = documentoCliente;
     ventas[contadorVentas].monto = monto;
-    ventas[contadorVentas].id = id;
+    ventas[contadorVentas].id = idSurtidor;
+    ventas[contadorVentas].est = est;
 
     contadorVentas++;
 }
@@ -184,11 +186,6 @@ bool estacion::guardarVentasEnArchivo() {
         return false;
     }
 
-    // Agregar cabeceras si el archivo está vacío
-    if (archivo.tellp() == 0) {
-        archivo << "Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($) | ID (Surtidor)" << endl;
-    }
-
     // Guardar cada venta en el archivo
     for (int i = 0; i < contadorVentas; ++i) {
         archivo << ventas[i].fechaHora << " | "
@@ -197,7 +194,8 @@ bool estacion::guardarVentasEnArchivo() {
                 << ventas[i].metodoPago << " | "
                 << ventas[i].documentoCliente << " | "
                 << "$" << ventas[i].monto << " | "
-                << "Surtidor " << ventas[i].id << endl;
+                << ventas[i].id << " | "
+                << ventas[i].est << endl;
     }
 
     archivo.close();
@@ -207,7 +205,8 @@ bool estacion::guardarVentasEnArchivo() {
 
 // Mostrar ventas
 void estacion::mostrarVentas() {
-    ifstream archivo("ventas.txt");
+    guardarVentasEnArchivo();
+    ifstream archivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\ventas.txt");
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return;
@@ -294,3 +293,76 @@ void estacion::guardarTXT(const string& rutaArchivo) {
 
     archivo.close();
 }
+/*
+void estacion::guardarSurtidoresEnArchivo(const std::string& rutaArchivo) {
+    std::ofstream archivo(rutaArchivo, std::ios::trunc);  // Sobrescribir el archivo
+    if (!archivo.is_open()) {
+        std::cerr << "Error al abrir el archivo para guardar." << std::endl;
+        return;
+    }
+
+    for (unsigned short int i = 0; i < contadorSurtidores; ++i) {
+        archivo << surtidores[i] << ';'
+                << surtidorActivo[i] << ';'
+                << ventaSurtidor[i];
+
+        // Si no es el último surtidor, añadir una coma para separar
+        if (i < contadorSurtidores - 1) {
+            archivo << ',';
+        }
+    }
+
+    archivo << '\n';  // Terminar la línea de la estación
+    archivo.close();
+    std::cout << "Datos guardados correctamente en " << rutaArchivo << std::endl;
+}
+void estacion::cargarSurtidoresDesdeArchivo(const std::string& rutaArchivo) {
+    std::ifstream archivo(rutaArchivo);  // Abrir el archivo en modo lectura
+    if (!archivo.is_open()) {
+        std::cerr << "Error al abrir el archivo para cargar." << std::endl;
+        return;
+    }
+
+    std::string linea;
+    contadorSurtidores = 0;  // Reiniciar el contador de surtidores
+
+    while (std::getline(archivo, linea)) {  // Leer cada línea completa (una estación)
+        std::istringstream streamLinea(linea);
+        std::string datosSurtidor;
+
+        // Leer cada conjunto de datos de surtidor separado por ','
+        while (std::getline(streamLinea, datosSurtidor, ',')) {
+            std::istringstream streamDatos(datosSurtidor);
+            std::string valor;
+
+            unsigned short int idSurtidor, estado, ventas;
+
+            // Extraer los datos individuales separados por ';'
+            if (std::getline(streamDatos, valor, ';')) {
+                idSurtidor = static_cast<unsigned short int>(std::stoi(valor));
+            }
+            if (std::getline(streamDatos, valor, ';')) {
+                estado = static_cast<unsigned short int>(std::stoi(valor));
+            }
+            if (std::getline(streamDatos, valor, ';')) {
+                ventas = static_cast<unsigned short int>(std::stoi(valor));
+            }
+
+            // Guardar los datos en los arrays correspondientes
+            if (contadorSurtidores < 12) {
+                surtidores[contadorSurtidores] = idSurtidor;
+                surtidorActivo[contadorSurtidores] = estado;
+                ventaSurtidor[contadorSurtidores] = ventas;
+                contadorSurtidores++;
+            } else {
+                std::cerr << "Se alcanzó la capacidad máxima de surtidores." << std::endl;
+                break;
+            }
+        }
+    }
+
+    archivo.close();
+    std::cout << "Surtidores cargados correctamente desde " << rutaArchivo << std::endl;
+}
+
+*/

@@ -16,26 +16,22 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
 
 int main() {
     estacion estacion1("Estación Central", 101, "Carlos Pérez", 'N', 4.60971, -74.08175,
-                       "Máquina XPTO", 2, 1);
-
+                      "Máquina XPTO", 2, 1);
     estacion1.mostrarInfo();
-
     estacion1.agregarSurtidor(1); // Surtidor 1
     estacion1.agregarSurtidor(2); // Surtidor 2
-
     estacion1.mostrarEstadoSurtidores();
-
     estacion1.activarSurtidor(0, true); // Activar surtidor 1
     estacion1.activarSurtidor(1, true); // Activar surtidor 2
-
     estacion1.mostrarEstadoSurtidores();
-
-    estacion1.registrarVentaSurtidor(0); // Venta en surtidor 1
-    estacion1.registrarVentaSurtidor(1); // Venta en surtidor 2
-
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    /*estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
-
-    estacion1.mostrarVentas();
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    */estacion1.mostrarVentas();
+    estacion1.mostrarEstadoSurtidores();
 /*
     unsigned short int opcion = 0;
 
