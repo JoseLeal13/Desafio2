@@ -13,6 +13,43 @@ void MopSurtidores(); // mostrar opciones para los surtidores
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo);
+int main() {
+    // Crear una estación de ejemplo
+    estacion miEstacion("Estacion Central", 1001, "Carlos Pérez", 'N', 4.6097, -74.0817,
+                        "Maquina-X", 2, 7);
+
+    // Cargar los surtidores desde un archivo
+    miEstacion.cargarSurtidoresDesdeArchivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\surtidora.txt");
+
+    // Mostrar la información básica de la estación
+    cout << "Información de la estación:\n";
+    miEstacion.mostrarInfo();
+
+    // Mostrar el estado de los surtidores cargados
+    cout << "\nEstado de los surtidores:\n";
+    miEstacion.mostrarEstadoSurtidores();
+
+    // Agregar un nuevo surtidor
+    cout << "\nAgregando surtidor 7...\n";
+    miEstacion.agregarSurtidor(7);
+
+    // Activar el surtidor agregado
+    miEstacion.activarSurtidor(6, true); // Índice del surtidor agregado es 6 (ya que empezamos en 0)
+
+    // Registrar una venta en el surtidor 7
+    miEstacion.registrarVenta(50.5, "Regular", "Efectivo", "CC123456", 300000, 6);
+
+    // Guardar los datos de los surtidores en el archivo
+    cout << "\nGuardando surtidores en archivo...\n";
+    miEstacion.guardarSurtidoresEnArchivo("surtidores.txt");
+
+    // Mostrar las ventas registradas
+    cout << "\nVentas registradas:\n";
+    miEstacion.mostrarVentas();
+
+    return 0;
+}
+
 /*
 
 int main() {
@@ -48,6 +85,7 @@ int main() {
         if (opcion == 1) { // gestionar la red
 =======
 */
+/*
 int main() {
     string archivotanks="C:\\Users\\Lenovo\\Documents\\desafio2\\tank.txt";
     string archivoEst="C:\\Users\\Lenovo\\Documents\\desafio2\\estacion.txt";
@@ -269,4 +307,4 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cout << "Ingrese si la estacion esta activa (1 o 0): ";
     cin >> activo;
 }
-
+*/

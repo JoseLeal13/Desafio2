@@ -1,3 +1,4 @@
+
 #ifndef ESTACION_H
 #define ESTACION_H
 
@@ -77,8 +78,9 @@ public:
 
     static unsigned int contadorlineas(const string& rutaArchivo);
     static estacion* TXTobj(const string& rutaArchivo);
-    static void guardarTXT(estacion* array, estacion obj, const string& rutaArchivo);      //sobrecargar archivo
     void guardarTXT(const string& rutaArchivo);
+
+    //Métodos para manejar surtidores desde archivos
 };
 
 #endif // ESTACION_H
