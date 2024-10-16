@@ -12,6 +12,7 @@ struct Venta {
     string documentoCliente;
     double monto;
     unsigned short int id;
+    unsigned short int est;
 };
 
 class estacion {
@@ -71,8 +72,8 @@ public:
     // Métodos de venta
     void venderCombustible(string tipo) const;
     void registrarVenta(double cantidad, string categoria, string metodoPago,
-                        string documentoCliente, double monto,
-                        unsigned short int id);
+                        string documentoCliente, double monto, unsigned short int id,
+                        unsigned short int est);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
 

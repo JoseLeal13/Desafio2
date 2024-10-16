@@ -302,7 +302,7 @@ void Mopcion(){//mostrar opciones
     estacion1.mostrarEstadoSurtidores();
     estacion1.registrarVentaSurtidor(0); // Venta en surtidor 1
     estacion1.registrarVentaSurtidor(1); // Venta en surtidor 2
-    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0,1234);
     /*estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
