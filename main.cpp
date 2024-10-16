@@ -15,8 +15,26 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
                            unsigned short int& isla, unsigned short int& activo);
 
 int main() {
-    estacion estacion1("Estación Central", 101, "Carlos Pérez", 'N', 4.60971, -74.08175,
-                      "Máquina XPTO", 2, 1);
+    const string archivoEstacion = "C:\\Users\\Lenovo\\Documents\\Desafio2\\estacion.txt";
+    const string archivoSurtidor = "C:\\Users\\Lenovo\\Documents\\Desafio2\\surtidora.txt";
+
+    // Cargar las estaciones desde el archivo
+    unsigned short numEstaciones;
+    estacion* estaciones = estacion::TXTobj(archivoEstacion, archivoSurtidor);
+
+    // Comprobar si la carga fue exitosa
+    if (estaciones == nullptr) {
+        cout << "Error al cargar las estaciones." << endl;
+        return 1; // Salir del programa con error
+    }
+
+    // Mostrar información de las estaciones cargadas
+    for (unsigned short i = 0; i < numEstaciones; i++) {
+        estaciones[i].mostrarInfo();
+        estaciones[i].mostrarEstadoSurtidores();
+
+    estacion estacion1("Termax", 77777, "Carlos", 'S', 4.50971, -73.08175,
+                      "Máquina XPTO", 4, 1);
     estacion1.mostrarInfo();
     estacion1.agregarSurtidor(1); // Surtidor 1
     estacion1.agregarSurtidor(2); // Surtidor 2
@@ -25,13 +43,13 @@ int main() {
     estacion1.activarSurtidor(1, true); // Activar surtidor 2
     estacion1.mostrarEstadoSurtidores();
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
-    /*estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
-    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
-    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
-    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
-    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
-    */estacion1.mostrarVentas();
-    estacion1.mostrarEstadoSurtidores();
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.mostrarVentas();
+
 /*
     unsigned short int opcion = 0;
 
@@ -215,4 +233,5 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cout << "Ingrese si la estacion esta activa (1 o 0): ";
     cin >> activo;
 */
+    }
 }

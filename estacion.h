@@ -4,6 +4,12 @@
 #include <string>
 using namespace std;
 
+struct Surtidor {
+    unsigned short int idEstacion; // Id de la estación
+    unsigned short int idSurtidor;  // Id del surtidor
+    bool activo;                    // Estado del surtidor
+    double ventas;                  // Ventas realizadas
+};
 struct Venta {
     string fechaHora;
     double cantidadCombustible;
@@ -77,8 +83,10 @@ public:
     // Métodos para manejar estaciones desde archivos
 
     static unsigned int contadorlineas(const string& rutaArchivo);
-    static estacion* TXTobj(const string& rutaArchivo);
+    static estacion* TXTobj(const string& rutaArchivo, const string& rutaSurtidores);
     void guardarTXT(const string& rutaArchivo);
+
+    static Surtidor* TXTsurtidor(const string& rutaArchivo, unsigned short& count);
 };
 
 #endif // ESTACION_H

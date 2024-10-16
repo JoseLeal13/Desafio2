@@ -231,53 +231,6 @@ unsigned int estacion::contadorlineas(const string& rutaArchivo) {
     return count;
 }
 
-// Cargar objetos desde un archivo
-estacion* estacion::TXTobj(const string& rutaArchivo) {
-    unsigned int count = contadorlineas(rutaArchivo); // Determinar cuántas líneas tiene el archivo
-    if (count == 0 ){
-        cout << "El archivo está vacío." << endl;
-        return nullptr;
-    }
-
-    estacion* arrayEstaciones = new estacion[count]; // Crear arreglo dinámico
-    string atributos[9]; // Asumiendo 9 atributos por estación
-    string linea;
-    unsigned int i = 0;
-
-    ifstream archivo(rutaArchivo);
-    if (!archivo.is_open()) {
-        cout << "Error al abrir el archivo." << endl;
-        return nullptr; // Si no se puede abrir, retornamos nullptr
-    }
-
-    // Leer línea por línea del archivo
-    while (getline(archivo, linea) && i < count) {
-        unsigned int posInicio = 0, posDelim, index = 0;
-
-        // Pasar cada línea y extraer los atributos separados por ';'
-        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 9) {
-            atributos[index] = linea.substr(posInicio, posDelim - posInicio);
-            posInicio = posDelim + 1;
-            index++;
-        }
-
-        // Validar que se han leído todos los atributos necesarios
-        if (index != 9) {
-            cout << "Error: Línea incompleta en el archivo." << endl;
-            continue; // O manejar el error de otra manera
-        }
-
-        // Crear y almacenar un objeto estación en el arreglo
-        arrayEstaciones[i] = estacion(atributos[0],stoi(atributos[1]), atributos[2],
-                                      atributos[3][0], stod(atributos[4]), stod(atributos[5]),
-                                      atributos[6], stoi(atributos[7]), stoi(atributos[8]));
-        i++;
-    }
-
-    archivo.close();
-    return arrayEstaciones; // Retornar el arreglo de objetos
-}
-
 // Guardar estación en archivo
 void estacion::guardarTXT(const string& rutaArchivo) {
     ofstream archivo(rutaArchivo, ios::app); // Modo 'append' para agregar sin borrar
@@ -286,83 +239,123 @@ void estacion::guardarTXT(const string& rutaArchivo) {
         return;
     }
 
-    // Guardar los atributos separados por ';'
-    archivo << nombre<< ';' << id << ';' << gerente << ';' << region << ';'
-            << latitud << ';' << longitud << ';' << maquina << ';' << isla << ';'
-            << activo << '\n';
-
-    archivo.close();
-}
-/*
-void estacion::guardarSurtidoresEnArchivo(const std::string& rutaArchivo) {
-    std::ofstream archivo(rutaArchivo, std::ios::trunc);  // Sobrescribir el archivo
-    if (!archivo.is_open()) {
-        std::cerr << "Error al abrir el archivo para guardar." << std::endl;
-        return;
+// Método para cargar las estaciones desde un archivo
+estacion* estacion::TXTobj(const string& rutaArchivo, const string& rutaSurtidores) {
+    unsigned int count = contadorlineas(rutaArchivo);
+    if (count == 0) {
+        cout << "El archivo de estaciones está vacío." << endl;
+        return nullptr;
     }
 
-    for (unsigned short int i = 0; i < contadorSurtidores; ++i) {
-        archivo << surtidores[i] << ';'
-                << surtidorActivo[i] << ';'
-                << ventaSurtidor[i];
+    estacion* arrayEstaciones = new estacion[count];
+    string atributos[9];
+    string linea;
+    unsigned int i = 0;
 
-        // Si no es el último surtidor, añadir una coma para separar
-        if (i < contadorSurtidores - 1) {
-            archivo << ',';
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo de estaciones." << endl;
+        delete[] arrayEstaciones;
+        return nullptr;
+    }
+
+    while (getline(archivo, linea) && i < count) {
+        unsigned int posInicio = 0, posDelim, index = 0;
+
+        // Procesar la línea para extraer los atributos
+        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 9) {
+            atributos[index] = linea.substr(posInicio, posDelim - posInicio);
+            posInicio = posDelim + 1;
+            index++;
         }
+        // Añadir el último atributo después del último delimitador
+        if (index < 9) {
+            atributos[index] = linea.substr(posInicio);
+        }
+
+        // Crear la estación con los atributos leídos
+        arrayEstaciones[i] = estacion(
+            atributos[0],
+            stoi(atributos[1]),
+            atributos[2],
+            atributos[3][0],
+            stod(atributos[4]),
+            stod(atributos[5]),
+            atributos[6],
+            static_cast<unsigned short>(stoi(atributos[7])),
+            static_cast<unsigned short>(stoi(atributos[8]))
+            );
+
+        i++;
     }
 
-    archivo << '\n';  // Terminar la línea de la estación
     archivo.close();
-    std::cout << "Datos guardados correctamente en " << rutaArchivo << std::endl;
-}
-void estacion::cargarSurtidoresDesdeArchivo(const std::string& rutaArchivo) {
-    std::ifstream archivo(rutaArchivo);  // Abrir el archivo en modo lectura
-    if (!archivo.is_open()) {
-        std::cerr << "Error al abrir el archivo para cargar." << std::endl;
-        return;
-    }
 
-    std::string linea;
-    contadorSurtidores = 0;  // Reiniciar el contador de surtidores
+    // Cargar los surtidores y asociarlos a las estaciones
+    unsigned short numSurtidores;
+    Surtidor* surtidores = TXTsurtidor(rutaSurtidores, numSurtidores);
 
-    while (std::getline(archivo, linea)) {  // Leer cada línea completa (una estación)
-        std::istringstream streamLinea(linea);
-        std::string datosSurtidor;
-
-        // Leer cada conjunto de datos de surtidor separado por ','
-        while (std::getline(streamLinea, datosSurtidor, ',')) {
-            std::istringstream streamDatos(datosSurtidor);
-            std::string valor;
-
-            unsigned short int idSurtidor, estado, ventas;
-
-            // Extraer los datos individuales separados por ';'
-            if (std::getline(streamDatos, valor, ';')) {
-                idSurtidor = static_cast<unsigned short int>(std::stoi(valor));
-            }
-            if (std::getline(streamDatos, valor, ';')) {
-                estado = static_cast<unsigned short int>(std::stoi(valor));
-            }
-            if (std::getline(streamDatos, valor, ';')) {
-                ventas = static_cast<unsigned short int>(std::stoi(valor));
-            }
-
-            // Guardar los datos en los arrays correspondientes
-            if (contadorSurtidores < 12) {
-                surtidores[contadorSurtidores] = idSurtidor;
-                surtidorActivo[contadorSurtidores] = estado;
-                ventaSurtidor[contadorSurtidores] = ventas;
-                contadorSurtidores++;
-            } else {
-                std::cerr << "Se alcanzó la capacidad máxima de surtidores." << std::endl;
-                break;
+    if (surtidores) {
+        for (unsigned short j = 0; j < numSurtidores; j++) {
+            for (unsigned int k = 0; k < count; k++) {
+                // Comparar idEstacion con idSurtidor de cada surtidor
+                if (arrayEstaciones[k].getId() == surtidores[j].idEstacion) {
+                    arrayEstaciones[k].agregarSurtidor(surtidores[j].idSurtidor);
+                }
             }
         }
+        delete[] surtidores;
+    }
+
+    cout << "Estaciones cargadas correctamente desde el archivo." << endl;
+    return arrayEstaciones;
+}
+
+
+Surtidor* estacion::TXTsurtidor(const string& rutaArchivo, unsigned short& count) {
+    count = contadorlineas(rutaArchivo);
+    if (count == 0) {
+        cout << "El archivo de surtidores está vacío." << endl;
+        return nullptr;
+    }
+
+    Surtidor* arraySurtidores = new Surtidor[count];
+    string atributos[4];
+    string linea;
+    unsigned int i = 0;
+
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo de surtidores." << endl;
+        delete[] arraySurtidores;
+        return nullptr;
+    }
+
+    while (getline(archivo, linea) && i < count) {
+        unsigned int posInicio = 0, posDelim, index = 0;
+
+        // Procesar la línea para extraer los atributos
+        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 4) {
+            atributos[index] = linea.substr(posInicio, posDelim - posInicio);
+            posInicio = posDelim + 1;
+            index++;
+        }
+        // Añadir el último atributo después del último delimitador
+        if (index < 4) {
+            atributos[index] = linea.substr(posInicio);
+        }
+
+        // Crear el surtidor con los atributos leídos
+        arraySurtidores[i] = Surtidor(
+            static_cast<unsigned short>(stoi(atributos[0])),  // idEstacion
+            static_cast<unsigned short>(stoi(atributos[1])),  // idSurtidor
+            atributos[2] == "1", // activo
+            stod(atributos[3])   // ventas
+            );
+        i++;
     }
 
     archivo.close();
-    std::cout << "Surtidores cargados correctamente desde " << rutaArchivo << std::endl;
+    return arraySurtidores;
+    }
 }
-
-*/
