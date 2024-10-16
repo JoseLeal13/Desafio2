@@ -13,46 +13,14 @@ void MopSurtidores(); // mostrar opciones para los surtidores
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo);
-/*
 
-int main() {
-    estacion estacion1("Estación Central", 101, "Carlos Pérez", 'N', 4.60971, -74.08175,
-                       "Máquina XPTO", 2, 1);
+//void simularventas(estacion objeto,); //funcion para simular ventas
 
-    estacion1.mostrarInfo();
-
-    estacion1.agregarSurtidor(1); // Surtidor 1
-    estacion1.agregarSurtidor(2); // Surtidor 2
-
-    estacion1.mostrarEstadoSurtidores();
-
-    estacion1.activarSurtidor(0, true); // Activar surtidor 1
-    estacion1.activarSurtidor(1, true); // Activar surtidor 2
-
-    estacion1.mostrarEstadoSurtidores();
-
-    estacion1.registrarVentaSurtidor(0); // Venta en surtidor 1
-    estacion1.registrarVentaSurtidor(1); // Venta en surtidor 2
-
-    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
-
-    estacion1.mostrarVentas();
-
-    unsigned short int opcion = 0;
-
-    while (opcion != 3) {
-        system("cls");
-        Mopcion();  // muestra opciones para gestionar red o estaciones
-        cin >> opcion;
-
-        if (opcion == 1) { // gestionar la red
-=======
-*/
-int main() {
-    string archivotanks="C:\\Users\\Lenovo\\Documents\\desafio2\\tank.txt";
-    string archivoEst="C:\\Users\\Lenovo\\Documents\\desafio2\\estacion.txt";
-    string archivoventas="C:\\Users\\Lenovo\\Documents\\desafio2\\ventas.txt";
-    estacion* Estsaved=estacion::TXTobj(archivoEst);
+/*int main() {
+    string archivotanks="C:\\Users\\juan david\\Documents\\desafioII\\tank.txt";
+    string archivoEst="C:\\Users\\juan david\\Documents\\desafioII\\estacion.txt";
+    string archivoventas="C:\\Users\\juan david\\Documents\\desafioII\\ventas.txt";
+   estacion* Estsaved=estacion::TXTobj(archivoEst);
     tank* tankes=tank::TXTobj(archivotanks);
     string nombre;
     unsigned int id;
@@ -62,8 +30,9 @@ int main() {
     double longitud;
     string maquina;
     unsigned short int isla,activo,surtidores;
-    string idsurtidor;
+    unsigned int idsurtidor;
     unsigned short int opcion=0;
+
     while(opcion!=3){
          system("cls");
         Mopcion();  //muestra opciones para gestionar red o estaciones
@@ -127,13 +96,16 @@ int main() {
             unsigned int tam=estacion::contadorlineas(archivoEst);
             float newpricea=0,newpriceb=0,newpricec=0;
             cout<<"Ingrese el nuevo precio de los combustibles."<<endl;
+            cout<<"Ingrese el precio del combustible regular: ";
             cin>>newpricea;
+            cout<<"Ingrese el precio del combustible premium: ";
             cin>>newpriceb;
+            cout<<"Ingrese el precio del combustible ecoextra: ";
             cin>>newpricec;
             for (unsigned short int i=0;i<tam;i++){
                 tankes[i].setprecios(newpricea,newpriceb,newpricec);
             }
-            tankes[0].getprice();
+            //tankes[0].getprice();
 
         }else if (opcred==0){
              system("cls");
@@ -157,23 +129,75 @@ int main() {
                 system("cls");
                     unsigned int short ops=8;
                     while(ops!=0){
+                        unsigned int tam=estacion::contadorlineas(archivoEst);
+                        unsigned short int cantsurti=0;
                         MopSurtidores();
                         cin>>ops;
                         if (ops==1){
+                            *//*unsigned int tam=estacion::contadorlineas(archivoEst);
+                            unsigned short int cantsurti=0;*//*
                             system("cls");
-                            cout << "agregar surtidor: " << endl;
+                            cout<<"Ingrese el Id de la estacion a agregar: ";
+                            cin>>id;
+                            for (unsigned short int i=0;i<tam;i++){
+                                if(Estsaved[i].getId()==id){
+                                    cout<<"Ingrese cantidad de surtidores a agregar surtidor: ";
+                                    cin>>cantsurti;
+                                    if(cantsurti<(12-Estsaved[i].getcantsurti())){
+                                        while(cantsurti>0){
+                                            cout<<"Ingrese el Id de los surtidores: ";
+                                            cin>>idsurtidor;
+                                            cout<<idsurtidor<<" agregado correctamente.."<<endl;
+                                            cantsurti-=1;
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
                         }else if(ops==2){
                             system("cls");
-                            cout <<"eliminar surtidor"<<endl;
+                            cout<<"Ingrese el Id de la estacion a eliminar surtidor: ";
+                            cin>>id;
+                            for (unsigned short int i=0;i<tam;i++){
+                                if(Estsaved[i].getId()==id){
+                                    cout<<"Ingrese el Id del surtidor a eliminar ";
+                                    cin>>cantsurti;
+                                    cout<<"Surtidor eliminado correctamente.."<<endl;
+                                }break;
+                            }
                         }else if (ops == 3) {
                             system("cls");
-                            cout << "Activando surtidor" << endl;
+                            cout<<"Ingrese el Id del surtidor a activar: ";
+                            cin>>id;
+                            for (unsigned short int i=0;i<tam;i++){
+                                if(Estsaved[i].getId()==id){
+                                    cout<<"Ingrese el Id del surtidor a activar: ";
+                                    cin>>cantsurti;
+                                    cout<<"Surtidor activado correctamente.."<<endl;
+                                }break;
+                            }
                         } else if (ops == 4) {
                             system("cls");
-                            cout << "Desactivando surtidor" << endl;
+                            cout<<"Ingrese el Id del surtidor a desactivar: ";
+                            cin>>id;
+                            for (unsigned short int i=0;i<tam;i++){
+                                if(Estsaved[i].getId()==id){
+                                    cout<<"Ingrese el Id del surtidor a desactivar: ";
+                                    cin>>cantsurti;
+                                    cout<<"Surtidor desactivado correctamente.."<<endl;
+                                }break;
+                            }
                         } else if (ops == 5) {
                             system("cls");
-                            cout << "Mostrando historial" << endl;
+                            cout<<"Ingrese el Id de la estacion: ";
+                            cin>>id;
+                            for (unsigned short int i=0;i<tam;i++){
+                                if(Estsaved[i].getId()==id){
+                                    cout<<"Ingrese el Id del surtidor al cual se le va a ver el historial: ";
+                                    cin>>cantsurti;
+                                    cout<<"historial del surtidor.."<<endl;
+                                }break;
+                            }
                         } else if (ops == 0) {
                             system("cls");
                             break;
@@ -187,7 +211,7 @@ int main() {
                     break;
                 } else if (opce == 3) {
                     system("cls");
-                    break;
+
                 } else if (opce == 4) {
                     system("cls");
                     break;
@@ -203,13 +227,88 @@ int main() {
 
     return 0;
 }
+*/
+int main(){
+    //tank:tankes myTank(0, 0.0,0.0, 0.0, 1);
+    tank tankn(12345,1);
+    tank tank2(121234,0);
+    tank tank3(12345,0);
+    tank lista[3]={tankn,tank2,tank3};
+    lista[0].setprecios(20000,35000,40000);
+
+    tank* array=tank::TXTobj("C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
+    lista[0].gettank();
+    //tank::Saveobj(array,lista[0],"C:\\Users\\juan david\\Documents\\desafioII\\tank.txt");
+
+    string archivo="C:\\Users\\juan david\\Documents\\desafioII\\estacion.txt";
+    estacion est1("Termax", 12345, "José", 'N', 11.2408, -74.2052, "A", 2, 7);
+    estacion est2("Termax", 54321, "Juan", 'S', 10.9983, -73.2514, "B", 2, 5);
+
+    //est1.guardarTXT(archivo);
+    //est2.guardarTXT(archivo);
 
 
+    estacion* estacionesCargadas = estacion::TXTobj(archivo);
+    //estacionesCargadas[0].mostrarInfo();
+    double cant=34;
+    string categoria="preimun";
+    string metodoPago="efectivo";
+    string documentoCliente="1066234";
+    double monto=4000;
+    unsigned short int id;
+    /*cout<<"Ingrese cantidad a retirar: ";
+    cin>>cant;
+    cout<<"Ingrese el tipo de combustible: ";
+    cin>>categoria;
+    cout<<"Ingrese el metodo de pago (1 efectivo o 2 tarjeta): ";
+    cin>>metodoPago;
+    cout <<"Ingrese su documento: ";
+    cin>>documentoCliente;
+    cout<<"cantidad a pagar: ";
+    cin>>monto;
+    cout<<"surtidor: ";
+    cin>>id;
+    estacionesCargadas[0].agregarSurtidor(123456);
+    estacionesCargadas[0].agregarSurtidor(23455);
+    estacionesCargadas[0].activarSurtidor(1, true);
+    estacionesCargadas[0].activarSurtidor(0,true);
+    estacionesCargadas[0].registrarVenta(cant,categoria,metodoPago,documentoCliente
+                                         ,monto,0,estacionesCargadas[0]);
+    estacionesCargadas[0].registrarVenta(cant,categoria,metodoPago,documentoCliente
+                                         ,monto,0,estacionesCargadas[0]);
+    estacionesCargadas[0].registrarVenta(cant,categoria,metodoPago,documentoCliente
+                                         ,monto,0,estacionesCargadas[0]);
+    estacionesCargadas[0].registrarVenta(cant,categoria,metodoPago,documentoCliente
+                                         ,monto,0,estacionesCargadas[0]);
+    estacionesCargadas[0].registrarVenta(cant,categoria,metodoPago,documentoCliente
+                                         ,monto,0,estacionesCargadas[0]);
+    estacionesCargadas[0].registrarVenta(cant,categoria,metodoPago,documentoCliente
+                                         ,monto,0,estacionesCargadas[0]);
+
+}
 void Mopcion(){//mostrar opciones
     cout << "1. Gestionar la red de estaciones."<<endl;
     cout << "2. Gestionar las estaciones de servicio."<<endl;
     cout << "3. Salir"<<endl;
-    return;
+    */
+    estacion estacion1("Estación Central", 101, "Carlos Pérez", 'N', 4.60971, -74.08175,
+                       "Máquina XPTO", 2, 1);
+    estacion1.mostrarInfo();
+    estacion1.agregarSurtidor(1); // Surtidor 1
+    estacion1.agregarSurtidor(2); // Surtidor 2
+    estacion1.mostrarEstadoSurtidores();
+    estacion1.activarSurtidor(0, true); // Activar surtidor 1
+    estacion1.activarSurtidor(1, true); // Activar surtidor 2
+    estacion1.mostrarEstadoSurtidores();
+    estacion1.registrarVentaSurtidor(0); // Venta en surtidor 1
+    estacion1.registrarVentaSurtidor(1); // Venta en surtidor 2
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    /*estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
+    */estacion1.mostrarVentas();
 
 }
 
@@ -269,4 +368,4 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cout << "Ingrese si la estacion esta activa (1 o 0): ";
     cin >> activo;
 }
-
+//void simularventa(){}

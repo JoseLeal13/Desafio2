@@ -25,7 +25,7 @@ public:
 
 
     //Metodos
-    void getprice();
+    void getprice();    //muestra los precios
     unsigned int Getid()const;//muestra el id del objeto
     unsigned short int Getact()const;//muestra si la estacion esta activa o no
     void gettank();     //mostrar los valores de los atributos

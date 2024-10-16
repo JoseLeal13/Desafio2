@@ -46,6 +46,7 @@ public:
     ~estacion();
 
     // Getters
+    unsigned short int getcantsurti()const;
     string getNombre() const;
     unsigned int getId() const;
     string getGerente() const;
@@ -69,7 +70,9 @@ public:
 
     // Métodos de venta
     void venderCombustible(string tipo) const;
-    void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto, unsigned short int id);
+    void registrarVenta(double cantidad, string categoria, string metodoPago,
+                        string documentoCliente, double monto,
+                        unsigned short int id);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
 

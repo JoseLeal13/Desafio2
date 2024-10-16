@@ -21,6 +21,11 @@ estacion::~estacion() {
 }
 
 // Getters
+unsigned short int estacion:: getcantsurti()const{
+    return contadorSurtidores;
+}
+
+
 string estacion::getNombre() const {
     return nombre;
 }
@@ -179,7 +184,7 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
 
 // Guardar ventas en archivo
 bool estacion::guardarVentasEnArchivo() {
-    ofstream archivo("ventas.txt", ios::app); // Modo append
+    ofstream archivo("C:\\Users\\juan david\\Documents\\desafioII\\ventas.txt", ios::app); // Modo append
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return false;
@@ -208,12 +213,12 @@ bool estacion::guardarVentasEnArchivo() {
 
 // Mostrar ventas
 void estacion::mostrarVentas() {
-    ifstream archivo("ventas.txt");
+    guardarVentasEnArchivo();
+    ifstream archivo("C:\\Users\\juan david\\Documents\\desafioII\\ventas.txt");
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return;
     }
-
     string linea;
     while (getline(archivo, linea)) {
         cout << linea << endl;
@@ -273,6 +278,7 @@ estacion* estacion::TXTobj(const string& rutaArchivo) {
         arrayEstaciones[i] = estacion(atributos[0],stoi(atributos[1]), atributos[2],
                                       atributos[3][0], stod(atributos[4]), stod(atributos[5]),
                                       atributos[6], stoi(atributos[7]), stoi(atributos[8]));
+        //arrayEstaciones[1].mostrarInfo();;
         i++;
     }
 

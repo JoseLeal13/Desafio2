@@ -1,1 +1,4 @@
-
+Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($) | ID (Surtidor)
+Tue Oct 15 22:26:57 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | Surtidor 0
+Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($) | ID (Surtidor)
+Tue Oct 15 22:27:11 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | Surtidor 0
