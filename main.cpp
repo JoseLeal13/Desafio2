@@ -13,68 +13,48 @@ void MopSurtidores(); // mostrar opciones para los surtidores
 void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, char& region,
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo);
+
 int main() {
-    // Crear una estación de ejemplo
-    estacion miEstacion("Estacion Central", 1001, "Carlos Pérez", 'N', 4.6097, -74.0817,
-                        "Maquina-X", 2, 7);
+    const string archivoEstacion = "C:\\Users\\Lenovo\\Documents\\Desafio2\\estacion.txt";
+    const string archivoSurtidor = "C:\\Users\\Lenovo\\Documents\\Desafio2\\surtidora.txt";
 
-    // Cargar los surtidores desde un archivo
-    miEstacion.cargarSurtidoresDesdeArchivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\surtidora.txt");
+    // Cargar las estaciones desde el archivo
+    estacion* estaciones = estacion::TXTobj(archivoEstacion, archivoSurtidor);
 
-    // Mostrar la información básica de la estación
-    cout << "Información de la estación:\n";
-    miEstacion.mostrarInfo();
+    // Comprobar si la carga fue exitosa
+    if (estaciones == nullptr) {
+        cout << "Error al cargar las estaciones." << endl;
+        return 1; // Salir del programa con error
+    }
 
-    // Mostrar el estado de los surtidores cargados
-    cout << "\nEstado de los surtidores:\n";
-    miEstacion.mostrarEstadoSurtidores();
 
-    // Agregar un nuevo surtidor
-    cout << "\nAgregando surtidor 7...\n";
-    miEstacion.agregarSurtidor(7);
+    /*
+    estacion estacion1("Termax", 77777, "Carlos", 'S', 4.50971, -73.08175,
+                       "Máquina XPTO", 4, 1);
+    estacion1.agregarSurtidor(890, false, 0);
+    estacion1.mostrarEstadoSurtidores();
+    */
+    estaciones[0].agregarSurtidor(56565,true,5);
+    estaciones[1].agregarSurtidor(34352,false,0);
 
-    // Activar el surtidor agregado
-    miEstacion.activarSurtidor(6, true); // Índice del surtidor agregado es 6 (ya que empezamos en 0)
+    try {
+        estaciones[0].guardarSurtidoresTXT(archivoEstacion);
+        estaciones[1].guardarSurtidoresTXT(archivoSurtidor);
+    } catch (const exception& e) {
+        cerr << "Ocurrió un error";
 
-    // Registrar una venta en el surtidor 7
-    miEstacion.registrarVenta(50.5, "Regular", "Efectivo", "CC123456", 300000, 6);
-
-    // Guardar los datos de los surtidores en el archivo
-    cout << "\nGuardando surtidores en archivo...\n";
-    miEstacion.guardarSurtidoresEnArchivo("surtidores.txt");
-
-    // Mostrar las ventas registradas
-    cout << "\nVentas registradas:\n";
-    miEstacion.mostrarVentas();
-
-    return 0;
+        }
 }
-
-/*
-
-int main() {
-    estacion estacion1("Estación Central", 101, "Carlos Pérez", 'N', 4.60971, -74.08175,
-                       "Máquina XPTO", 2, 1);
-
-    estacion1.mostrarInfo();
-
-    estacion1.agregarSurtidor(1); // Surtidor 1
-    estacion1.agregarSurtidor(2); // Surtidor 2
-
-    estacion1.mostrarEstadoSurtidores();
-
-    estacion1.activarSurtidor(0, true); // Activar surtidor 1
-    estacion1.activarSurtidor(1, true); // Activar surtidor 2
-
-    estacion1.mostrarEstadoSurtidores();
-
-    estacion1.registrarVentaSurtidor(0); // Venta en surtidor 1
-    estacion1.registrarVentaSurtidor(1); // Venta en surtidor 2
-
-    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0);
-
+    /*
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
     estacion1.mostrarVentas();
-
+*/
+/*
     unsigned short int opcion = 0;
 
     while (opcion != 3) {

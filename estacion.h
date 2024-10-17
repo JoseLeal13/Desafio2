@@ -5,6 +5,12 @@
 #include <string>
 using namespace std;
 
+struct surtidor {
+    unsigned short int idEstacion; // Id de la estación
+    unsigned short int idSurtidor;  // Id del surtidor
+    bool activo;                    // Estado del surtidor
+    double ventas;                  // Ventas realizadas
+};
 struct Venta {
     string fechaHora;
     double cantidadCombustible;
@@ -13,6 +19,7 @@ struct Venta {
     string documentoCliente;
     double monto;
     unsigned short int id;
+    unsigned short int est;
 };
 
 class estacion {
@@ -59,7 +66,7 @@ public:
     void setactivo(unsigned short int activi);
 
     // Métodos para surtidores
-    void agregarSurtidor(unsigned short int  idSurtidor);
+    void agregarSurtidor(unsigned short int  idSurtidor, bool activo, unsigned short int ventas);
     void eliminarSurtidor(unsigned short int idSurtidor);
     void activarSurtidor(unsigned short int indice, bool estado);
     void mostrarEstadoSurtidores() const;
@@ -70,17 +77,20 @@ public:
 
     // Métodos de venta
     void venderCombustible(string tipo) const;
-    void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto, unsigned short int id);
+    void registrarVenta(double cantidad, string categoria, string metodoPago, string documentoCliente, double monto, unsigned short int id, unsigned short int est);
     bool guardarVentasEnArchivo();
     void mostrarVentas();
 
     // Métodos para manejar estaciones desde archivos
-
     static unsigned int contadorlineas(const string& rutaArchivo);
-    static estacion* TXTobj(const string& rutaArchivo);
     void guardarTXT(const string& rutaArchivo);
 
+
     //Métodos para manejar surtidores desde archivos
+    void guardarSurtidoresTXT(const string& rutaArchivo);
+    static estacion* TXTobj(const string& rutaArchivo, const string& rutaSurtidores);
+    static surtidor* TXTsurtidor(const string& rutaArchivo, unsigned short& count);
+
 };
 
 #endif // ESTACION_H

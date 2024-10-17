@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
+#include <sstream>
 #include <string>
 using namespace std;
 
@@ -61,16 +62,15 @@ void estacion::setactivo(unsigned short int activi){
     activo=activi;
 }
 // Método para agregar un surtidor
-void estacion::agregarSurtidor(unsigned short int idSurtidor) {
-    if (contadorSurtidores >= 12) {
-        cout << "Capacidad máxima de surtidores alcanzada." << endl;
-        return;
+void estacion::agregarSurtidor(unsigned short int idSurtidor, bool activo, unsigned short int ventas) {
+    if (contadorSurtidores < 12) {  // Verificar que no exceda la capacidad
+        surtidores[contadorSurtidores] = idSurtidor;  // Almacenar el ID del surtidor
+        surtidorActivo[contadorSurtidores] = activo;  // Almacenar el estado del surtidor
+        ventaSurtidor[contadorSurtidores] = ventas;  // Almacenar las ventas del surtidor
+        contadorSurtidores++;  // Incrementar el contador
+    } else {
+        cerr << "No se pueden agregar más surtidores a esta estación." << endl;
     }
-    surtidores[contadorSurtidores] = idSurtidor;
-    surtidorActivo[contadorSurtidores] = 0;  // Inicialmente desactivado
-    ventaSurtidor[contadorSurtidores] = 0;   // Inicialmente sin ventas
-    contadorSurtidores++;
-    cout << "Surtidor " << idSurtidor << " agregado." << endl;
 }
 
 void estacion::eliminarSurtidor(unsigned short int idSurtidor) {
@@ -146,7 +146,7 @@ void estacion::mostrarEstadoCombustibles() const {
 
 // Registrar venta de combustible
 void estacion::registrarVenta(double cantidad, string categoria, string metodoPago,
-                              string documentoCliente, double monto, unsigned short int id) {
+                              string documentoCliente, double monto, unsigned short int id, unsigned short int est) {
     if (contadorVentas >= capacidadVentas) {
         cout << "Capacidad máxima alcanzada. Guardando ventas." << endl;
         guardarVentasEnArchivo();
@@ -160,6 +160,7 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
 
     // Registrar venta en el surtidor
     registrarVentaSurtidor(id);
+    unsigned short int idSurtidor = surtidores[id];
 
     // Almacenar los datos de la venta
     time_t now = time(0);
@@ -171,7 +172,8 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
     ventas[contadorVentas].metodoPago = metodoPago;
     ventas[contadorVentas].documentoCliente = documentoCliente;
     ventas[contadorVentas].monto = monto;
-    ventas[contadorVentas].id = id;
+    ventas[contadorVentas].id = idSurtidor;
+    ventas[contadorVentas].est = est;
 
     contadorVentas++;
 }
@@ -179,15 +181,10 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
 
 // Guardar ventas en archivo
 bool estacion::guardarVentasEnArchivo() {
-    ofstream archivo("ventas.txt", ios::app); // Modo append
+    ofstream archivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\ventas.txt", ios::app); // Modo append
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return false;
-    }
-
-    // Agregar cabeceras si el archivo está vacío
-    if (archivo.tellp() == 0) {
-        archivo << "Fecha y Hora | Cantidad (L) | Categoría | Método de Pago | Cliente | Monto ($) | ID (Surtidor)" << endl;
     }
 
     // Guardar cada venta en el archivo
@@ -198,7 +195,8 @@ bool estacion::guardarVentasEnArchivo() {
                 << ventas[i].metodoPago << " | "
                 << ventas[i].documentoCliente << " | "
                 << "$" << ventas[i].monto << " | "
-                << "Surtidor " << ventas[i].id << endl;
+                << ventas[i].id << " | "
+                << ventas[i].est << endl;
     }
 
     archivo.close();
@@ -208,7 +206,8 @@ bool estacion::guardarVentasEnArchivo() {
 
 // Mostrar ventas
 void estacion::mostrarVentas() {
-    ifstream archivo("ventas.txt");
+    guardarVentasEnArchivo();
+    ifstream archivo("C:\\Users\\Lenovo\\Documents\\Desafio2\\ventas.txt");
     if (!archivo) {
         cerr << "Error al abrir el archivo." << endl;
         return;
@@ -233,53 +232,6 @@ unsigned int estacion::contadorlineas(const string& rutaArchivo) {
     return count;
 }
 
-// Cargar objetos desde un archivo
-estacion* estacion::TXTobj(const string& rutaArchivo) {
-    unsigned int count = contadorlineas(rutaArchivo); // Determinar cuántas líneas tiene el archivo
-    if (count == 0 ){
-        cout << "El archivo está vacío." << endl;
-        return nullptr;
-    }
-
-    estacion* arrayEstaciones = new estacion[count]; // Crear arreglo dinámico
-    string atributos[9]; // Asumiendo 9 atributos por estación
-    string linea;
-    unsigned int i = 0;
-
-    ifstream archivo(rutaArchivo);
-    if (!archivo.is_open()) {
-        cout << "Error al abrir el archivo." << endl;
-        return nullptr; // Si no se puede abrir, retornamos nullptr
-    }
-
-    // Leer línea por línea del archivo
-    while (getline(archivo, linea) && i < count) {
-        unsigned int posInicio = 0, posDelim, index = 0;
-
-        // Pasar cada línea y extraer los atributos separados por ';'
-        while ((posDelim = linea.find(';', posInicio)) != string::npos && index < 9) {
-            atributos[index] = linea.substr(posInicio, posDelim - posInicio);
-            posInicio = posDelim + 1;
-            index++;
-        }
-
-        // Validar que se han leído todos los atributos necesarios
-        if (index != 9) {
-            cout << "Error: Línea incompleta en el archivo." << endl;
-            continue; // O manejar el error de otra manera
-        }
-
-        // Crear y almacenar un objeto estación en el arreglo
-        arrayEstaciones[i] = estacion(atributos[0],stoi(atributos[1]), atributos[2],
-                                      atributos[3][0], stod(atributos[4]), stod(atributos[5]),
-                                      atributos[6], stoi(atributos[7]), stoi(atributos[8]));
-        i++;
-    }
-
-    archivo.close();
-    return arrayEstaciones; // Retornar el arreglo de objetos
-}
-
 // Guardar estación en archivo
 void estacion::guardarTXT(const string& rutaArchivo) {
     ofstream archivo(rutaArchivo, ios::app); // Modo 'append' para agregar sin borrar
@@ -288,10 +240,126 @@ void estacion::guardarTXT(const string& rutaArchivo) {
         return;
     }
 
-    // Guardar los atributos separados por ';'
-    archivo << nombre<< ';' << id << ';' << gerente << ';' << region << ';'
-            << latitud << ';' << longitud << ';' << maquina << ';' << isla << ';'
-            << activo << '\n';
+    // Guardar la información de la estación
+    archivo << nombre << ";"
+            << id << ";"
+            << gerente << ";"
+            << region << ";"
+            << latitud << ";"
+            << longitud << ";"
+            << maquina << ";"
+            << isla << ";"
+            << activo << endl;
 
     archivo.close();
+    cout << "Estación guardada exitosamente." << endl;
+    return;
+}
+
+void estacion::guardarSurtidoresTXT(const string& rutaArchivo) {
+    ofstream archivo(rutaArchivo, ios::app); // Modo 'append' para agregar sin borrar
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo para guardar los surtidores." << endl;
+        return;
+    }
+
+    // Guardar la información de los surtidores
+    for (unsigned short int i = 0; i < contadorSurtidores; ++i) {
+        archivo << id << ";"  // ID de la estación
+                << surtidores[i] << ";"  // ID del surtidor
+                << surtidorActivo[i] << ";"  // Estado del surtidor
+                << ventaSurtidor[i] << endl;  // Ventas del surtidor
+    }
+
+    archivo.close();
+    cout << "Surtidores guardados exitosamente." << endl;
+    return;
+}
+//Método para cargar staciones desde un archivos
+estacion* estacion::TXTobj(const string& rutaArchivo, const string& rutaSurtidores) {
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cerr << "Error al abrir el archivo de estaciones: " << rutaArchivo << endl;
+        return nullptr;
+    }
+
+    // Contamos las líneas del archivo para saber cuántas estaciones hay.
+    unsigned int count = contadorlineas(rutaArchivo);
+    estacion* arrayEstaciones = new estacion[count];  // Array dinámico de estaciones.
+
+    string linea;
+    unsigned int i = 0;
+    while (getline(archivo, linea) && i < count) {
+        istringstream ss(linea);
+        string nombre, gerente, maquina, regionStr;
+        int id;
+        double latitud, longitud;
+        unsigned short isla, activo;
+
+        // Extraemos los atributos del archivo separados por ';'.
+        getline(ss, nombre, ';');
+        ss >> id; ss.ignore();
+        getline(ss, gerente, ';');
+        getline(ss, regionStr, ';');
+        char region = regionStr[0];  // Convertimos el string a char.
+        ss >> latitud; ss.ignore();
+        ss >> longitud; ss.ignore();
+        getline(ss, maquina, ';');
+        ss >> isla; ss.ignore();
+        ss >> activo;
+
+        // Creamos la estación y la agregamos al array.
+        arrayEstaciones[i++] = estacion(nombre, id, gerente, region, latitud, longitud, maquina, isla, activo);
+    }
+    archivo.close();
+
+    // Cargar surtidores y asociarlos con las estaciones.
+    unsigned short numSurtidores;
+    surtidor* surtidores = TXTsurtidor(rutaSurtidores, numSurtidores);
+
+    if (surtidores) {
+        for (unsigned short j = 0; j < numSurtidores; j++) {
+            for (unsigned int k = 0; k < count; k++) {
+                if (arrayEstaciones[k].getId() == surtidores[j].idEstacion) {
+                    arrayEstaciones[k].agregarSurtidor(surtidores[j].idSurtidor, surtidores[j].activo, surtidores[j].ventas);
+                }
+            }
+        }
+        delete[] surtidores;  // Liberamos la memoria de los surtidores.
+    }
+
+    cout << "Estaciones cargadas correctamente." << endl;
+    return arrayEstaciones;
+}
+
+surtidor* estacion::TXTsurtidor(const string& rutaArchivo, unsigned short& count) {
+    ifstream archivo(rutaArchivo);
+    if (!archivo.is_open()) {
+        cerr << "Error al abrir el archivo de surtidores: " << rutaArchivo << endl;
+        return nullptr;
+    }
+
+    count = contadorlineas(rutaArchivo);
+    surtidor* arraySurtidores = new surtidor[count];  // Array dinámico de surtidores.
+
+    string linea;
+    unsigned int i = 0;
+    while (getline(archivo, linea) && i < count) {
+        istringstream ss(linea);
+        unsigned short idSurtidor, idEstacion;
+        bool activo;
+        double ventas;
+        // Extraemos los atributos del archivo separados por ';'.
+        ss >> idEstacion; ss.ignore();  // Leer idEstacion
+        ss >> idSurtidor; ss.ignore();   // Leer idSurtidor
+        ss >> activo; ss.ignore();        // Leer estado activo (true/false)
+        ss >> ventas;                     // Leer ventas como unsigned short
+
+        // Creamos el surtidor y lo agregamos al array.
+        arraySurtidores[i++] = surtidor{idEstacion, idSurtidor, activo, ventas}; // Asignando valores leídos.
+    }
+    archivo.close();
+
+    cout << "Surtidores cargados correctamente." << endl;
+    return arraySurtidores;
 }
