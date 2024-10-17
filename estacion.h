@@ -4,7 +4,7 @@
 #include <string>
 using namespace std;
 
-struct Surtidor {
+struct surtidor {
     unsigned short int idEstacion; // Id de la estación
     unsigned short int idSurtidor;  // Id del surtidor
     bool activo;                    // Estado del surtidor
@@ -65,7 +65,7 @@ public:
     void setactivo(unsigned short int activi);
 
     // Métodos para surtidores
-    void agregarSurtidor(unsigned short int  idSurtidor);
+    void agregarSurtidor(unsigned short int  idSurtidor, bool activo, unsigned short int ventas);
     void eliminarSurtidor(unsigned short int idSurtidor);
     void activarSurtidor(unsigned short int indice, bool estado);
     void mostrarEstadoSurtidores() const;
@@ -83,10 +83,9 @@ public:
     // Métodos para manejar estaciones desde archivos
 
     static unsigned int contadorlineas(const string& rutaArchivo);
-    static estacion* TXTobj(const string& rutaArchivo, const string& rutaSurtidores);
     void guardarTXT(const string& rutaArchivo);
-
-    static Surtidor* TXTsurtidor(const string& rutaArchivo, unsigned short& count);
+    static estacion* TXTobj(const string& rutaArchivo, const string& rutaSurtidores);
+    static surtidor* TXTsurtidor(const string& rutaArchivo, unsigned short& count);
 };
 
 #endif // ESTACION_H

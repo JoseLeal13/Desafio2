@@ -27,17 +27,16 @@ int main() {
         cout << "Error al cargar las estaciones." << endl;
         return 1; // Salir del programa con error
     }
-
-    // Mostrar información de las estaciones cargadas
-    for (unsigned short i = 0; i < numEstaciones; i++) {
-        estaciones[i].mostrarInfo();
-        estaciones[i].mostrarEstadoSurtidores();
-
+        estaciones[0].mostrarInfo();
+        estaciones[0].mostrarEstadoSurtidores();
+        estaciones[1].mostrarInfo();
+        estaciones[1].mostrarEstadoSurtidores();
+        /*
     estacion estacion1("Termax", 77777, "Carlos", 'S', 4.50971, -73.08175,
                       "Máquina XPTO", 4, 1);
     estacion1.mostrarInfo();
-    estacion1.agregarSurtidor(1); // Surtidor 1
-    estacion1.agregarSurtidor(2); // Surtidor 2
+    estacion1.agregarSurtidor(2345); // Surtidor 1
+    estacion1.agregarSurtidor(1234); // Surtidor 2
     estacion1.mostrarEstadoSurtidores();
     estacion1.activarSurtidor(0, true); // Activar surtidor 1
     estacion1.activarSurtidor(1, true); // Activar surtidor 2
@@ -49,7 +48,7 @@ int main() {
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
     estacion1.mostrarVentas();
-
+*/
 /*
     unsigned short int opcion = 0;
 
@@ -234,4 +233,4 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cin >> activo;
 */
     }
-}
+

@@ -16,3 +16,9 @@ Tue Oct 15 10:50:05 2024
 Tue Oct 15 22:55:27 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
 Tue Oct 15 23:00:17 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
 Tue Oct 15 23:01:03 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
+Wed Oct 16 16:51:19 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
+Wed Oct 16 16:51:19 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
+Wed Oct 16 16:51:19 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
+Wed Oct 16 16:51:19 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
+Wed Oct 16 16:51:19 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
+Wed Oct 16 16:51:19 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 1 | 101
