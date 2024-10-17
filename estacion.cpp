@@ -238,6 +238,41 @@ void estacion::guardarTXT(const string& rutaArchivo) {
         cout << "Error al abrir el archivo para guardar." << endl;
         return;
     }
+
+    // Guardar la información de la estación
+    archivo << nombre << ";"
+            << id << ";"
+            << gerente << ";"
+            << region << ";"
+            << latitud << ";"
+            << longitud << ";"
+            << maquina << ";"
+            << isla << ";"
+            << activo << endl;
+
+    archivo.close();
+    cout << "Estación guardada exitosamente." << endl;
+    return;
+}
+
+void estacion::guardarSurtidoresTXT(const string& rutaArchivo) {
+    ofstream archivo(rutaArchivo, ios::app); // Modo 'append' para agregar sin borrar
+    if (!archivo.is_open()) {
+        cout << "Error al abrir el archivo para guardar los surtidores." << endl;
+        return;
+    }
+
+    // Guardar la información de los surtidores
+    for (unsigned short int i = 0; i < contadorSurtidores; ++i) {
+        archivo << id << ";"  // ID de la estación
+                << surtidores[i] << ";"  // ID del surtidor
+                << surtidorActivo[i] << ";"  // Estado del surtidor
+                << ventaSurtidor[i] << endl;  // Ventas del surtidor
+    }
+
+    archivo.close();
+    cout << "Surtidores guardados exitosamente." << endl;
+    return;
 }
 //Método para cargar staciones desde un archivos
 estacion* estacion::TXTobj(const string& rutaArchivo, const string& rutaSurtidores) {

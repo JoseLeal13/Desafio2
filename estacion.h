@@ -84,6 +84,7 @@ public:
 
     static unsigned int contadorlineas(const string& rutaArchivo);
     void guardarTXT(const string& rutaArchivo);
+    void guardarSurtidoresTXT(const string& rutaArchivo);
     static estacion* TXTobj(const string& rutaArchivo, const string& rutaSurtidores);
     static surtidor* TXTsurtidor(const string& rutaArchivo, unsigned short& count);
 };

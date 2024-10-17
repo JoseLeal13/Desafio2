@@ -19,7 +19,6 @@ int main() {
     const string archivoSurtidor = "C:\\Users\\Lenovo\\Documents\\Desafio2\\surtidora.txt";
 
     // Cargar las estaciones desde el archivo
-    unsigned short numEstaciones;
     estacion* estaciones = estacion::TXTobj(archivoEstacion, archivoSurtidor);
 
     // Comprobar si la carga fue exitosa
@@ -27,20 +26,26 @@ int main() {
         cout << "Error al cargar las estaciones." << endl;
         return 1; // Salir del programa con error
     }
-        estaciones[0].mostrarInfo();
-        estaciones[0].mostrarEstadoSurtidores();
-        estaciones[1].mostrarInfo();
-        estaciones[1].mostrarEstadoSurtidores();
-        /*
+
+
+    /*
     estacion estacion1("Termax", 77777, "Carlos", 'S', 4.50971, -73.08175,
-                      "Máquina XPTO", 4, 1);
-    estacion1.mostrarInfo();
-    estacion1.agregarSurtidor(2345); // Surtidor 1
-    estacion1.agregarSurtidor(1234); // Surtidor 2
+                       "Máquina XPTO", 4, 1);
+    estacion1.agregarSurtidor(890, false, 0);
     estacion1.mostrarEstadoSurtidores();
-    estacion1.activarSurtidor(0, true); // Activar surtidor 1
-    estacion1.activarSurtidor(1, true); // Activar surtidor 2
-    estacion1.mostrarEstadoSurtidores();
+    */
+    estaciones[0].agregarSurtidor(56565,true,5);
+    estaciones[1].agregarSurtidor(34352,false,0);
+
+    try {
+        estaciones[0].guardarSurtidoresTXT(archivoEstacion);
+        estaciones[1].guardarSurtidoresTXT(archivoSurtidor);
+    } catch (const exception& e) {
+        cerr << "Ocurrió un error";
+
+        }
+    cout << "Chupala anibal" << endl;
+    /*
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
     estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
@@ -232,5 +237,4 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cout << "Ingrese si la estacion esta activa (1 o 0): ";
     cin >> activo;
 */
-    }
-
+}
