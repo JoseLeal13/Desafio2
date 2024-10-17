@@ -3,6 +3,8 @@
 #include <ctime>
 #include <fstream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 // Definición del constructor
@@ -10,10 +12,20 @@ estacion::estacion(string nombre, unsigned int id, string gerente, char region, 
                    double longitud, string maquina, unsigned short int isla, unsigned short int activo)
     : nombre(nombre), id(id), gerente(gerente), region(region), latitud(latitud), longitud(longitud),
     maquina(maquina), isla(isla), activo(activo), contadorSurtidores(0), contadorVentas(0), capacidadVentas(5) {
+
+   /* srand(static_cast<unsigned int>(time(0)));
+    for(unsigned short int i=0;i<2;i++){
+     unsigned int numeroAleatorio = rand() % 10001 + 20000;
+     surtidores[i]=numeroAleatorio;
+     surtidorActivo[i]=true;
+    }*/
+    //contadorSurtidores=2;
     ventas = new Venta[capacidadVentas]; // Inicializa el arreglo dinámico para ventas
 }
 estacion::estacion() : nombre(""),id(0),gerente(""),region('N'),latitud(0.0f),longitud(0.0f),
-    maquina(""),isla(0),activo(0),contadorSurtidores(0),contadorVentas(0),capacidadVentas(5){}
+    maquina(""),isla(0),activo(0),contadorSurtidores(0),contadorVentas(0),capacidadVentas(5){
+    ventas = new Venta[capacidadVentas];
+}
 
 // Destructor
 estacion::~estacion() {
@@ -52,6 +64,15 @@ double estacion::getLongitud() const {
 
 string estacion::getMaquina() const {
     return maquina;
+}
+unsigned int estacion:: getIdsurt(unsigned int idsurtidor){
+    for (unsigned short int i=0;i<contadorSurtidores;i++){
+        if(surtidores[i]==idsurtidor){
+            return surtidores[i];
+        }
+    }
+    cout<<"el surtidor no existe en esta estacion"<<endl;
+    return 0;
 }
 
 unsigned short int estacion::getIsla() const {
@@ -149,9 +170,10 @@ void estacion::mostrarEstadoCombustibles() const {
     cout << "- Ecomax: " << ((activo & 4) ? "Disponible" : "No disponible") << endl;
 }
 
+
 // Registrar venta de combustible
 void estacion::registrarVenta(double cantidad, string categoria, string metodoPago,
-                              string documentoCliente, double monto, unsigned short int id, unsigned short int est) {
+                              string documentoCliente, double monto, unsigned short int id, unsigned int est) {
     if (contadorVentas >= capacidadVentas) {
         cout << "Capacidad máxima alcanzada. Guardando ventas." << endl;
         guardarVentasEnArchivo();
@@ -165,7 +187,7 @@ void estacion::registrarVenta(double cantidad, string categoria, string metodoPa
 
     // Registrar venta en el surtidor
     registrarVentaSurtidor(id);
-    unsigned short int idSurtidor = surtidores[id];
+    unsigned int idSurtidor = surtidores[id];
 
     // Almacenar los datos de la venta
     time_t now = time(0);
@@ -199,7 +221,7 @@ bool estacion::guardarVentasEnArchivo() {
                 << ventas[i].categoria << " | "
                 << ventas[i].metodoPago << " | "
                 << ventas[i].documentoCliente << " | "
-                << "$" << ventas[i].monto << " | "
+                << ventas[i].monto << " | "
                 << ventas[i].id << " | "
                 << ventas[i].est << endl;
     }
@@ -399,5 +421,79 @@ void estacion::cargarSurtidoresDesdeArchivo(const std::string& rutaArchivo) {
     std::cout << "Surtidores cargados correctamente desde " << rutaArchivo << std::endl;
 }
 
-*/
 
+void estacion::registrarVenta(double cantidad, string categoria, string metodoPago,
+                              string documentoCliente, double monto, unsigned short int id, unsigned int est) {
+    if (contadorVentas >= capacidadVentas) {
+        cout << "Capacidad máxima alcanzada. Guardando ventas." << endl;
+        guardarVentasEnArchivo();
+        contadorVentas = 0;  // Reiniciar el contador
+    }
+
+    if (id >= 12 || surtidorActivo[id] == 0) {
+        cout << "Surtidor inválido o inactivo." << endl;
+        return;
+    }
+
+    // Registrar venta en el surtidor
+    registrarVentaSurtidor(id);
+    unsigned short int idSurtidor = surtidores[id];
+
+    // Almacenar los datos de la venta
+    time_t now = time(0);
+    string fechaHora = ctime(&now);
+    fechaHora.pop_back();  // Eliminar '\n'
+    ventas[contadorVentas].fechaHora = fechaHora;
+    ventas[contadorVentas].cantidadCombustible = cantidad;
+    ventas[contadorVentas].categoria = categoria;
+    ventas[contadorVentas].metodoPago = metodoPago;
+    ventas[contadorVentas].documentoCliente = documentoCliente;
+    ventas[contadorVentas].monto = monto;
+    ventas[contadorVentas].id = idSurtidor;
+    ventas[contadorVentas].est = est;
+
+    contadorVentas++;
+}
+
+
+// Guardar ventas en archivo
+bool estacion::guardarVentasEnArchivo() {
+    ofstream archivo("C:\\Users\\juan david\\Documents\\desafioII\\ventas.txt", ios::app); // Modo append
+    if (!archivo) {
+        cerr << "Error al abrir el archivo." << endl;
+        return false;
+    }
+
+    // Guardar cada venta en el archivo
+    for (int i = 0; i < contadorVentas; ++i) {
+        archivo << ventas[i].fechaHora << " | "
+                << ventas[i].cantidadCombustible << "L | "
+                << ventas[i].categoria << " | "
+                << ventas[i].metodoPago << " | "
+                << ventas[i].documentoCliente << " | "
+                << ventas[i].monto << " | "
+                << ventas[i].id << " | "
+                << ventas[i].est << endl;
+    }
+
+    archivo.close();
+    cout << "Ventas guardadas exitosamente." << endl;
+    return true;
+}
+
+// Mostrar ventas
+void estacion::mostrarVentas() {
+    guardarVentasEnArchivo();
+    ifstream archivo("C:\\Users\\juan david\\Documents\\desafioII\\ventas.txt");
+    if (!archivo) {
+        cerr << "Error al abrir el archivo." << endl;
+        return;
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        cout << linea << endl;
+    }
+    archivo.close();
+}
+*/

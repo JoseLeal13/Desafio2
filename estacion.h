@@ -1,6 +1,8 @@
 #ifndef ESTACION_H
 #define ESTACION_H
 
+#include <cstdlib>
+#include <ctime>
 #include <string>
 using namespace std;
 
@@ -12,7 +14,7 @@ struct Venta {
     string documentoCliente;
     double monto;
     unsigned short int id;
-    unsigned short int est;
+    unsigned int est;
 };
 
 class estacion {
@@ -27,10 +29,10 @@ private:
     unsigned short int isla;
     unsigned short int activo;
 
-    unsigned short int surtidores[12];  // Arreglo para almacenar los identificadores de surtidores
+    unsigned short int surtidores[12]={0};  // Arreglo para almacenar los identificadores de surtidores
     unsigned short int contadorSurtidores;  // Para llevar el conteo de surtidores añadidos
     unsigned short int ventaSurtidor[12];   //Para guardar ventas de cada surtidor
-    bool surtidorActivo[12];  //Para activar o desactivar surtidor
+    bool surtidorActivo[12]={false};  //Para activar o desactivar surtidor
     Venta* ventas;  // Puntero para almacenar las ventas dinámicamente (arreglo bidimensional)
     unsigned short int contadorVentas;  // Contador para las ventas realizadas
     unsigned short int capacidadVentas;  // Capacidad actual del arreglo
@@ -47,6 +49,7 @@ public:
     ~estacion();
 
     // Getters
+    unsigned int getIdsurt(unsigned int id);
     unsigned short int getcantsurti()const;
     string getNombre() const;
     unsigned int getId() const;
@@ -71,10 +74,13 @@ public:
 
     // Métodos de venta
     void venderCombustible(string tipo) const;
+
     void registrarVenta(double cantidad, string categoria, string metodoPago,
                         string documentoCliente, double monto, unsigned short int id,
-                        unsigned short int est);
+                        unsigned int est);
+
     bool guardarVentasEnArchivo();
+
     void mostrarVentas();
 
     // Métodos para manejar estaciones desde archivos

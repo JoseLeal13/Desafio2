@@ -1,6 +1,8 @@
 #ifndef tank_h
 #define tank_h
 #include <string>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 class tank
 {
