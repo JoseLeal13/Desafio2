@@ -143,9 +143,9 @@ void tank::setprecios(float pr,float pp,float peco){
 }
 
 void tank::getprice(){
-    cout<<precios[0]<<endl;
-    cout<<precios[1]<<endl;
-    cout<<precios[2]<<endl;
+    cout<<"Precio regular: "<<precios[0]<<endl;
+    cout<<"precio preimun: "<<precios[1]<<endl;
+    cout<<"Precio ecoextra: "<<precios[2]<<endl;
     return;
 }
 

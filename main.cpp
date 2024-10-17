@@ -14,6 +14,7 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
                            double& latitud, double& longitud, string& maquina,
                            unsigned short int& isla, unsigned short int& activo);
 
+<<<<<<< HEAD
 void simularventa(    double cant,string categoria,
                   string metodoPago,string documentoCliente,
                   double monto,estacion* obj,string& archivoEst); //funcion para simular ventas
@@ -23,6 +24,65 @@ void simularventa(    double cant,string categoria,
     string archivoEst="C:\\Users\\juan david\\Documents\\desafioII\\estacion.txt";
     string archivoventas="C:\\Users\\juan david\\Documents\\desafioII\\ventas.txt";
    estacion* Estsaved=estacion::TXTobj(archivoEst);
+=======
+int main() {
+    const string archivoEstacion = "C:\\Users\\Lenovo\\Documents\\Desafio2\\estacion.txt";
+    const string archivoSurtidor = "C:\\Users\\Lenovo\\Documents\\Desafio2\\surtidora.txt";
+
+    // Cargar las estaciones desde el archivo
+    estacion* estaciones = estacion::TXTobj(archivoEstacion, archivoSurtidor);
+
+    // Comprobar si la carga fue exitosa
+    if (estaciones == nullptr) {
+        cout << "Error al cargar las estaciones." << endl;
+        return 1; // Salir del programa con error
+    }
+
+
+    /*
+    estacion estacion1("Termax", 77777, "Carlos", 'S', 4.50971, -73.08175,
+                       "Máquina XPTO", 4, 1);
+    estacion1.agregarSurtidor(890, false, 0);
+    estacion1.mostrarEstadoSurtidores();
+    */
+    estaciones[0].agregarSurtidor(56565,true,5);
+    estaciones[1].agregarSurtidor(34352,false,0);
+
+    try {
+        estaciones[0].guardarSurtidoresTXT(archivoEstacion);
+        estaciones[1].guardarSurtidoresTXT(archivoSurtidor);
+    } catch (const exception& e) {
+        cerr << "Ocurrió un error";
+
+        }
+}
+    /*
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.registrarVenta(10.5, "Regular", "Tarjeta", "12345678", 35000.0, 0, 101);
+    estacion1.mostrarVentas();
+*/
+/*
+    unsigned short int opcion = 0;
+
+    while (opcion != 3) {
+        system("cls");
+        Mopcion();  // muestra opciones para gestionar red o estaciones
+        cin >> opcion;
+
+        if (opcion == 1) { // gestionar la red
+=======
+*/
+/*
+int main() {
+    string archivotanks="C:\\Users\\Lenovo\\Documents\\desafio2\\tank.txt";
+    string archivoEst="C:\\Users\\Lenovo\\Documents\\desafio2\\estacion.txt";
+    string archivoventas="C:\\Users\\Lenovo\\Documents\\desafio2\\ventas.txt";
+    estacion* Estsaved=estacion::TXTobj(archivoEst);
+>>>>>>> 3d46799c016bcf9c3e89ec6a1311963b894d3583
     tank* tankes=tank::TXTobj(archivotanks);
     string nombre;
     unsigned int id;
@@ -370,6 +430,7 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
     cin >> activo;
 }
 */
+<<<<<<< HEAD
 void simularventa(double cant,string categoria,
                   string metodoPago,string documentoCliente,
                   double monto,estacion* obj,string& archivoEst){
@@ -395,3 +456,5 @@ void simularventa(double cant,string categoria,
 
 }
 
+=======
+>>>>>>> 3d46799c016bcf9c3e89ec6a1311963b894d3583

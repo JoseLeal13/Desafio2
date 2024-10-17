@@ -1,5 +1,6 @@
-Wed Oct 16 19:05:12 2024 | 34L | preimun | efectivo | 1066234 | 4000 | 123 | 106
-Wed Oct 16 19:05:12 2024 | 34L | preimun | efectivo | 1066234 | 4000 | 123 | 106
-Wed Oct 16 19:05:12 2024 | 34L | preimun | efectivo | 1066234 | 4000 | 123 | 106
-Wed Oct 16 19:05:12 2024 | 34L | preimun | efectivo | 1066234 | 4000 | 123 | 106
-Wed Oct 16 19:05:12 2024 | 34L | preimun | efectivo | 1066234 | 4000 | 123 | 106
+Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
+Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
+Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
+Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
+Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
+Wed Oct 16 19:3139 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 1011
