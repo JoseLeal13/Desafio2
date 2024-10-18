@@ -135,6 +135,21 @@ void tank:: Saveobj(tank* array,tank obj,const string& archivo){    //guardar ob
     }
     texto.close();
 }
+
+void tank:: Saveobj(tank* array,const string& archivo){    //guardar objetos en archivo
+    unsigned int tam=contadorlineas();
+    ofstream texto(archivo);
+    if (!texto.is_open()) {
+        cout << "Error al abrir el archivo para guardar." << endl;
+        return;
+    }
+    for(unsigned short int i=0;i<tam;i++){
+            texto<<array[i]<<endl;
+    }
+    texto.close();
+}
+
+
 void tank::setprecios(float pr,float pp,float peco){
     precios[0]=pr;
     precios[1]=pp;

@@ -40,8 +40,8 @@ public:
     friend ostream& operator<<(ostream& os, const tank& tank); //funcion amiga(puede acceder a los atributos de cualquier objeto)
     static unsigned int contadorlineas();       //contar las lineas del archivo
     static tank* TXTobj(const string& rutaArchivo);                      //pasar el txt a objetos de clase tank
-    static void Saveobj(tank* array,tank obj,const string& archivo);           //guardar los objetos a un archivo
-
+    static void Saveobj(tank* array,tank obj,const string& archivo);        //guardar los objetos a un archivo
+    static void Saveobj(tank* array,const string& archivo);
 
 
 };

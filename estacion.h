@@ -97,9 +97,11 @@ public:
     static unsigned int contadorlineas(const string& rutaArchivo);
     void guardarTXT(const string& rutaArchivo);
     static void guardarTXT(estacion* array, estacion obj, const string& rutaArchivo);
+    static void guardarTXT(estacion* array, const string& rutaArchivo);
 
     //Métodos para manejar surtidores desde archivos
     void guardarSurtidoresTXT(const string& rutaArchivo);
+    static void guardarSurtidoresTXT(estacion* array,const string& rutaArchivo);
     static estacion* TXTobj(const string& rutaArchivo, const string& rutaSurtidores);
     static surtidor* TXTsurtidor(const string& rutaArchivo, unsigned short& count);
 

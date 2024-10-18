@@ -17,7 +17,7 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
 
 void simularventa(double cant,string categoria,
                   string metodoPago,string documentoCliente,
-                  estacion* obj,tank* obj2, string archivoEst); //funcion para simular ventas
+                  estacion obj,tank obj2, string archivoEst); //funcion para simular ventas
 
 /*
 int main() {
@@ -61,25 +61,26 @@ int main() {
     string archivotanks="C:\\Users\\juan david\\Documents\\desafioII\\tank.txt";
     const string archivoEst = "C:\\Users\\juan david\\Documents\\desafioII\\estacion.txt";
     const string archivoSurtidor = "C:\\Users\\juan david\\Documents\\desafioII\\surtidora.txt";
-
     string archivoventas="C:\\Users\\juan david\\Documents\\desafioII\\ventas.txt";
-    estacion* Estsaved=estacion::TXTobj(archivoEst,archivoSurtidor);
-    tank* tankes=tank::TXTobj(archivotanks);
-    string nombre;
-    unsigned int id;
-    string gerente;
-    char region;
-    double latitud;
-    double longitud;
-    string maquina;
-    unsigned short int isla,activo,surtidores;
-    unsigned int idsurtidor;
-    unsigned short int opcion=0;
+
     //Estsaved[2].mostrarInfo();
     //Estsaved[2].mostrarEstadoSurtidores();
 
-
+    unsigned short int opcion=0;
     while(opcion!=3){
+        unsigned int tam=estacion::contadorlineas(archivoEst);
+        estacion* Estsaved=estacion::TXTobj(archivoEst,archivoSurtidor);
+        tank* tankes=tank::TXTobj(archivotanks);
+        string nombre;
+        unsigned int id;
+        string gerente;
+        char region;
+        double latitud;
+        double longitud;
+        string maquina;
+        unsigned short int isla,activo,surtidores;
+        unsigned int idsurtidor;
+
          system("cls");
         Mopcion();  //muestra opciones para gestionar red o estaciones
         cin>>opcion;
@@ -143,7 +144,8 @@ int main() {
             //break;
         }else if(opcred==3){// calcular las ventas
              system("cls");
-            cout<<"calculando ventas..."<<endl;
+            cout<<"el registro de venta es: "<<endl;
+            Estsaved[0].mostrarVentas();
             //break;
         }else if (opcred==4){//fijar el precio de los combustibles
              system("cls");
@@ -184,7 +186,7 @@ int main() {
                     unsigned int short ops=8;
 
                     while(ops!=0){
-                        unsigned int tam=estacion::contadorlineas(archivoEst);
+
                         unsigned short int cantsurti=0;
                         unsigned int idsurti=0;
                         MopSurtidores();
@@ -267,12 +269,35 @@ int main() {
                             cout << "Ingrese una opcion valida" << endl;
                         }
                     }
-                } else if (opce == 2) {
+                } else if (opce == 2) {     //simular venta
+                system("cls");
+                    for(int i=0;i<5;i++){
+                double cant=32;
+                string categoria="regular";
+                string metodoPago="efectivo";
+                string documentoCliente="12121231";
+                /*cout <<"Ingrese la cantidad de combustible: ";
+                cin>>cant;
+                cout<<"Ingrese el metodo de pago: ";
+                cin>>metodoPago;
+                cout<<"Ingrese el tipo de combustible: ";
+                cin>>categoria;
+                cout<<"Ingrese su documento: ";
+                cin>>documentoCliente;
+
+                *//*simularventa(cant,categoria,
+                             metodoPago, documentoCliente,
+                             Estsaved[2],tankes[2],archivoEst);
+                */
+                Estsaved[2].registrarVenta(cant, categoria, metodoPago,
+                                           documentoCliente,72000,4,
+                                           1066269364);
+
+                cout <<"Buena venta...."<<endl;
+                    }
+                } else if (opce == 3) { //agregar combustible ramdon
                     system("cls");
 
-                } else if (opce == 3) {
-                    system("cls");
-                    unsigned int tam=estacion::contadorlineas(archivoEst);
                     system("cls");
                     cout<<"Ingrese la estacion a la cual quiere asignarle combustible: ";
                     cin>>id;
@@ -288,16 +313,13 @@ int main() {
                             }
 
                             tankes[i].setcombus(nume[0],nume[1],nume[2]);
-                            //cout<<"dentro del ciclo"<<endl;
-                            cout<<tankes[i].getrest(1)<<endl;
-                            tankes[i].getrest(2);
-                            tankes[i].getrest(3);
                             break;
                         }
 
                     }
                 }
             }
+
         } else if (opcion == 3) {
             cout << "Saliendo de el programa...." << endl;
             break;
@@ -305,6 +327,10 @@ int main() {
             system("cls");
             cout << "Ingrese una opcion valida." << endl;
         }
+
+        estacion::guardarSurtidoresTXT(Estsaved,archivoSurtidor);
+        estacion::guardarTXT(Estsaved,archivoEst);
+        tank:: Saveobj(tankes,archivotanks);
     }
 
     return 0;
@@ -323,7 +349,7 @@ void Mopred() { // mostrar opciones para la gestion de la red
     cout << "0.  Atras." << endl;
     cout << "1.  Agregar estaciones de servicio." << endl;
     cout << "2.  Eliminar una E/S de la red nacional." << endl;
-    cout << "3.  Calcular el monto total de las ventas." << endl;
+    cout << "3.  mostrar las ventas totales de las ventas." << endl;
     cout << "4.  Fijar los precios del combustible para toda la red." << endl;
     return;
 }
@@ -377,7 +403,7 @@ void ingresarDatosEstacion(string& nombre, unsigned int& id, string& gerente, ch
 
 void simularventa(double cant,string categoria,
                   string metodoPago,string documentoCliente,
-                  estacion* obj,tank* obj2, string archivoEst){
+                  estacion obj,tank obj2, string archivoEst){
     string lowerTipo;
     unsigned short int tipo=0;
     unsigned int tam=estacion::contadorlineas(archivoEst);
@@ -394,26 +420,29 @@ void simularventa(double cant,string categoria,
         tipo= 3;
     }
     double monto;                   //cuanto debe pagar el usuario
-    unsigned int indice;
+    unsigned int idsurti;
     unsigned int idEst;
     cout<<"Ingrese la estacion en la que se ecuentra ";
     cin>>idEst;
     cout <<"Ingrese el surtidor en el que esta comprando: ";
-    cin>>indice;
+    cin>>idsurti;
     while(tam>=0){
         tam--;
-        if(obj[tam].getId()==idEst){
-            float combustible[3]={obj2[tam].getrest(1),obj2[tam].getrest(2),obj2[tam].getrest(3)};  //cantidad de combustible en est.
-            float precio=obj2[tam].getprice(tipo);
+        if(obj.getId()==idEst){
+            float combustible[3]={obj2.getrest(1),obj2.getrest(2),obj2.getrest(3)};  //cantidad de combustible en est.
+            float precio=obj2.getprice(tipo);
             if(combustible[tipo-1]!=0){
+                unsigned short int indice=obj.getIdsurt(idsurti);
                 if(cant<combustible[tipo-1]){
                     monto=cant*precio;
                     try {
-                        obj[tam].registrarVenta(cant, categoria, metodoPago,
+                        obj.registrarVenta(cant, categoria, metodoPago,
                                                 documentoCliente,monto,indice,
                                                 idEst);
-                        obj2[tam].settank(tipo,cant);                    //restarle al tanke la cantidad de combustible
-                        obj2[tam].gettank();
+                         cout<<"ocurrio un error jajs xd"<<endl;
+                        //obj[tam].guardarVentasEnArchivo();
+                        /*obj2[tam].settank(tipo,cant);                    //restarle al tanke la cantidad de combustible
+                        obj2[tam].gettank();*/
 
                     } catch (const exception& e) {
                         cerr << "Ocurrió un error";
