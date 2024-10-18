@@ -3,4 +3,4 @@ Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 
 Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
 Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
 Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
-Wed Oct 16 19:31:39 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 101
+Wed Oct 16 19:3139 2024 | 10.5L | Regular | Tarjeta | 12345678 | $35000 | 2345 | 1011

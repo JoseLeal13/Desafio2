@@ -1,3 +1,5 @@
-Termax;12345;José;N;11.2408;-74.2052;A;2;1
-Termax;54321;Juan;S;10.9983;-73.2514;B;2;1
-Termax;77777;Carlos;S;4.50971;-73.0817;Máquina XPTO;4;1
+termax 3;4040404;papa yuto;N;123.23;-123.23;S;2;1
+termax 34;808080;212121;N;123.123;-123.45;N;2;1
+Termax;1066269364;Juan;S;10.9983;73.2514;N;2;1
+Termax;1231;Juan;S;10.9983;73.2514;N;2;1
+termax45;2024;juan pablo gonzales;C;123.45;-123.32;mac32;2;1
