@@ -20,8 +20,8 @@ tank::tank(unsigned int id_,unsigned short int activo_)
     : id(id_), activo(activo_){
     srand(static_cast<unsigned>(time(0)));
     for(unsigned int i=0;i<3;i++){
-        unsigned int numeroAleatorio = rand() % 101 + 100;
-        unsigned int numprecio =rand()%20001+20000;
+        float numeroAleatorio = rand() % 101 + 100;
+        float numprecio =rand()%20001+20000;
         combustibles[i]=numeroAleatorio;
         precios[i]=numprecio;
     }
@@ -55,7 +55,7 @@ void tank::settank(unsigned short int tcombustible,unsigned short int cant){ //i
 }
 
 
-int tank::getrest(unsigned short int tcombustibles){
+float tank::getrest(unsigned short int tcombustibles){
     return combustibles[tcombustibles-1];
 }
 ostream& operator<<(ostream& os, const tank& tank) {
@@ -141,12 +141,15 @@ void tank::setprecios(float pr,float pp,float peco){
     precios[2]=peco;
     return;
 }
-
-void tank::getprice(){
-    cout<<"Precio regular: "<<precios[0]<<endl;
-    cout<<"precio preimun: "<<precios[1]<<endl;
-    cout<<"Precio ecoextra: "<<precios[2]<<endl;
+void tank::setcombus(float reg,float pre,float eco){
+    combustibles[0]=reg;
+    combustibles[1]=pre;
+    combustibles[2]=eco;
     return;
+}
+
+float tank::getprice(unsigned short int indice){
+    return precios[indice-1];;
 }
 
 //destructor

@@ -8,8 +8,8 @@
 using namespace std;
 
 struct surtidor {
-    unsigned short int idEstacion; // Id de la estación
-    unsigned short int idSurtidor;  // Id del surtidor
+    unsigned  int idEstacion; // Id de la estación
+    unsigned  int idSurtidor;  // Id del surtidor
     bool activo;                    // Estado del surtidor
     double ventas;                  // Ventas realizadas
 };
@@ -56,7 +56,8 @@ public:
     ~estacion();
 
     // Getters
-    unsigned int getIdsurt(unsigned int id);
+    void getsurtidores();
+    unsigned int getIdsurt(unsigned int idsurtidor);      //devuelve el indice del surtidor
     unsigned short int getcantsurti()const;
     string getNombre() const;
     unsigned int getId() const;
@@ -86,6 +87,8 @@ public:
                         string documentoCliente, double monto, unsigned short int id,
                         unsigned int est);
 
+    void getVentas();
+
     bool guardarVentasEnArchivo();
 
     void mostrarVentas();
@@ -93,7 +96,7 @@ public:
     // Métodos para manejar estaciones desde archivos
     static unsigned int contadorlineas(const string& rutaArchivo);
     void guardarTXT(const string& rutaArchivo);
-
+    static void guardarTXT(estacion* array, estacion obj, const string& rutaArchivo);
 
     //Métodos para manejar surtidores desde archivos
     void guardarSurtidoresTXT(const string& rutaArchivo);
